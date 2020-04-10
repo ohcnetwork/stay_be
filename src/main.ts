@@ -13,12 +13,14 @@ async function bootstrap() {
 
   app.useStaticAssets(join(__dirname, '../../../public'));
   global.console.log('environment', process.env.NODE_ENV);
+
   const options = new DocumentBuilder()
     .setTitle('Coronasafe')
     .setDescription('Coronasafe Stay')
     .setVersion('1.0')
     .addTag('Coronasafe')
-    .addBearerAuth()
+    .setSchemes('https', 'http')
+    .addBearerAuth('Authorization', 'header', 'apiKey')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

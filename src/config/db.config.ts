@@ -18,7 +18,7 @@ export const DbConfig: TypeOrmModuleOptions = {
   ssl: {
     ca: fs.readFileSync(__dirname + '/rds-ca-2019-root.pem')
   },
-  logging: ["query", "error"],
+  // logging: ["query", "error"],
   cli: {
     migrationsDir: 'migrations',
   },
