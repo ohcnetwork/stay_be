@@ -1,0 +1,10 @@
+server:
+  host: https://stay.coronasafe.in
+  port: 3999
+  origin:
+    '*'
+db:
+  type: 'postgres'
+
+jwt:
+  expiresIn: 3600
