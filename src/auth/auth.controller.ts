@@ -38,7 +38,6 @@ export class AuthController {
 
   @Post('register')
   register(@Body() registerDto: RegisterDto):Promise<any>{
-    this.logger.verbose('New user Created');
     return this.authService.register(registerDto);
   }
 

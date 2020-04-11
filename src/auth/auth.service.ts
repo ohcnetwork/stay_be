@@ -37,12 +37,12 @@ export class AuthService {
 
   async register(data: any): Promise<any> {
     try {
-      if (data.password != data.confirmPassword) {
+      if (data.password !== data.confirm) {
         return {
           success: false,
           message: 'Error',
           data: {
-            confirmPassword: 'Password and confirm password must be same',
+            confirm: 'Password and confirm password must be same.',
           },
         };
       }
@@ -50,6 +50,7 @@ export class AuthService {
       if (!user) {
         data.password = await bcrypt.hash(data.password, 10);
         data.status = 'ACTIVE';
+
         const registerUser = await this.userRepository.save(data);
         const { password, ...result } = registerUser;
         return {
@@ -62,14 +63,15 @@ export class AuthService {
         success: false,
         message: 'Error',
         data: {
-          email: 'user already exists, Please login'
-        }
-      }
+          uniqueId: 'User already exist, please login.',
+        },
+      };
     } catch (e) {
+      global.console.log('err', e);
       return {
         success: false,
-        message : 'Something Went wrong ... Registration Failed'
-      }
+        message: 'Something went wrong..! Registration failed.',
+      };
     }
   }
 
