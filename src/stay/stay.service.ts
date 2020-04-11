@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class StayService {
-    private logger = new Logger('Stay Controller');
+    private logger = new Logger('Stay Service');
     constructor(
    @InjectRepository(StayRepository)
    private readonly stayRepository: StayRepository){}

@@ -1,4 +1,4 @@
-import { Body,Controller,Post, Logger, Get, Request, Patch } from '@nestjs/common';
+import { Body,Controller,Post, Logger, Get, Put } from '@nestjs/common';
 import { StayService } from './stay.service';
 import { AddStayDto,UpdateRoomDto } from './dto';
 
@@ -20,7 +20,7 @@ export class StayController {
         return this.stayService.addStay(addStayDto);
     }
 
-    @Patch(':id')
+    @Put('updateroom')
     updateRooms(@Body() updateRoomDto: UpdateRoomDto) {
         this.logger.verbose("room availability updated")
         return this.stayService.updateRooms(updateRoomDto);
