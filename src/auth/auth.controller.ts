@@ -41,6 +41,12 @@ export class AuthController {
     this.logger.verbose('New user Created');
     return this.authService.register(registerDto);
   }
+  
+  @Patch(':id')
+  changePass(@Body() changePasswordDto: ChangePasswordDto){
+    this.logger.verbose("Password Changed Successfully");
+    return this.authService.changePass(changePasswordDto);
+  }
 
 
 }
