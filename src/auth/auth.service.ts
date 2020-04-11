@@ -101,4 +101,19 @@ async login(user: any, body: any) {
       access_token: this.jwtService.sign(payload)
     }
 }
+  async changePassword(data:any): Promise<any> {
+    try{
+      const user = await this.userRepository.findOne({id:data.id})
+      if(!user){
+        user.password=data.password;
+        const{password, ...result} = user;
+      }
+      return{
+        success:true,
+        message:'success',
+        data:result,
+      }
+    }
+    
+  }
 }
