@@ -9,7 +9,7 @@ import { StayModule } from './stay/stay.module';
 @Module({
   imports: [
     AuthModule,
-    StayController,
+    StayModule,
     TypeOrmModule.forRoot(DbConfig),
   ],
   controllers: [AuthController,StayController],
