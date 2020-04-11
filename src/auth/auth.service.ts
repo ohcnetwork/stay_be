@@ -35,6 +35,26 @@ export class AuthService {
   }
 
 
+  async validateUser(email: string, password: string): Promise<any> {
+    try {
+      const user = await this.userRepository.findOne({ email });
+      console.log('user', user);
+      if (user) {
+        const match = await bcrypt.compare(password, user.password);
+        if (match) {
+          return user;
+        }
+      }
+      return null;
+    } catch (err) {
+      global.console.log('err', err);
+      return {
+        success: false,
+        message: 'Something went wrong..! Login failed.',
+      };
+    }
+  }
+
   async register(data: any): Promise<any> {
     try {
       if (data.password !== data.confirm) {
@@ -75,24 +95,6 @@ export class AuthService {
     }
   }
 
-  async validateUser(email: string, password: string): Promise<any> {
-    try {
-      const user = await this.userRepository.findOne({ email });
-      if (user) {
-        const match = await bcrypt.compare(password, user.password);
-        if (match) {
-          return user;
-        }
-      }
-      return null;
-    } catch (err) {
-      global.console.log('err', err);
-      return {
-        success: false,
-        message: 'Something went wrong..! Login failed.',
-      };
-    }
-  }
 
 async login(user: any, body: any) {
     const {email, id} = user;
