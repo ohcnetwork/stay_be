@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async getAllUsers(req: any) : Promise<any> {
-    return this.userRepository.getAllUsers();
+    return await this.userRepository.find();
   }
 
   async getUser(req: any): Promise<any> {
