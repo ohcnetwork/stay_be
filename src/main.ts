@@ -25,7 +25,7 @@ async function bootstrap() {
     .setDescription('Coronasafe Stay')
     .setVersion('1.0')
     .addTag('Coronasafe')
-    .setSchemes('https', 'http')
+    .setSchemes('http')
     .addBearerAuth('Authorization', 'header', 'apiKey')
     .build();
 
