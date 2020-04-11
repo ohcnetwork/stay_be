@@ -103,17 +103,34 @@ async login(user: any, body: any) {
 }
   async changePassword(data:any): Promise<any> {
     try{
-      const user = await this.userRepository.findOne({id:data.id})
-      if(!user){
-        user.password=data.password;
-        const{password, ...result} = user;
+      if (data.password != data.confirmPassword) {
+        return {
+          success: false,
+          message: 'Error',
+          data: {
+            confirmPassword: 'Password and confirm password must be same',
+          },
+        };
       }
+      const user = await this.userRepository.findOne({id:data.id})
+      if(user){
+        const match = await bcrypt.compare(data.currentpassword, user.password);
+        if(match){
+        user.password= await bcrypt.hash(data.password,10);
+        const User = await this.userRepository.save(user);
       return{
         success:true,
         message:'success',
-        data:result,
       }
     }
+    else{
+      return{
+        success:false,
+        message: 'current passwords doesnt match'
+      }
+    }
+    }
+    } catch(e){}
     
   }
 }

@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Request, Logger, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Request, Logger, Post, UseGuards, Put } from '@nestjs/common';
 import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './dto';
+import { LoginDto, RegisterDto, ChangePasswordDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 
 
@@ -42,10 +42,10 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
   
-  @Patch(':id')
+  @Put('changepassword')
   changePass(@Body() changePasswordDto: ChangePasswordDto){
     this.logger.verbose("Password Changed Successfully");
-    return this.authService.changePass(changePasswordDto);
+    return this.authService.changePassword(changePasswordDto);
   }
 
 
