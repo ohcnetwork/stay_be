@@ -108,9 +108,9 @@ async login(user: any, body: any) {
 }
 
   async changePassword(user:User,data:ChangePasswordDto): Promise<any> {
-   // const id = user.id;
+    //const id = user.id;
     //const found = await this.userRepository.findOne({id});
-    const found = await this.userRepository.findOne({id:data.id}) 
+    const found = await this.userRepository.findOne({id:data.id})  
     const match = await bcrypt.compare(data.currentPassword
      , found.password);
     if(!match) {
@@ -141,7 +141,7 @@ async login(user: any, body: any) {
   async resetPass(user:User,data:ResetPasswordDto): Promise<any> {
     // const id = user.id;
     //const found = await this.userRepository.findOne({id});
-    const found = await this.userRepository.findOne({id:data.id})  
+    const found = await this.userRepository.findOne({email:data.email})  
     if(found){
     if(data.password==data.confirm){
       found.password = await bcrypt.hash(data.password,10);
@@ -155,7 +155,7 @@ async login(user: any, body: any) {
       return{
         success:false,
         confirmPassword: 'Passwords do not match'
-      };
+      }
     }
   }
   else{
