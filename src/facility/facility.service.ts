@@ -70,10 +70,19 @@ export class FacilityService {
         //    const id = facility.id;
         //    const stay = await this.facilityRepository.findOne({id});
             const stay = await this.facilityRepository.findOne({ id:data.id })
+            if(stay){
             this.facilityRepository.delete(stay);
+            
             return{
                 sucess:true,
                 message: 'Deleted Successfully'
+            }
+        }
+            else{
+                return{
+                    sucess:false,
+                    message: 'Deletion Failed'
+                }
             }
         } catch(e) {
             return {
