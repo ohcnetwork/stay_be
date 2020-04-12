@@ -49,7 +49,7 @@ export class AuthController {
     return this.authService.changePassword(req.user,changePasswordDto);
   }
 
-  @Post('reset-password')
+  @Put('reset-password')
   resetPass(@Request() req: any,@Body() resetPasswordDto: ResetPasswordDto){
     this.logger.verbose("Password Reset Successfully");
     return this.authService.resetPass(req.user,resetPasswordDto);
