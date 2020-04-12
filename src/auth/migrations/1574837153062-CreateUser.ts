@@ -23,6 +23,12 @@ export class CreateUser1574837153062 implements MigrationInterface {
           type: 'varchar',
         },
         {
+          name: 'token',
+          type:'varchar',
+          isUnique: true,
+          isNullable: true,
+        },
+        {
           name: 'password',
           type: 'varchar',
           isNullable: false,
