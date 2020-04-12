@@ -20,8 +20,8 @@ export class AuthController {
       return this.authService.getUser(req);
     }
   
-    // @ApiBearerAuth()
-    // @UseGuards(AuthGuard('jwt'))
+     @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Get('all-users')
     getAllUsers(@Request() req: any) {
       this.logger.verbose(`User retrieving all users `);
@@ -42,7 +42,7 @@ export class AuthController {
     }
   
   
-//  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Put('change-password')
   changePass(@Request() req: any, @Body() changePasswordDto: ChangePasswordDto){
     this.logger.verbose("Password Changed Successfully");
