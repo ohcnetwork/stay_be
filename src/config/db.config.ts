@@ -3,7 +3,6 @@ import * as config from 'config';
 import * as fs from 'fs';
 const dbConfig = config.get('db');
 
-global.console.log(dbConfig);
 export const DbConfig: TypeOrmModuleOptions = {
   type: dbConfig.type,
   host: dbConfig.host,

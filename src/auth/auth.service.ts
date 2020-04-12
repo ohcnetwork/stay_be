@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async getAllUsers(req: any) : Promise<any> {
-    return this.userRepository.getAllUsers();
+    return await this.userRepository.find();
   }
 
   async getUser(req: any): Promise<any> {
@@ -35,47 +35,10 @@ export class AuthService {
   }
 
 
-  async register(data: any): Promise<any> {
-    try {
-      if (data.password != data.confirmPassword) {
-        return {
-          success: false,
-          message: 'Error',
-          data: {
-            confirmPassword: 'Password and confirm password must be same',
-          },
-        };
-      }
-      const user = await this.userRepository.findOne({ email: data.email });
-      if (!user) {
-        data.password = await bcrypt.hash(data.password, 10);
-        data.status = 'ACTIVE';
-        const registerUser = await this.userRepository.save(data);
-        const { password, ...result } = registerUser;
-        return {
-          success: true,
-          message: 'Success',
-          data: result,
-        };
-      }
-      return {
-        success: false,
-        message: 'Error',
-        data: {
-          email: 'user already exists, Please login'
-        }
-      }
-    } catch (e) {
-      return {
-        success: false,
-        message : 'Something Went wrong ... Registration Failed'
-      }
-    }
-  }
-
   async validateUser(email: string, password: string): Promise<any> {
     try {
       const user = await this.userRepository.findOne({ email });
+      console.log('user', user);
       if (user) {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -91,6 +54,47 @@ export class AuthService {
       };
     }
   }
+
+  async register(data: any): Promise<any> {
+    try {
+      if (data.password !== data.confirm) {
+        return {
+          success: false,
+          message: 'Error',
+          data: {
+            confirm: 'Password and confirm password must be same.',
+          },
+        };
+      }
+      const user = await this.userRepository.findOne({ email: data.email });
+      if (!user) {
+        data.password = await bcrypt.hash(data.password, 10);
+        data.status = 'ACTIVE';
+
+        const registerUser = await this.userRepository.save(data);
+        const { password, ...result } = registerUser;
+        return {
+          success: true,
+          message: 'Success',
+          data: result,
+        };
+      }
+      return {
+        success: false,
+        message: 'Error',
+        data: {
+          uniqueId: 'User already exist, please login.',
+        },
+      };
+    } catch (e) {
+      global.console.log('err', e);
+      return {
+        success: false,
+        message: 'Something went wrong..! Registration failed.',
+      };
+    }
+  }
+
 
 async login(user: any, body: any) {
     const {email, id} = user;

@@ -21,5 +21,5 @@ export class ChangePasswordDto {
   @MinLength(8)
   @MaxLength(49)
   @Matches(/^(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)(?=.*[!@#$%^&*]).{8,}$/, { message: 'Password too Weak' })
-  readonly confirmPassword: string;
+  readonly confirm: string;
 }

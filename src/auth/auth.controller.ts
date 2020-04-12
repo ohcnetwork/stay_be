@@ -20,8 +20,8 @@ export class AuthController {
     return this.authService.getUser(req);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard('jwt'))
   @Get('all-users')
   getAllUsers(@Request() req: any) {
     this.logger.verbose(`User retrieving all users `);
@@ -38,7 +38,6 @@ export class AuthController {
 
   @Post('register')
   register(@Body() registerDto: RegisterDto):Promise<any>{
-    this.logger.verbose('New user Created');
     return this.authService.register(registerDto);
   }
 
