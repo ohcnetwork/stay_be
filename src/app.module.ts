@@ -3,16 +3,13 @@ import { AuthModule } from './auth/auth.module';
 import {DbConfig} from './config/db.config'
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { AuthController } from './auth/auth.controller';
-import { StayController } from './stay/stay.controller';
-import { StayModule } from './stay/stay.module';
 
 @Module({
   imports: [
     AuthModule,
-    StayModule,
     TypeOrmModule.forRoot(DbConfig),
   ],
-  controllers: [AuthController,StayController],
+  controllers: [AuthController],
   providers: [],
 })
 export class AppModule {}
