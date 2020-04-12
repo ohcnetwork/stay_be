@@ -155,7 +155,7 @@ async login(user: any, body: any) {
       return{
         success:false,
         confirmPassword: 'Passwords do not match'
-      }
+      };
     }
   }
   else{
