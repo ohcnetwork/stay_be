@@ -33,5 +33,5 @@ export class Facility {
     longitude:string;
 
     @Column({ length:128 })
-    stayDescription: string;
+    facilityDescription: string;
 }

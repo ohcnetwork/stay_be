@@ -16,9 +16,9 @@ export class FacilityController {
     }
     
     @Get("all-facility")
-    getAllStay(@Request() req: any) {
+    getAllFacility(@Request() req: any) {
         this.logger.verbose(`retrieving all facilities`);
-        return this.facilityService.getAllStay(req);
+        return this.facilityService.getAllFacility(req);
     }
 
     @Get("users-facility")

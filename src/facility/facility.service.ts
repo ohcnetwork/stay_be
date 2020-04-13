@@ -37,7 +37,7 @@ export class FacilityService {
         
     }
 
-    async getAllStay(req: any): Promise<any> {
+    async getAllFacility(req: any): Promise<any> {
         return this.facilityRepository.getAllFacility();
     }
 
@@ -59,13 +59,13 @@ export class FacilityService {
             }
         }
     }
-    async deleteFacility(facility:Facility,data:any):Promise<any> {
+    async deleteFacility(facility1:Facility,data:any):Promise<any> {
         try{
-        //    const id = facility.id;
-        //    const stay = await this.facilityRepository.findOne({id});
-            const stay = await this.facilityRepository.findOne({ hotelId:data.hotelId })
-            if(stay){
-            this.facilityRepository.delete(stay);
+        //    const id = facility1.id;
+        //    const facility = await this.facilityRepository.findOne({id});
+            const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+            if(facility){
+            this.facilityRepository.delete(facility);
             
             return{
                 sucess:true,
@@ -88,32 +88,32 @@ export class FacilityService {
     }
     async updateFacility(facility:Facility,data:any): Promise <any> {
         //const id = facility.id;
-        //const stay = await this.facilityRepository.findOne({id});
-        const stay = await this.facilityRepository.findOne({ hotelId:data.hotelId })
-        if(stay){
+        //const facility = await this.facilityRepository.findOne({id});
+        const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+        if(facility){
             if(data.hotelName) {
-                stay.hotelName=data.hotelName
+                facility.hotelName=data.hotelName
             }
-            if(data.stayDescription) {
-                stay.stayDescription=data.stayDescription
+            if(data.facilityDescription) {
+                facility.facilityDescription=data.facilityDescription
             }
             if(data.address) {
-                stay.address=data.address
+                facility.address=data.address
             }
             if(data.latitude) {
-                stay.latitude = data.latitude
+                facility.latitude = data.latitude
             }
             if(data.longitude) {
-                stay.longitude = data.longitude
+                facility.longitude = data.longitude
             }
-            if(stay.panchayath){
-                stay.panchayath = data.panchayath
+            if(facility.panchayath){
+                facility.panchayath = data.panchayath
             }
-            if(stay.district){
-                stay.district=data.district
+            if(facility.district){
+                facility.district=data.district
             }
-            await this.facilityRepository.save(stay);
-            const {...result} = stay
+            await this.facilityRepository.save(facility);
+            const {...result} = facility
             return {
                 success:true,
                 data: result

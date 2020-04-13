@@ -47,7 +47,7 @@ export class createfacility1586659778148 implements MigrationInterface {
                 type: 'int',
               },
               {
-                  name: 'stayDescription',
+                  name: 'facilityDescription',
                   type: 'varchar'
               },
               {

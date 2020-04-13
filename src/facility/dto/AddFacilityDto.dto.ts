@@ -4,7 +4,7 @@ import { IsString, IsNumberString ,Matches, MinLength } from 'class-validator';
 export class AddFacilityDto {
     @ApiModelProperty({ example:null })
     @IsString()
-    name:string;
+    hotelName:string;
 
     @ApiModelProperty({ example:null })
     @IsString()
@@ -15,13 +15,12 @@ export class AddFacilityDto {
     panchayath:string;
 
     @ApiModelProperty({ example:null })
-    cost:number
+    @IsString()
+    district:string;
+
 
     @ApiModelProperty({ example:null })
-    rooms_Available:number;
-
-    @ApiModelProperty({ example:null })
-    star_category:number;
+    starCategory:number;
 
     @ApiModelProperty({ example:null })
     @IsString()
@@ -33,10 +32,6 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    stayDescription:string;
-
-    @ApiModelProperty({ example:null })
-    @IsNumberString()
-    telephone:number;
+    facilityDescription:string;
 
 }
