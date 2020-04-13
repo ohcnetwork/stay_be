@@ -1,3 +1,4 @@
-export {AddFacilityDto} from './AddFacilityDto.dto';
-export {UpdateRoomDto} from './UpdateRoomDto.dto';
-export {UpdateFacilityDto} from './UpdateFacilityDto.dto';
+export {ChangePasswordDto} from './ChangePassword.dto';
+export {LoginDto} from './Login.dto';
+export {RegisterDto} from './Register.dto';
+export {ResetPasswordDto} from './ResetPassword.dto';
