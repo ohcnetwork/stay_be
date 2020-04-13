@@ -28,9 +28,9 @@ export class FacilityController {
     }
 
     @Post('add-facility')
-    addfacility(@Body() addfacilityDto: AddFacilityDto) {
+    addFacility(@Body() addFacilityDto: AddFacilityDto) {
         this.logger.verbose("facility created");
-        return this.facilityService.addfacility(addfacilityDto);
+        return this.facilityService.addFacility(addfacilityDto);
     }
 
     @Post('delete-Facility')
