@@ -86,8 +86,8 @@ export class FacilityService {
         }
 
     }
-    async updateFacility(facility:Facility,data:any): Promise <any> {
-        //const id = facility.id;
+    async updateFacility(facility1:Facility,data:any): Promise <any> {
+        //const id = facility1.id;
         //const facility = await this.facilityRepository.findOne({id});
         const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
         if(facility){
