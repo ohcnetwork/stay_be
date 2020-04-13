@@ -15,7 +15,7 @@ export class FacilityService {
     }
     
 
-    async addfacility(data:any): Promise<any> {
+    async addFacility(data:any): Promise<any> {
         try {
             const facility = await this.facilityRepository.findOne({ hotelName:data.hotelName });
             if(!facility) {
