@@ -15,19 +15,19 @@ export class FacilityController {
         return this.facilityService.gethello();
     }
     
-    @Get("all-facility")
+    @Get("all-Facility")
     getAllFacility(@Request() req: any) {
         this.logger.verbose(`retrieving all facilities`);
         return this.facilityService.getAllFacility(req);
     }
 
-    @Get("users-facility")
+    @Get("users-Facility")
     getFacility(@Request() req:any){
         this.logger.verbose('retrieving faclility of the user');
         return this.facilityService.getFacility(req.user);
     }
 
-    @Post('add-facility')
+    @Post('add-Facility')
     addFacility(@Body() addFacilityDto: AddFacilityDto) {
         this.logger.verbose("facility created");
         return this.facilityService.addFacility(addfacilityDto);
