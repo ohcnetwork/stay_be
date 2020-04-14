@@ -15,7 +15,7 @@ export class FacilityService {
     }
     
 
-    async addFacility(data:any): Promise<any> {
+    async addfacility(data:any): Promise<any> {
         try {
             const facility = await this.facilityRepository.findOne({ hotelName:data.hotelName });
             if(!facility) {
@@ -87,7 +87,7 @@ export class FacilityService {
 
     }
     async updateFacility(facility1:Facility,data:any): Promise <any> {
-        //const id = facility1.id;
+        //const id = facility.id;
         //const facility = await this.facilityRepository.findOne({id});
         const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
         if(facility){
@@ -125,5 +125,23 @@ export class FacilityService {
                 message: "Updatation failed"
             }
         }
+    }
+    async searchDistrict(facility1:Facility): Promise<any> {
+        const district = facility1.district;
+        const facility = await this.facilityRepository.find({district});
+        if(facility) {
+            const {...result}=facility
+            return {
+                success:true,
+                data: result
+            };
+        }
+        else {
+            return {
+                success: false,
+                message : "no such facility exists"
+            }
+        }
+
     }
 }

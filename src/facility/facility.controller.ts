@@ -15,22 +15,22 @@ export class FacilityController {
         return this.facilityService.gethello();
     }
     
-    @Get("all-Facility")
+    @Get("all-facility")
     getAllFacility(@Request() req: any) {
         this.logger.verbose(`retrieving all facilities`);
         return this.facilityService.getAllFacility(req);
     }
 
-    @Get("users-Facility")
+    @Get("users-facility")
     getFacility(@Request() req:any){
         this.logger.verbose('retrieving faclility of the user');
         return this.facilityService.getFacility(req.user);
     }
 
-    @Post('add-Facility')
-    addFacility(@Body() addFacilityDto: AddFacilityDto) {
+    @Post('add-facility')
+    addfacility(@Body() addfacilityDto: AddFacilityDto) {
         this.logger.verbose("facility created");
-        return this.facilityService.addFacility(addfacilityDto);
+        return this.facilityService.addfacility(addfacilityDto);
     }
 
     @Post('delete-Facility')
@@ -44,6 +44,11 @@ export class FacilityController {
         this.logger.verbose("facility updated");
         return this.facilityService.updateFacility(req.facility,updateFacilityDto);
     }
-
+    
+    @Put('search-District')
+    searchDistrict(@Request() req: any) {
+        this.logger.verbose("searching by district");
+        return this.facilityService.searchDistrict(req.facility);
+    }
 
 }
