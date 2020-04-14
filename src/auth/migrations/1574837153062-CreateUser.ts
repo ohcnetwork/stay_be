@@ -23,10 +23,14 @@ export class CreateUser1574837153062 implements MigrationInterface {
           type: 'varchar',
         },
         {
-          name: 'token',
+          name: 'referal',
           type:'varchar',
           isUnique: true,
           isNullable: true,
+        },
+        {
+          name: 'type',
+          type:'varchar'
         },
         {
           name: 'password',

@@ -2,6 +2,7 @@ import { Injectable,Logger, NotFoundException } from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
+//import { UpdateFacilityDto } from './dto';
 
 @Injectable()
 export class FacilityService {
@@ -14,9 +15,9 @@ export class FacilityService {
     }
     
 
-    async addfacility(data:any): Promise<any> {
+    async addFacility(data:any): Promise<any> {
         try {
-            const facility = await this.facilityRepository.findOne({ name:data.name });
+            const facility = await this.facilityRepository.findOne({ hotelName:data.hotelName });
             if(!facility) {
                 data.status = 'ACTIVE';
                 const registerStay = await this.facilityRepository.save(data);
@@ -36,42 +37,35 @@ export class FacilityService {
         
     }
 
-/*    async updateRooms(facility:Facility,data:any):Promise<any> {
-        try {
-            //const id = facility.id;
-            //const facility = await this.facilityRepository.findOne({id});
-            const facility = await this.facilityRepository.findOne({ id:data.id });
-            if(facility){
-                facility.rooms_Available=data.rooms_Available;
-                await this.facilityRepository.save(facility);
-                const { name, ...result } = facility;
-                return {
-                    success:true,
-                    message:'Success',
-                    data:result,
-                }
-            }
-            else{
-                return {
-                    success:false,
-                    message:'updation failed',
-                }
-            }
-        } catch(e){
-            throw new NotFoundException('Could not find the Facility');
-        }
-    }*/
-    async getAllStay(req: any): Promise<any> {
+    async getAllFacility(req: any): Promise<any> {
         return this.facilityRepository.getAllFacility();
     }
 
-    async deleteFacility(facility:Facility,data:any):Promise<any> {
+    async getFacility(req:any): Promise<any> {
+        const { id } = req.user
+        const facility = await this.facilityRepository.find({ hotelownerid:id })
+        if(facility) {
+            const {...result}=facility;
+            return{
+                success:true,
+                message:"facilities retrieved",
+                data:result
+            };
+        }
+        else {
+            return{
+                success:false,
+                message:"No Facilities exist"
+            }
+        }
+    }
+    async deleteFacility(facility1:Facility,data:any):Promise<any> {
         try{
-        //    const id = facility.id;
-        //    const stay = await this.facilityRepository.findOne({id});
-            const stay = await this.facilityRepository.findOne({ id:data.id })
-            if(stay){
-            this.facilityRepository.delete(stay);
+        //    const id = facility1.id;
+        //    const facility = await this.facilityRepository.findOne({id});
+            const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+            if(facility){
+            this.facilityRepository.delete(facility);
             
             return{
                 sucess:true,
@@ -91,5 +85,45 @@ export class FacilityService {
             }
         }
 
+    }
+    async updateFacility(facility1:Facility,data:any): Promise <any> {
+        //const id = facility1.id;
+        //const facility = await this.facilityRepository.findOne({id});
+        const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+        if(facility){
+            if(data.hotelName) {
+                facility.hotelName=data.hotelName
+            }
+            if(data.facilityDescription) {
+                facility.facilityDescription=data.facilityDescription
+            }
+            if(data.address) {
+                facility.address=data.address
+            }
+            if(data.latitude) {
+                facility.latitude = data.latitude
+            }
+            if(data.longitude) {
+                facility.longitude = data.longitude
+            }
+            if(facility.panchayath){
+                facility.panchayath = data.panchayath
+            }
+            if(facility.district){
+                facility.district=data.district
+            }
+            await this.facilityRepository.save(facility);
+            const {...result} = facility
+            return {
+                success:true,
+                data: result
+            };
+        }
+        else {
+            return {
+                sucess:false,
+                message: "Updatation failed"
+            }
+        }
     }
 }

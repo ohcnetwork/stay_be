@@ -3,7 +3,7 @@ import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @ApiModelProperty({example: null})
-  id:number;
+  id:number;  //added for testing
     
   @ApiModelProperty({ example: null })
   @IsString()

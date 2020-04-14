@@ -13,7 +13,7 @@ export class RegisterDto {
   @ApiModelProperty({ required: false, example: null })
   @IsOptional()
   @IsString()
-  readonly token: string;
+  readonly referal: string;
 
   @ApiModelProperty({ example: null })
   @IsString()
@@ -25,4 +25,8 @@ export class RegisterDto {
   @ApiModelProperty({ example: null })
   @IsString()
   confirm: string;
+
+  @ApiModelProperty({ example: null })
+  @IsString()
+  type: string;
 }

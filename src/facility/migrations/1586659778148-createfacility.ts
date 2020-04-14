@@ -7,19 +7,23 @@ export class createfacility1586659778148 implements MigrationInterface {
             name: 'facility',
             columns: [
               {
-                name: 'id',
+                name: 'hotelId',
                 type: 'bigint',
                 isPrimary: true,
                 isGenerated: true,
                 generationStrategy: 'increment',
               },
               {
-                name: 'name',
+                name: 'hotelName',
                 type: 'varchar',
               },
               {
                 name: 'address',
                 type: 'varchar',
+              },
+              {
+                name: 'hotelOwnerId',
+                type: 'bigint'  
               },
               {
                 name:'panchayath',
@@ -34,30 +38,16 @@ export class createfacility1586659778148 implements MigrationInterface {
                 type:'varchar',
               },
               {
-                name: 'cost',
-                type:'bigint',
-              },
-              {
-                name: 'rooms_Available',
-                type: 'bigint',
-                isNullable: false,
-              },
-              {
-                name: 'telephone',
-                type: 'bigint',
-                isNullable: false,
-              },
-              {
                 name: 'status',
                 type: 'varchar',
                 default: '\'ACTIVE\'',
               },
               {
-                name: 'star_category',
+                name: 'starCategory',
                 type: 'int',
               },
               {
-                  name: 'stayDescription',
+                  name: 'facilityDescription',
                   type: 'varchar'
               },
               {
@@ -74,7 +64,6 @@ export class createfacility1586659778148 implements MigrationInterface {
               },
               
               {
-      
                 name: 'updatedAt',
                 type: 'timestamp',
                 default: 'CURRENT_TIMESTAMP',

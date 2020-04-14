@@ -5,10 +5,13 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique } from
 export class Facility {
     
     @PrimaryGeneratedColumn()
-    id:number;
+    hotelId:number;
+
+    @Column()
+    hotelownerid: number;
 
     @Column({ length:128 })
-    name: string;
+    hotelName: string;
 
     @Column({ length:128 })
     address: string;
@@ -16,17 +19,12 @@ export class Facility {
     @Column({ length:128 })
     panchayath:string;
 
-    @Column()
-    cost:number
+    @Column({ length:128 })
+    district:string;
 
     @Column()
-    rooms_Available: number;
+    starCategory: number;
 
-    @Column()
-    star_category: number;
-
-//    @Column()
-//    telephone:number;
 
     @Column()
     latitude:string;
@@ -35,5 +33,5 @@ export class Facility {
     longitude:string;
 
     @Column({ length:128 })
-    stayDescription: string;
+    facilityDescription: string;
 }
