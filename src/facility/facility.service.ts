@@ -15,13 +15,13 @@ export class FacilityService {
     }
     
 
-    async addFacility(data:any): Promise<any> {
+    async addfacility(data:any): Promise<any> {
         try {
             const facility = await this.facilityRepository.findOne({ hotelName:data.hotelName });
             if(!facility) {
                 data.status = 'ACTIVE';
                 const registerStay = await this.facilityRepository.save(data);
-                const { name, ...result } = registerStay;
+                const {...result } = registerStay;
                 return{
                     success: true,
                     message: 'Success',
@@ -43,7 +43,7 @@ export class FacilityService {
 
     async getFacility(req:any): Promise<any> {
         const { id } = req.user
-        const facility = await this.facilityRepository.find({ hotelownerid:id })
+        const facility = await this.facilityRepository.find({ hotelOwnerId:id })
         if(facility) {
             const {...result}=facility;
             return{
@@ -87,7 +87,7 @@ export class FacilityService {
 
     }
     async updateFacility(facility1:Facility,data:any): Promise <any> {
-        //const id = facility1.id;
+        //const id = facility.id;
         //const facility = await this.facilityRepository.findOne({id});
         const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
         if(facility){
@@ -106,10 +106,10 @@ export class FacilityService {
             if(data.longitude) {
                 facility.longitude = data.longitude
             }
-            if(facility.panchayath){
+            if(facility.panchayath!="null"){
                 facility.panchayath = data.panchayath
             }
-            if(facility.district){
+            if(facility.district!="null"){
                 facility.district=data.district
             }
             await this.facilityRepository.save(facility);
@@ -125,5 +125,24 @@ export class FacilityService {
                 message: "Updatation failed"
             }
         }
+    }
+    async searchDistrict(facility1:Facility,data:any): Promise<any> {
+       // const district = facility1.district;
+        const district = data.district
+        const facility = await this.facilityRepository.find({district});
+        if(facility) {
+            const {...result}=facility
+            return {
+                success:true,
+                data: result
+            };
+        }
+        else {
+            return {
+                success: false,
+                message : "no such facility exists"
+            }
+        }
+
     }
 }

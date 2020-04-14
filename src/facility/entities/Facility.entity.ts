@@ -1,14 +1,14 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('facility')
-@Unique(['name'])
+@Unique(['hotelName'])
 export class Facility {
     
     @PrimaryGeneratedColumn()
     hotelId:number;
 
     @Column()
-    hotelownerid: number;
+    hotelOwnerId: number;
 
     @Column({ length:128 })
     hotelName: string;
