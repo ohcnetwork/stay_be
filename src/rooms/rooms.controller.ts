@@ -3,7 +3,7 @@ import {RoomsService} from './rooms.service';
 import {CreateRoomDto} from './dto/create-room.dto';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomStatusValidationPipe} from './pipes/room-status-validation.pipe'
-import { Room } from './room.entity';
+import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
 @Controller('rooms')
 export class RoomsController {
@@ -13,10 +13,12 @@ export class RoomsController {
     getRooms(@Query(ValidationPipe) filterDto:GetRoomsFilterDto){
         return this.roomsService.getRooms(filterDto);
     }
+
     @Get('/:id')
     getRoomById(@Param('id',ParseIntPipe) id:number):Promise<Room>{
         return this.roomsService.getRoomById(id);
     }
+
     @Post()
     @UsePipes(ValidationPipe)
     createRoom(@Body() createRoomDto : CreateRoomDto):Promise<Room>

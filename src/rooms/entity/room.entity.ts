@@ -1,5 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { RoomStatus } from "./room-status.enum";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
+import { RoomStatus } from "../room-status.enum";
+import { User } from '../../auth/entities/User.entity';
 @Entity()
 export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
@@ -30,9 +31,16 @@ export class Room extends BaseEntity{
     cost:number;
 
     @Column()
-    status:RoomStatus;
+    status: RoomStatus;
 
     @Column()
-    policy:string;
+    policy: string;
+
+    @OneToMany(type=> User, user => user.room, {
+        cascade: ['update'],
+    })
+    @JoinColumn({name: 'id'})
+    user: User;
+
 
 }

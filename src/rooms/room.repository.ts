@@ -1,8 +1,8 @@
-import { Repository, EntityRepository } from "typeorm";
-import {Room} from './room.entity';
-import { CreateRoomDto } from "./dto/create-room.dto";
-import { RoomStatus } from "./room-status.enum";
-import { GetRoomsFilterDto } from "./dto/get-room-filter";
+import { EntityRepository, Repository } from 'typeorm';
+import { Room } from './entity/room.entity';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { RoomStatus } from './room-status.enum';
+import { GetRoomsFilterDto } from './dto/get-room-filter';
 
 @EntityRepository(Room)
 export class RoomRepository extends Repository<Room>{
@@ -20,8 +20,7 @@ export class RoomRepository extends Repository<Room>{
         }
 
 
-        const rooms = await query.getMany();
-        return rooms;
+        return await query.getMany();
     }
 
     async createRoom(createRoomDto: CreateRoomDto):Promise<Room>{
@@ -39,5 +38,12 @@ export class RoomRepository extends Repository<Room>{
         room.policy=policy;
         await room.save();
         return room;
+    }
+
+    async rooms(): Promise<any> {
+        const query = this.createQueryBuilder('room');
+        query.leftJoin('room.user', 'user')
+          .leftJoin('room.booking', 'booking').select( ['user.id', 'user.name', 'user', 'room', 'booking']);
+        const [data, count] =  await query.getManyAndCount();
     }
 }
