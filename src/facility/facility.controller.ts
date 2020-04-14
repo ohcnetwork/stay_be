@@ -1,7 +1,7 @@
 import { Body,Controller,Post, Logger, Get, Put,Request } from '@nestjs/common';
 import { FacilityService } from './facility.service';
 import { ApiUseTags } from '@nestjs/swagger';
-import { AddFacilityDto,UpdateRoomDto,UpdateFacilityDto } from './dto';
+import { AddFacilityDto,UpdateFacilityDto, DeleteFacilityDto, SearchByDistrictDto } from './dto';
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
@@ -34,9 +34,9 @@ export class FacilityController {
     }
 
     @Post('delete-Facility')
-    deleteFacility(@Request() req: any,@Body() updateRoomDto: UpdateRoomDto) {
+    deleteFacility(@Request() req: any,@Body() deleteFacilityDto: DeleteFacilityDto) {
         this.logger.verbose("facility removed");
-        return this.facilityService.deleteFacility(req.facility,updateRoomDto);//updateRoomDto added only for testing purpose
+        return this.facilityService.deleteFacility(req.facility,deleteFacilityDto);
     }
 
     @Put('update-Facility')
@@ -45,10 +45,10 @@ export class FacilityController {
         return this.facilityService.updateFacility(req.facility,updateFacilityDto);
     }
     
-    @Put('search-District')
-    searchDistrict(@Request() req: any) {
+    @Post('search-District')
+    searchDistrict(@Request() req: any,@Body() searchByDistrictDto:SearchByDistrictDto) {
         this.logger.verbose("searching by district");
-        return this.facilityService.searchDistrict(req.facility);
+        return this.facilityService.searchDistrict(req.facility,searchByDistrictDto);
     }
 
 }

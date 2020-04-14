@@ -8,6 +8,10 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
+    hotelOwnerId:number;
+
+    @ApiModelProperty({ example:null })
+    @IsString()
     address:string;
 
     @ApiModelProperty({ example:null })

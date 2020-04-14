@@ -23,11 +23,13 @@ export class createfacility1586659778148 implements MigrationInterface {
               },
               {
                 name: 'hotelOwnerId',
-                type: 'bigint'  
+                type: 'bigint',  
+                isNullable: true
               },
               {
                 name:'panchayath',
                 type:'varchar',
+                isNullable: true
               },
               {
                 name:'longitude',
@@ -44,7 +46,7 @@ export class createfacility1586659778148 implements MigrationInterface {
               },
               {
                 name: 'starCategory',
-                type: 'int',
+                type: 'bigint',
               },
               {
                   name: 'facilityDescription',
@@ -56,6 +58,10 @@ export class createfacility1586659778148 implements MigrationInterface {
                 type: 'timestamp',
                 default: 'CURRENT_TIMESTAMP',
                 isNullable: false,
+              },
+              {
+                name:'district',
+                type:'varchar',
               },
               {
                   name: 'photos',

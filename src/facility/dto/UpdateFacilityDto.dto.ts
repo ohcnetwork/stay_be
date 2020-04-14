@@ -5,7 +5,7 @@ export class UpdateFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    id:string;
+    hotelId:string;
 
 
     @ApiModelProperty({ example:null })
@@ -42,6 +42,10 @@ export class UpdateFacilityDto {
     @IsOptional()
     @IsString()
     readonly longitude:string;
+
+//    @ApiModelProperty({ example:null })
+//    @IsOptional()
+//    readonly starCategory:number;
 
     @ApiModelProperty({ example:null })
     @IsOptional()
