@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-
+import { User } from './entities/User.entity';
+import { ChangePasswordDto, ResetPasswordDto } from './dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('Auth Service');
@@ -15,7 +16,7 @@ export class AuthService {
   ) {
   }
 
-  async getAllUsers(req: any) : Promise<any> {
+  async getAllUsers() : Promise<any> {
     return await this.userRepository.find();
   }
 
@@ -24,7 +25,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({ id });
     this.logger.verbose(`User Logged In ${user.name}`);
     if (user) {
-      const { password, ...result } = user;
+      const { ...result } = user;
       return {
         success: true,
         message: 'Success',
@@ -72,7 +73,7 @@ export class AuthService {
         data.status = 'ACTIVE';
 
         const registerUser = await this.userRepository.save(data);
-        const { password, ...result } = registerUser;
+        const {  ...result } = registerUser;
         return {
           success: true,
           message: 'Success',
@@ -96,7 +97,7 @@ export class AuthService {
   }
 
 
-async login(user: any, body: any) {
+async login(user: any) {
     const {email, id} = user;
     const payload = {email, id};
     return {
@@ -105,4 +106,63 @@ async login(user: any, body: any) {
       access_token: this.jwtService.sign(payload)
     }
 }
+
+  async changePassword(user:User,data:ChangePasswordDto): Promise<any> {
+    //const id = user.id;
+    //const found = await this.userRepository.findOne({id});
+    const found = await this.userRepository.findOne({id:data.id})  
+    const match = await bcrypt.compare(data.currentPassword
+     , found.password);
+    if(!match) {
+      return {
+        success: false,
+        message: 'Error',
+        data: {
+          confirmPassword: 'Current Password is incorrect'
+        },
+      }
+    }
+    if(data.password === data.confirm){
+      found.password = await bcrypt.hash(data.password, 10);
+      await this.userRepository.save(found);
+      return {
+        success: true,
+        message: 'Success'
+      };
+    }
+    return {
+      success: false,
+    message: 'Error',
+      data: {
+        confirmPassword: 'Password and confirm Password must be same'
+      },
+    };
+  }
+  async resetPass(user:User,data:ResetPasswordDto): Promise<any> {
+    // const id = user.id;
+    //const found = await this.userRepository.findOne({id});
+    const found = await this.userRepository.findOne({email:data.email})  
+    if(found){
+    if(data.password==data.confirm){
+      found.password = await bcrypt.hash(data.password,10);
+      await this.userRepository.save(found);
+      return{
+        success:true,
+        message: 'password reset successfull'
+      };
+    }
+    else{
+      return{
+        success:false,
+        confirmPassword: 'Passwords do not match'
+      }
+    }
+  }
+  else{
+    return{
+      success:false,
+      message: 'no such user'
+    }
+  }
+  }
 }
