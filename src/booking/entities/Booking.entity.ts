@@ -1,6 +1,7 @@
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from "typeorm";
+import {PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Entity} from "typeorm";
 import { User } from "src/auth/entities/User.entity";
 
+@Entity('booking')
 export class Booking {
     save() {
         throw new Error("Method not implemented.");
