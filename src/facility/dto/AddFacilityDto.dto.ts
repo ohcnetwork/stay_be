@@ -6,11 +6,11 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    hotelName:string;
+    name:string;
 
     @ApiModelProperty({ example:null })
     @IsString()
-    hotelOwnerId:number;
+    ownerID:number;
 
     @ApiModelProperty({ example:null })
     @IsString()
@@ -38,6 +38,19 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    facilityDescription:string;
+    facilities:string;
+
+    @ApiModelProperty({ example:null })
+    @IsString()
+    contact:string;
+
+    @ApiModelProperty({ example:null})
+    @IsString()
+    policy:string;
+
+    @ApiModelProperty({ example:null})
+    @IsString()
+    photos:string;
+
 
 }

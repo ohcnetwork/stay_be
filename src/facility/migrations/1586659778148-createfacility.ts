@@ -14,7 +14,7 @@ export class Createfacility1586659778148 implements MigrationInterface {
                 generationStrategy: 'increment',
               },
               {
-                name: 'hotelName',
+                name: 'name',
                 type: 'varchar',
               },
               {
@@ -22,7 +22,7 @@ export class Createfacility1586659778148 implements MigrationInterface {
                 type: 'varchar',
               },
               {
-                name: 'hotelOwnerId',
+                name: 'ownerID',
                 type: 'bigint',  
                 isNullable: true
               },
@@ -49,7 +49,7 @@ export class Createfacility1586659778148 implements MigrationInterface {
                 type: 'bigint',
               },
               {
-                  name: 'facilityDescription',
+                  name: 'facilities',
                   type: 'varchar'
               },
               {
@@ -61,6 +61,14 @@ export class Createfacility1586659778148 implements MigrationInterface {
               },
               {
                 name:'district',
+                type:'varchar',
+              },
+              {
+                name:'contact',
+                type:'varchar',
+              },
+              {
+                name:'policy',
                 type:'varchar',
               },
               {
