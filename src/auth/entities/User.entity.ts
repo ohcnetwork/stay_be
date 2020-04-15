@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { type } from 'os';
 import { Room } from '../../rooms/entity/room.entity';
+import {Booking} from "../../booking/entities/Booking.entity";
 
 @Entity('users')
 @Unique(['email'])
@@ -48,4 +49,8 @@ export class User {
   @ManyToOne(type => Room, room => room.user)
   @JoinColumn({name: 'id'})
   room: Room;
+
+  @ManyToOne(type => Booking, booking => booking.user)
+  @JoinColumn({name: 'id'})
+  booking: Booking;
 }

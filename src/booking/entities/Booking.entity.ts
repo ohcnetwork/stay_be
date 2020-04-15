@@ -21,7 +21,7 @@ export class Booking {
     @CreateDateColumn()
     updatedAt: Date;
 
-    @ManyToOne(type => User, user => user.bookings, { eager:false} )
+    @ManyToOne(type => User, user => user.booking, { eager:false} )
     user: User;
 
     @Column()
