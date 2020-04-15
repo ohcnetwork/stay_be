@@ -1,5 +1,5 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString, IsNumberString ,Matches, MinLength, IsOptional } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class DeleteFacilityDto {
     @ApiModelProperty({ example:null })

@@ -34,7 +34,7 @@ export class User {
   status: string;
 
   @Column({ nullable: true })
-  token: string;
+  referal: string;
 
   @Column({ nullable: true })
   lastLogin: Date;

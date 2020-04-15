@@ -11,5 +11,6 @@ import { RoomRepository } from './room.repository';
   ],
   controllers: [RoomsController],
   providers: [RoomsService],
+  exports: [RoomsService],
 })
 export class RoomsModule {}
