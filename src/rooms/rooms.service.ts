@@ -3,7 +3,7 @@ import { CreateRoomDto } from './dto/create-room.dto';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomRepository} from './room.repository';
 import {InjectRepository} from '@nestjs/typeorm';
-import { Room } from './room.entity';
+import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
 
 @Injectable()

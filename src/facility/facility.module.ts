@@ -4,7 +4,6 @@ import { FacilityService } from './facility.service';
 import { FacilityRepository } from './facility.repository'; 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
-import * as config from 'config';
 
 @Module({
     imports:[
