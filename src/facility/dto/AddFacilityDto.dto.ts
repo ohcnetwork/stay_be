@@ -1,7 +1,9 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString, IsNumberString ,Matches, MinLength } from 'class-validator';
+import { IsString} from 'class-validator';
 
 export class AddFacilityDto {
+    
+
     @ApiModelProperty({ example:null })
     @IsString()
     hotelName:string;
