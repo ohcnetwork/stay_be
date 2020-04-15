@@ -1,8 +1,8 @@
-import { Injectable,Logger, NotFoundException } from '@nestjs/common';
+import { Injectable,Logger} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
-//import { UpdateFacilityDto } from './dto';
+import { UpdateFacilityDto } from './dto';
 
 @Injectable()
 export class FacilityService {
@@ -10,14 +10,14 @@ export class FacilityService {
     constructor(
    @InjectRepository(FacilityRepository)
    private readonly facilityRepository: FacilityRepository){}
-   gethello(): string { //to just see that it works
+   gethello(): string { 
         return 'Welcome to stay service';
     }
     
 
     async addfacility(data:any): Promise<any> {
         try {
-            const facility = await this.facilityRepository.findOne({ hotelName:data.hotelName });
+            const facility = await this.facilityRepository.findOne({ name:data.name });
             if(!facility) {
                 data.status = 'ACTIVE';
                 const registerStay = await this.facilityRepository.save(data);
@@ -37,13 +37,13 @@ export class FacilityService {
         
     }
 
-    async getAllFacility(req: any): Promise<any> {
+    async getAllFacility(): Promise<any> {
         return this.facilityRepository.getAllFacility();
     }
+   
 
-    async getFacility(req:any): Promise<any> {
-        const { id } = req.user
-        const facility = await this.facilityRepository.find({ hotelOwnerId:id })
+    async getFacility(id:number): Promise<any> {
+        const facility = await this.facilityRepository.find({ ownerID:id })
         if(facility) {
             const {...result}=facility;
             return{
@@ -59,11 +59,9 @@ export class FacilityService {
             }
         }
     }
-    async deleteFacility(facility1:Facility,data:any):Promise<any> {
+    async deleteFacility(id:number):Promise<any> {
         try{
-        //    const id = facility1.id;
-        //    const facility = await this.facilityRepository.findOne({id});
-            const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+            const facility = await this.facilityRepository.findOne({ hotelId:id})
             if(facility){
             this.facilityRepository.delete(facility);
             
@@ -86,16 +84,14 @@ export class FacilityService {
         }
 
     }
-    async updateFacility(facility1:Facility,data:any): Promise <any> {
-        //const id = facility.id;
-        //const facility = await this.facilityRepository.findOne({id});
-        const facility = await this.facilityRepository.findOne({ hotelId:data.hotelId })
+    async updateFacility(id:number,data:UpdateFacilityDto): Promise <any> {
+        const facility = await this.facilityRepository.findOne({ hotelId:id })
         if(facility){
-            if(data.hotelName) {
-                facility.hotelName=data.hotelName
+            if(data.name) {
+                facility.name=data.name
             }
-            if(data.facilityDescription) {
-                facility.facilityDescription=data.facilityDescription
+            if(data.facilities) {
+                facility.facilities=data.facilities
             }
             if(data.address) {
                 facility.address=data.address
@@ -112,6 +108,19 @@ export class FacilityService {
             if(facility.district!="null"){
                 facility.district=data.district
             }
+            if(facility.policy){
+                facility.policy=data.policy;
+            }
+            if(facility.contact){
+                facility.contact= data.contact;
+            }
+            if(facility.status){
+                facility.status=data.status
+            }
+            if(facility.photos)
+            {
+                facility.photos=data.photos
+            }
             await this.facilityRepository.save(facility);
             const {...result} = facility
             return {
@@ -127,7 +136,6 @@ export class FacilityService {
         }
     }
     async searchDistrict(facility1:Facility,data:any): Promise<any> {
-       // const district = facility1.district;
         const district = data.district
         const facility = await this.facilityRepository.find({district});
         if(facility) {

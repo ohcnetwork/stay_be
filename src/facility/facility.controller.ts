@@ -1,7 +1,7 @@
-import { Body,Controller,Post, Logger, Get, Put,Request } from '@nestjs/common';
+import { Body,Controller,Post, Logger, Get, Patch,Request,ParseIntPipe, Param, Delete } from '@nestjs/common';
 import { FacilityService } from './facility.service';
 import { ApiUseTags } from '@nestjs/swagger';
-import { AddFacilityDto,UpdateFacilityDto, DeleteFacilityDto, SearchByDistrictDto } from './dto';
+import { AddFacilityDto,UpdateFacilityDto, SearchByDistrictDto } from './dto';
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
@@ -16,15 +16,15 @@ export class FacilityController {
     }
     
     @Get("all-facility")
-    getAllFacility(@Request() req: any) {
+    getAllFacility() {
         this.logger.verbose(`retrieving all facilities`);
-        return this.facilityService.getAllFacility(req);
+        return this.facilityService.getAllFacility();
     }
 
-    @Get("users-facility")
-    getFacility(@Request() req:any){
+    @Get("/:id")
+    getFacility(@Param('id',ParseIntPipe) id:number){
         this.logger.verbose('retrieving faclility of the user');
-        return this.facilityService.getFacility(req.user);
+        return this.facilityService.getFacility(id);
     }
 
     @Post('add-facility')
@@ -33,16 +33,18 @@ export class FacilityController {
         return this.facilityService.addfacility(addfacilityDto);
     }
 
-    @Post('delete-Facility')
-    deleteFacility(@Request() req: any,@Body() deleteFacilityDto: DeleteFacilityDto) {
+    @Delete('/:id')
+    deleteFacility(@Param('id',ParseIntPipe)id:number) {
         this.logger.verbose("facility removed");
-        return this.facilityService.deleteFacility(req.facility,deleteFacilityDto);
+        return this.facilityService.deleteFacility(id);
     }
 
-    @Put('update-Facility')
-    updateFacility(@Request() req: any,@Body() updateFacilityDto: UpdateFacilityDto) {
+    @Patch('/:id/update-Facility')
+    updateFacility(
+        @Param('id',ParseIntPipe) id:number,
+        @Body() updateFacilityDto: UpdateFacilityDto) {
         this.logger.verbose("facility updated");
-        return this.facilityService.updateFacility(req.facility,updateFacilityDto);
+        return this.facilityService.updateFacility(id,updateFacilityDto);
     }
     
     @Post('search-District')
