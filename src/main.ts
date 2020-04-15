@@ -5,6 +5,11 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import * as config from 'config';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as Sentry from '@sentry/node';
+
+Sentry.init({
+  dsn: 'https://1ece66a620394c65af3e1dcc783ecd78@o371117.ingest.sentry.io/5201888' }
+  );
 
 async function bootstrap() {
   const logger = new Logger('Coronasafe Root');
