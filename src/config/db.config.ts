@@ -14,9 +14,9 @@ export const DbConfig: TypeOrmModuleOptions = {
   migrations: [__dirname + '/../**/migrations/*{.ts,.js}'],
   synchronize: false,
   migrationsRun: true,
-  ssl: {
-    ca: fs.readFileSync(__dirname + '/rds-ca-2019-root.pem')
-  },
+  // ssl: {
+  //   ca: fs.readFileSync(__dirname + '/rds-ca-2019-root.pem')
+  // },
   // logging: ["query", "error"],
   cli: {
     migrationsDir: 'migrations',
