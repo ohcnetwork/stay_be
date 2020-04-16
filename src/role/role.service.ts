@@ -1,11 +1,14 @@
 import { Injectable,Logger, NotFoundException , HttpException, HttpStatus } from '@nestjs/common';
 import { RoleRepository } from './role.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserRepository } from '../auth/user.repository';
 
 @Injectable()
 export class RoleService {
     private logger = new Logger('Role Service');
     constructor(
+        @InjectRepository(UserRepository)
+        private readonly userRepository:UserRepository,
    @InjectRepository(RoleRepository)
    private readonly roleRepository: RoleRepository){}
    
@@ -13,9 +16,7 @@ export class RoleService {
     return this.roleRepository.getAllRoles();
    }
     async addRole(data:any): Promise<any> {
-            const role1 = await this.roleRepository.getById(data.userId)
-            console.log(role1)
-            if(!role1) {
+
                 data.status='ACTIVE'
                 const addRole= await this.roleRepository.save(data);
                 const {...result } = addRole;
@@ -24,15 +25,12 @@ export class RoleService {
                     message: 'added role to user',
                     data:result
                 };
-
-            }
-            else{
-                throw new HttpException("user exists",HttpStatus.FORBIDDEN);
-            }
     }
     async getUserRole(id:number): Promise<any> {
-        const user = await this.roleRepository.getById(id)
+        const user = await this.roleRepository.getByUserId(id)
         console.log(user)
+        const user1 = await this.userRepository.findOne({id:id})
+        console.log(user1)
         if(user) {
             const {...result} = user;
             return {
@@ -45,7 +43,7 @@ export class RoleService {
         }
     }
     async deleteRole(id:number): Promise<any> {
-        const user = await this.roleRepository.getById(id)
+        const user = await this.roleRepository.findOne({id:id})
         if(user) {
             await this.roleRepository.delete(user);
             return {
@@ -54,7 +52,29 @@ export class RoleService {
             }
         }
         else {
-            throw new HttpException("user does not exist",HttpStatus.FORBIDDEN);
+            throw new HttpException("such an id does not exist",HttpStatus.FORBIDDEN);
         }
     }
+    async updateRole(id:number,body:any): Promise<any>{
+        const user = await this.roleRepository.findOne({id:id})
+        if(user){
+        if(body.userId){
+            user.userId = body.userId;
+        }
+        if(body.facilityId){
+            user.facilityId = body.facilityId;
+        }
+        if(body.role){
+            user.role = body.role;
+        }
+        await this.roleRepository.save(user);
+        return {
+            success:true,
+            message:'Update Successfull'
+        }
+    } else {
+        throw new HttpException("such an id does not exist",HttpStatus.FORBIDDEN);
+    }
+
+}
 }
