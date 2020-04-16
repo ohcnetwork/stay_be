@@ -19,11 +19,14 @@ export class RoomsController {
         return this.roomsService.getRoomById(id);
     }
 
-    @Post()
+    @Post('/:hotelid')
     @UsePipes(ValidationPipe)
-    createRoom(@Body() createRoomDto : CreateRoomDto):Promise<Room>
+    createRoom(
+        @Param('hotelid') id:number,
+        @Body() createRoomDto : CreateRoomDto,
+    ):Promise<Room>
     {
-        return this.roomsService.createRoom(createRoomDto); 
+        return this.roomsService.createRoom(createRoomDto,id); 
     }
 
     @Delete('/:id')

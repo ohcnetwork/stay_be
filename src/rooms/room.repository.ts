@@ -16,18 +16,18 @@ export class RoomRepository extends Repository<Room>{
         }
 
         if(search){
-            query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.address LIKE :search)',{search: `%${search}%`});
+            query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
         }
 
 
         return await query.getMany();
     }
 
-    async createRoom(createRoomDto: CreateRoomDto):Promise<Room>{
-        const {title,address,features,description,category,beds,photos,cost,policy}=createRoomDto;
+    async createRoom(createRoomDto: CreateRoomDto,id:number):Promise<Room>{
+        const {title,features,description,category,beds,photos,cost}=createRoomDto;
         const room = new Room();
+        room.hotelId = id;
         room.title=title;
-        room.address=address;
         room.features=features;
         room.description=description;
         room.category=category;
@@ -35,15 +35,14 @@ export class RoomRepository extends Repository<Room>{
         room.photos=photos;
         room.cost=cost;
         room.status=RoomStatus.AVAILABLE;
-        room.policy=policy;
         await room.save();
         return room;
     }
 
-    async rooms(): Promise<any> {
-        const query = this.createQueryBuilder('room');
-        query.leftJoin('room.user', 'user')
-          .leftJoin('room.booking', 'booking').select( ['user.id', 'user.name', 'user', 'room', 'booking']);
-        const [data, count] =  await query.getManyAndCount();
-    }
+    // async rooms(): Promise<any> {
+    //     const query = this.createQueryBuilder('room');
+    //     query.leftJoin('room.user', 'user')
+    //       .leftJoin('room.booking', 'booking').select( ['user.id', 'user.name', 'user', 'room', 'booking']);
+    //     const [data, count] =  await query.getManyAndCount();
+    // }
 }

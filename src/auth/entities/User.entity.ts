@@ -2,14 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { type } from 'os';
-import { Room } from '../../rooms/entity/room.entity';
 
 @Entity('users')
 @Unique(['email'])
@@ -45,7 +40,7 @@ export class User {
   @CreateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(type => Room, room => room.user)
-  @JoinColumn({name: 'id'})
-  room: Room;
+  // @ManyToOne(type => Room, room => room.user)
+  // @JoinColumn({name: 'id'})
+  // room: Room;
 }

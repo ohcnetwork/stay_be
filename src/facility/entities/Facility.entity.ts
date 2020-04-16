@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique,ManyToOne} from 'typeorm';
+import { Room } from 'src/rooms/entity/room.entity';
 
 @Entity('facility')
 @Unique(['name'])
@@ -47,6 +48,7 @@ export class Facility {
     @Column()
     status:string;
 
-
+    @ManyToOne(type => Room, room=>room.facility)
+    room:Room;
 
 }

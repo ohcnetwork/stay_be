@@ -1,16 +1,23 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn,  } from 'typeorm';
 import { RoomStatus } from "../room-status.enum";
-import { User } from '../../auth/entities/User.entity';
+import { Facility } from 'src/facility/entities/Facility.entity';
+import { type } from 'os';
 @Entity()
 export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
+    // @Column()
+    @ManyToOne(type => Facility,facility => facility.room,{cascade:['update']})
+    @JoinColumn({name:'hotelId'})
+    facility:Facility;
+
+    @Column()
+    hotelId:number;
+
     @Column()
     title:string;
 
-    @Column()
-    address:string;
 
     @Column()
     features:string;
@@ -33,14 +40,11 @@ export class Room extends BaseEntity{
     @Column()
     status: RoomStatus;
 
-    @Column()
-    policy: string;
 
-    @OneToMany(type=> User, user => user.room, {
-        cascade: ['update'],
-    })
-    @JoinColumn({name: 'id'})
-    user: User;
-
+    // @OneToMany(type=> User, user => user.room, {
+    //     cascade: ['update'],
+    // })
+    // @JoinColumn({name: 'id'})
+    // user: User;
 
 }

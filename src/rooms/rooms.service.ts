@@ -27,8 +27,8 @@ export class RoomsService {
     }
     
 
-    async createRoom(createRoomDto: CreateRoomDto){
-        return this.roomRepository.createRoom(createRoomDto);
+    async createRoom(createRoomDto: CreateRoomDto,id:number){
+        return this.roomRepository.createRoom(createRoomDto,id);
     }
     async deleteRoom(id:number):Promise<void>{
         const result= await this.roomRepository.delete(id);

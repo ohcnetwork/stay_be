@@ -1,11 +1,11 @@
 import {IsNotEmpty} from 'class-validator';
 
 export class CreateRoomDto{
-    @IsNotEmpty()
-    title:string;
+    // @IsNotEmpty()
+    // hotelId:number;
 
     @IsNotEmpty()
-    address:string;
+    title:string;
 
     @IsNotEmpty()
     features:string;
@@ -13,11 +13,13 @@ export class CreateRoomDto{
     description:string;
 
     category:string;
+
     beds:number;
+    
     photos:string;
 
     @IsNotEmpty()
     cost:number;
 
-    policy:string;
+
 }
