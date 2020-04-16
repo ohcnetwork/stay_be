@@ -7,8 +7,8 @@ import { FacilityController } from './facility/facility.controller';
 import { FacilityModule } from './facility/facility.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { RoomsController } from './rooms/rooms.controller';
-import { RoleController } from './role/role.controller';
-import { RoleModule } from './role/role.module';
+//import { RoleController } from './role/role.controller';
+//import { RoleModule } from './role/role.module';
 import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
 
