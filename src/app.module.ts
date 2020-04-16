@@ -20,9 +20,8 @@ import { BookingModule } from './booking/booking.module';
     RoomsModule,
     BookingModule,
     TypeOrmModule.forRoot(DbConfig),
-    RoleModule,
   ],
-  controllers: [AuthController,FacilityController,RoomsController, BookingController, RoleController],
+  controllers: [AuthController,FacilityController,RoomsController, BookingController],
   providers: [],
 })
 export class AppModule {}
