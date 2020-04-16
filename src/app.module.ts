@@ -7,8 +7,6 @@ import { FacilityController } from './facility/facility.controller';
 import { FacilityModule } from './facility/facility.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { RoomsController } from './rooms/rooms.controller';
-import { RoleController } from './role/role.controller';
-import { RoleModule } from './role/role.module';
 import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
 
@@ -20,9 +18,8 @@ import { BookingModule } from './booking/booking.module';
     RoomsModule,
     BookingModule,
     TypeOrmModule.forRoot(DbConfig),
-    RoleModule,
   ],
-  controllers: [AuthController,FacilityController,RoomsController, BookingController, RoleController],
+  controllers: [AuthController,FacilityController,RoomsController, BookingController],
   providers: [],
 })
 export class AppModule {}
