@@ -50,7 +50,4 @@ export class User {
   @JoinColumn({name: 'id'})
   room: Room;
 
-  @ManyToOne(type => Booking, booking => booking.user)
-  @JoinColumn({name: 'id'})
-  booking: Booking;
 }

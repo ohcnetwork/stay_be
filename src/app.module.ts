@@ -7,15 +7,18 @@ import { FacilityController } from './facility/facility.controller';
 import { FacilityModule } from './facility/facility.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { RoomsController } from './rooms/rooms.controller';
+import { BookingController } from './booking/booking.controller';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
     AuthModule,
     FacilityModule,
     RoomsModule,
+    BookingModule,
     TypeOrmModule.forRoot(DbConfig),
   ],
-  controllers: [AuthController,FacilityController,RoomsController],
+  controllers: [AuthController,FacilityController,RoomsController,BookingController],
   providers: [],
 })
 export class AppModule {}

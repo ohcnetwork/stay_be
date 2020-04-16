@@ -10,7 +10,7 @@ import { Booking } from './entities/Booking.entity';
 
 @ApiUseTags('Booking')
 @Controller('api/v1/booking')
-@UseGuards(AuthGuard())
+//@UseGuards(AuthGuard('jwt'))
 export class BookingController {
     private logger = new Logger ('Booking Controller');
     constructor (private readonly bookingService: BookingService) {}
@@ -26,36 +26,50 @@ export class BookingController {
 
     //post booking detail
     
-    @Post('bookoption')
+    @Post('/:userId/:roomId/:hotelId')
     createBooking(
+        @Param('userId') userid: number,
+        @Param('roomId') roomid: number,
+        @Param('hotelId') hotelid: number,
         @Body() createbookingDto: CreateBookingDto,
-        @GetUser() user:User,
-        ){                          //roomid also to pass
-        this.logger.verbose("boooking created");
-        return this.bookingService.createBooking(createbookingDto,user); 
+
+        ): Promise<any>{                          
+        this.logger.verbose("booking created with  ");
+        return this.bookingService.createBooking(userid,roomid,hotelid,createbookingDto); 
     
     }
 
     //get all bookings of user
 
-    @Get('user-bookings')
-    getBookings(@Request() req: any,
-        @GetUser() user: User,
+    @Get('/:userId')
+    getBookings(
+        @Param('userId') userid: number,
     ): Promise<Booking[]> {
-        this.logger.verbose("retrieving all bookings of thee user");
-        return this.bookingService.getBookings(req, user);
+        this.logger.verbose("retrieving all bookings of the user");
+        return this.bookingService.getBookings(userid);
     }
 
     //cancelbooking
-    @Delete('/:book_id')
+    @Delete('/:book_id/:userid')
     deleteTask(
-        @Param('book_id', ParseIntPipe) book_id: number,
-        @GetUser() user: User,
+        @Param('book_id') book_id: number,
+        @Param('userId') userid: number,
     ): Promise<void> {
-        return this.bookingService.deletebooking(book_id, user);
+        return this.bookingService.deletebooking(book_id, userid);
     }
 
-    //get booking details
+
+    //get booking details for hotel
+    @Get('/:hotelId')
+    getBookingsHotel(
+        @Param('hotelId') hotelid: number,
+    ): Promise<Booking[]> {
+        this.logger.verbose("retrieving all bookings for the hotel");
+        return this.bookingService.getBookings(hotelid);
+    }
+
+
+    //date filter
 
 
 

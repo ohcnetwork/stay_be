@@ -18,23 +18,32 @@ export class BookingService {
         return this.bookingRepository.getAllBooking();
     }
 
-    async createBooking(createbookingDto: CreateBookingDto,
-        user: User,
-        ){
-        return this.bookingRepository.createBooking(createbookingDto,user);        
+    async createBooking(
+      userid: number,
+      roomid: number,
+      hotelid: number,
+      createbookingDto: CreateBookingDto,
+      ): Promise<any>{
+      return this.bookingRepository.createBooking(userid,roomid,hotelid,createbookingDto);        
 
-    }
+  }
 
-    async getBookings(
-        req: any,
-        user: User,
-      ): Promise<Booking[]> {
-        return this.bookingRepository.getBookings(user);
-      }
+  async getBookings(
+    userid: number,
+ ): Promise<Booking[]> {
+   return this.bookingRepository.getBookings(userid);
+ }
+
+
+ async getBookingsHotel(
+  bookid: number,
+): Promise<Booking[]> {
+ return this.bookingRepository.getBookingsHotel(bookid);
+}
 
       async deletebooking(
         book_id: number,
-        user: User,
+        userid: number,
       ): Promise<void> {
         const result = await this.bookingRepository.delete(book_id);
     

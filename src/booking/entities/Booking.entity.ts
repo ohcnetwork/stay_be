@@ -1,11 +1,10 @@
-import {PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Entity} from "typeorm";
+import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne,  JoinColumn, BaseEntity, Entity } from "typeorm";
 import { User } from "src/auth/entities/User.entity";
+import { Room } from "src/rooms/entity/room.entity";
 
-@Entity('booking')
-export class Booking {
-    save() {
-        throw new Error("Method not implemented.");
-    }
+@Entity('bookings')
+export class Booking extends BaseEntity {
+    
 
     @PrimaryGeneratedColumn()
     book_id:number;
@@ -22,16 +21,26 @@ export class Booking {
     @CreateDateColumn()
     updatedAt: Date;
 
-    @ManyToOne(type => User, user => user.booking, { eager:false} )
-    user: User;
+   //@ManyToOne(type => User, user => user.bookings, { eager:false} )
+    //user: User;
+
+    @Column()
+    roomId: number;
+    
+    @OneToOne(type => Room, room => room.booking, {
+        cascade: ['update'],
+    })
+    @JoinColumn()
+    room: Room;
+
 
     @Column()
     userId: number;  //user_id
 
     @Column()
-    roomId: number;
+    hotelId: number;
+    
 
-    //relation for roomid
 
 
 }

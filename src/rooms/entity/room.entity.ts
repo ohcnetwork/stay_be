@@ -1,6 +1,7 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, OneToOne } from 'typeorm';
 import { RoomStatus } from "../room-status.enum";
 import { User } from '../../auth/entities/User.entity';
+import { Booking } from 'src/booking/entities/Booking.entity';
 @Entity()
 export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
@@ -41,6 +42,9 @@ export class Room extends BaseEntity{
     })
     @JoinColumn({name: 'id'})
     user: User;
+
+    @OneToOne(type => Booking, booking => booking.room) 
+    booking: Booking;
 
 
 }
