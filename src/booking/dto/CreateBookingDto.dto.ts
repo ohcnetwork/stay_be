@@ -4,10 +4,10 @@ import { IsDate } from "class-validator";
 export class CreateBookingDto {
 
     @ApiModelProperty({ example:null })
-    @IsDate()
+    //@IsDate()
     checkin:Date;
 
-    @IsDate()
+    //@IsDate()
     @ApiModelProperty({ example:null })
     checkout:Date;
 
