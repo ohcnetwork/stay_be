@@ -20,14 +20,14 @@ export class RoleController {
         return this.roleService.getUserRole(id);
     }
     @Post("add-role")
-    addRoles(@Body() addRoleDto: AddRoleDto) {
+    addRole(@Body() addRoleDto: AddRoleDto) {
         this.logger.verbose('adding new role');
-        return this.roleService.addRoles(addRoleDto);
+        return this.roleService.addRole(addRoleDto);
     }
-    @Delete("/:id")
-    deleteRole(@Param('id',ParseIntPipe) id:number): Promise<any>{
+    @Delete("/:userid")
+    deleteRole(@Param('userid',ParseIntPipe) userid:number): Promise<any>{
         this.logger.verbose('deleting a role');
-        return this.roleService.deleteRole(id);
+        return this.roleService.deleteRole(userid);
     }
 
 }

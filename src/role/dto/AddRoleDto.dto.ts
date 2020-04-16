@@ -5,12 +5,10 @@ export class AddRoleDto {
     
 
     @ApiModelProperty({ example:null })
-    @IsString()
-    userId:string;
+    userId:number;
 
     @ApiModelProperty({ example:null })
-    @IsString()
-    facilityId:string;
+    facilityId:number;
 
     @ApiModelProperty({ example:null })
     @IsString()

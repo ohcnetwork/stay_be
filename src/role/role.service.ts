@@ -12,7 +12,7 @@ export class RoleService {
    async getAllRoles(req: any): Promise<any> {
     return this.roleRepository.getAllRoles();
    }
-    async addRoles(data:any): Promise<any> {
+    async addRole(data:any): Promise<any> {
             const role1 = await this.roleRepository.getById(data.userId)
             console.log(role1)
             if(!role1) {

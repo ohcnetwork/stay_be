@@ -16,14 +16,17 @@ export class createRole1586946242520 implements MigrationInterface {
               {
                 name: 'userId',
                 type: 'bigint',
+                isUnique:true,
               },
               {
                 name: 'facilityId',
-                type: 'bigint',  
+                type: 'bigint',
+                isUnique:true,  
               },
               {
                   name: 'role',
                   type: 'varchar',
+                  isUnique:true,
               },
               {
                 name: 'status',
