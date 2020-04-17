@@ -27,9 +27,8 @@ export class RoomRepository extends Repository<Room>{
 
         const roomId = [];
         const {noOfRooms,photos,title,features,description,category,beds,cost}=createRoomDto;
-        console.log(noOfRooms);
         for(let i=0; i<noOfRooms;i++)
-        { console.log("inside table creATION",i);
+        { 
         const room = new Room();
         room.hotelId = id;
         room.title=title;
@@ -42,9 +41,7 @@ export class RoomRepository extends Repository<Room>{
         room.status=RoomStatus.AVAILABLE;
         await room.save();
         roomId.push(room);
-        console.log("saved",i);
         }
-        console.log("outside room creation");
         return roomId;
         
 
