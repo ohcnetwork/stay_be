@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+    postgres:
+        restart: always
+        image: postgres:latest
+        ports:
+        - "${DBPORT}:${DBPORT}"
+        environment:
+        - POSTGRES_USER=${USERNAME}
+        - POSTGRES_PASSWORD=${PASSWORD}
+        - POSTGRES_DB=${DATABASE}
