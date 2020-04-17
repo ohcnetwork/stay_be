@@ -5,7 +5,10 @@ import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomStatusValidationPipe} from './pipes/room-status-validation.pipe'
 import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
-@Controller('rooms')
+import { ApiUseTags } from '@nestjs/swagger';
+
+@ApiUseTags('Rooms Management')
+@Controller('api/v1/rooms')
 export class RoomsController {
     constructor(private roomsService: RoomsService) {}
 
@@ -21,12 +24,13 @@ export class RoomsController {
 
     @Post('/:hotelid')
     @UsePipes(ValidationPipe)
-    createRoom(
+
+        createRoom(
         @Param('hotelid') id:number,
         @Body() createRoomDto : CreateRoomDto,
     ):Promise<Room>
     {
-        return this.roomsService.createRoom(createRoomDto,id); 
+        return this.roomsService.createRoom(createRoomDto,id);  
     }
 
     @Delete('/:id')

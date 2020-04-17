@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException} from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomRepository} from './room.repository';
 import {InjectRepository} from '@nestjs/typeorm';
 import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
+
 
 @Injectable()
 export class RoomsService {
@@ -26,9 +27,8 @@ export class RoomsService {
         return found;
     }
     
-
     async createRoom(createRoomDto: CreateRoomDto,id:number){
-        return this.roomRepository.createRoom(createRoomDto,id);
+        return this.roomRepository.createRoom(createRoomDto,id);       
     }
     async deleteRoom(id:number):Promise<void>{
         const result= await this.roomRepository.delete(id);

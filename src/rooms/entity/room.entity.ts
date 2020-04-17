@@ -1,14 +1,12 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn,  } from 'typeorm';
 import { RoomStatus } from "../room-status.enum";
 import { Facility } from 'src/facility/entities/Facility.entity';
-import { type } from 'os';
 @Entity()
 export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
-    // @Column()
-    @ManyToOne(type => Facility,facility => facility.room,{cascade:['update']})
+    @ManyToOne(() => Facility,facility => facility.room,{cascade:['update']})
     @JoinColumn({name:'hotelId'})
     facility:Facility;
 
@@ -31,20 +29,13 @@ export class Room extends BaseEntity{
     @Column()
     beds:number;
 
-    @Column()
-    photos:string;
+    @Column({type:'jsonb',nullable:true})
+    photos:any;
 
     @Column()
     cost:number;
 
     @Column()
     status: RoomStatus;
-
-
-    // @OneToMany(type=> User, user => user.room, {
-    //     cascade: ['update'],
-    // })
-    // @JoinColumn({name: 'id'})
-    // user: User;
 
 }

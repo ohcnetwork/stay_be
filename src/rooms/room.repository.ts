@@ -18,13 +18,18 @@ export class RoomRepository extends Repository<Room>{
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
         }
-
-
-        return await query.getMany();
+      return await query.getMany();
     }
+    
+            
+    //Create Room
+    async createRoom(createRoomDto: CreateRoomDto,id:number):Promise<any>{
 
-    async createRoom(createRoomDto: CreateRoomDto,id:number):Promise<Room>{
-        const {title,features,description,category,beds,photos,cost}=createRoomDto;
+        const roomId = [];
+        const {noOfRooms,photos,title,features,description,category,beds,cost}=createRoomDto;
+        console.log(noOfRooms);
+        for(let i=0; i<noOfRooms;i++)
+        { console.log("inside table creATION",i);
         const room = new Room();
         room.hotelId = id;
         room.title=title;
@@ -32,17 +37,16 @@ export class RoomRepository extends Repository<Room>{
         room.description=description;
         room.category=category;
         room.beds=beds;
-        room.photos=photos;
+        room.photos=photos; //need to be done
         room.cost=cost;
         room.status=RoomStatus.AVAILABLE;
         await room.save();
-        return room;
-    }
+        roomId.push(room);
+        console.log("saved",i);
+        }
+        console.log("outside room creation");
+        return roomId;
+        
 
-    // async rooms(): Promise<any> {
-    //     const query = this.createQueryBuilder('room');
-    //     query.leftJoin('room.user', 'user')
-    //       .leftJoin('room.booking', 'booking').select( ['user.id', 'user.name', 'user', 'room', 'booking']);
-    //     const [data, count] =  await query.getManyAndCount();
-    // }
+    }
 }

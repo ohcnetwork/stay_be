@@ -39,8 +39,8 @@ export class Rooms1586844487538 implements MigrationInterface {
               },
               {
                 name: 'photos',
-                type: 'varchar',
-                isNullable: false,
+                type: 'jsonb',
+                isNullable: true,
               },
               {
                 name: 'cost',
@@ -52,6 +52,7 @@ export class Rooms1586844487538 implements MigrationInterface {
                 type: 'varchar',
                 default: '\'AVAILABLE\'',
               },
+              
             ],
           }), true);
     }
