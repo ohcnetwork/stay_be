@@ -17,8 +17,7 @@ export class FacilityService {
 
     async addfacility(data:any): Promise<any> {
         try {
-            const facility = await this.facilityRepository.findOne({ name:data.name });
-            if(!facility) {
+
                 data.status = 'ACTIVE';
                 const registerStay = await this.facilityRepository.save(data);
                 const {...result } = registerStay;
@@ -27,7 +26,6 @@ export class FacilityService {
                     message: 'Success',
                     data: result,
                 }
-            }
         } catch (e) {
             return {
                 success: false,

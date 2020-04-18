@@ -32,44 +32,33 @@ export class BookingController {
         @Param('roomId') roomid: number,
         @Param('hotelId') hotelid: number,
         @Body() createbookingDto: CreateBookingDto,
-
         ): Promise<any>{                          
         this.logger.verbose("booking created with  ");
         return this.bookingService.createBooking(userid,roomid,hotelid,createbookingDto); 
-    
     }
 
     //get all bookings of user
 
-    @Get('/:userId')
-    getBookings(
-        @Param('userId') userid: number,
-    ): Promise<Booking[]> {
-        this.logger.verbose("retrieving all bookings of the user");
-        return this.bookingService.getBookings(userid);
-    }
 
     //cancelbooking
-    @Delete('/:book_id/:userid')
+    @Delete('/:book_id')
     deleteTask(
-        @Param('book_id') book_id: number,
-        @Param('userId') userid: number,
+        @Param('book_id', ParseIntPipe) book_id: number,
+        @GetUser() user: User,
     ): Promise<void> {
-        return this.bookingService.deletebooking(book_id, userid);
+        return this.bookingService.deletebooking(book_id, user);
     }
 
-
-    //get booking details for hotel
-    @Get('/:hotelId')
-    getBookingsHotel(
-        @Param('hotelId') hotelid: number,
-    ): Promise<Booking[]> {
-        this.logger.verbose("retrieving all bookings for the hotel");
-        return this.bookingService.getBookings(hotelid);
+    //get booking details
+    @Get('/HotelDetails/:hotelId')
+    getHotelBookingDetails(@Param('hotelId',ParseIntPipe) hotelId:number): Promise<any> {
+        return this.bookingService.getHotelBookingDetails(hotelId);
+    }
+    @Get('/UserDetails/:userId')
+    getUserBookingDetails(@Param('userId',ParseIntPipe) userId:number):Promise<any>{
+        return this.bookingService.getUserBookingDetails(userId);
     }
 
-
-    //date filter
 
 
 

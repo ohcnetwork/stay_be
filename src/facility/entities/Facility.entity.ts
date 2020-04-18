@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('facility')
-@Unique(['name'])
+
 export class Facility {
     
     @PrimaryGeneratedColumn()
@@ -46,7 +46,5 @@ export class Facility {
 
     @Column()
     status:string;
-
-
 
 }
