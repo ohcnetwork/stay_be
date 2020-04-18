@@ -4,6 +4,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Unique,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
 
 import { Room } from '../../rooms/entity/room.entity';
@@ -45,9 +47,9 @@ export class User {
   updatedAt: Date;
 
 
-  @ManyToOne(type => Room, room => room.user)
-  @JoinColumn({name: 'id'})
-  room: Room;
+//  @ManyToOne(type => Room, room => room.user)
+//  @JoinColumn({name: 'id'})
+//  room: Room;
 
 
 }

@@ -1,3 +1,4 @@
+
 import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne,  JoinColumn, BaseEntity, Entity } from "typeorm";
 import { User } from "src/auth/entities/User.entity";
 import { Room } from "src/rooms/entity/room.entity";
@@ -21,25 +22,28 @@ export class Booking extends BaseEntity {
     @CreateDateColumn()
     updatedAt: Date;
 
-   //@ManyToOne(type => User, user => user.booking, { eager:false} )
-   // user: User;
+ //  @ManyToOne(type => User, user => user.booking, { eager:false} )
+  //  user: User;
+
+
 
     @Column()
     roomId: number;
     
- //   @OneToOne(type => Room, room => room.booking, {
- //       cascade: ['update'],
- //   })
- //   @JoinColumn()
- //   room: Room;
+
+    @OneToOne(type => Room, room => room.booking, {
+        cascade: ['update'],
+    })
+    @JoinColumn()
+    room: Room;
 
 
     @Column()
     userId: number;  //user_id
-    
 
     //relation for roomid
     @Column()
     hotelId: number;
+
 
 }

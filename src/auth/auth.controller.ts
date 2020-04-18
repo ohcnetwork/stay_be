@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Request, Logger, Post, UseGuards, Put } from '@nestjs/common';
+import { Body, Controller, Get, Request, Logger, Post, UseGuards, Put,Req } from '@nestjs/common';
 import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto, ChangePasswordDto,ResetPasswordDto } from './dto';
@@ -30,9 +30,9 @@ export class AuthController {
   
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    login(@Body() loginDto:LoginDto) {
-      this.logger.verbose(`user Logged in ${loginDto.email}`);
-      return this.authService.login(loginDto);
+    login(@Req() req,@Body() loginDto:LoginDto) {
+      this.logger.verbose(`user Logged in ${req.user.email}`);
+      return this.authService.login(req.user);
     }
   
   
