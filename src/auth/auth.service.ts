@@ -16,7 +16,7 @@ export class AuthService {
   ) {
   }
 
-  async getAllUsers(req: any) : Promise<any> {
+  async getAllUsers() : Promise<any> {
     return await this.userRepository.find();
   }
 
@@ -25,7 +25,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({ id });
     this.logger.verbose(`User Logged In ${user.name}`);
     if (user) {
-      const { password, ...result } = user;
+      const { ...result } = user;
       return {
         success: true,
         message: 'Success',
@@ -73,7 +73,7 @@ export class AuthService {
         data.status = 'ACTIVE';
 
         const registerUser = await this.userRepository.save(data);
-        const { password, ...result } = registerUser;
+        const {  ...result } = registerUser;
         return {
           success: true,
           message: 'Success',
@@ -97,7 +97,7 @@ export class AuthService {
   }
 
 
-async login(user: any, body: any) {
+async login(user: any) {
     const {email, id} = user;
     const payload = {email, id};
     return {

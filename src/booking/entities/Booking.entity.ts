@@ -24,9 +24,12 @@ export class Booking extends BaseEntity {
    //@ManyToOne(type => User, user => user.booking, { eager:false} )
    // user: User;
 
+
+
     @Column()
     roomId: number;
     
+
  //   @OneToOne(type => Room, room => room.booking, {
  //       cascade: ['update'],
  //   })
@@ -36,7 +39,6 @@ export class Booking extends BaseEntity {
 
     @Column()
     userId: number;  //user_id
-    
 
     //relation for roomid
     @Column()

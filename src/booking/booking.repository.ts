@@ -10,6 +10,7 @@ export class BookingRepository extends Repository<Booking> {
     
     async getAllBooking(): Promise<Booking[]>{
         const query = this.createQueryBuilder('bookings');
+        const query = this.createQueryBuilder('booking');
         return await query.getMany();
     }
 
@@ -37,41 +38,5 @@ export class BookingRepository extends Repository<Booking> {
 
     
     }
-
-    async getBookings(
-        user: User,
-      ): Promise<Booking[]> {
-        const query = this.createQueryBuilder('booking');
     
-        query.where('booking.userId = :userId', { userId: user.id });
-
-        try {
-          const bookings = await query.getMany();
-          return bookings;
-        } catch (error) {
-          //this.logger.error(`Failed to get tasks for user`);
-          throw new InternalServerErrorException();
-        }
-      }
-
-      /*async createBooking(createbookingDto: CreateBookingDto,
-        user: User,
-        ){
-        const { checkin,checkout } = createbookingDto;
-
-        const booking = new Booking();
-        booking.checkin = checkin;
-        booking.checkout = checkout;
-        booking.user = user;
-        await booking.save();
-        
-        delete booking.user;
-        return booking;
-
-
-    
-    }*/
-
-    
-
 }

@@ -23,16 +23,16 @@ export class AuthController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Get('all-users')
-    getAllUsers(@Request() req: any) {
+    getAllUsers() {
       this.logger.verbose(`User retrieving all users `);
-      return this.authService.getAllUsers(req);
+      return this.authService.getAllUsers();
     }
   
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    login(@Request() req: any, @Body() body: LoginDto) {
-      this.logger.verbose(`user Logged in ${req.user.email}`);
-      return this.authService.login(req.user, body);
+    login(@Body() loginDto:LoginDto) {
+      this.logger.verbose(`user Logged in ${loginDto.email}`);
+      return this.authService.login(loginDto);
     }
   
   

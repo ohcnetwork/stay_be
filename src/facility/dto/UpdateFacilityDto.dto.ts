@@ -1,17 +1,17 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString, IsNumberString ,Matches, MinLength, IsOptional } from 'class-validator';
+import { IsString, IsNumberString , IsOptional } from 'class-validator';
 
 export class UpdateFacilityDto {
 
     @ApiModelProperty({ example:null })
-    @IsString()
-    hotelId:string;
+    @IsOptional()
+    hotelId:number;
 
 
     @ApiModelProperty({ example:null })
     @IsOptional()
     @IsString()
-    readonly hotelName:string;
+    readonly name:string;
 
     @ApiModelProperty({ example:null })
     @IsOptional()
@@ -30,7 +30,7 @@ export class UpdateFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsOptional()
-    readonly rooms_Available:number;
+    readonly policy:string;
 
 
     @ApiModelProperty({ example:null })
@@ -43,17 +43,28 @@ export class UpdateFacilityDto {
     @IsString()
     readonly longitude:string;
 
-//    @ApiModelProperty({ example:null })
-//    @IsOptional()
-//    readonly starCategory:number;
+    @ApiModelProperty({ example:null })
+    @IsOptional()
+    readonly starCategory:number;
 
     @ApiModelProperty({ example:null })
     @IsOptional()
     @IsString()
-    readonly facilityDescription:string;
+    readonly facilities:string;
 
-//    @ApiModelProperty({ example:null })
-//    @IsNumberString()
-//    telephone:number;
+    @ApiModelProperty({ example:null })
+    @IsOptional()
+    @IsNumberString()
+    contact:string;
+
+    @ApiModelProperty({ example:null })
+    @IsOptional()
+    @IsNumberString()
+    photos:string;
+
+    @ApiModelProperty({ example:null })
+    @IsOptional()
+    @IsNumberString()
+    status:string;
 
 }

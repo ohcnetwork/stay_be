@@ -8,11 +8,13 @@ import { FacilityRepository } from 'src/facility/facility.repository';
 import { RoomRepository } from 'src/rooms/room.repository';
 import { UserRepository } from 'src/auth/user.repository';
 
+
 @Injectable()
 export class BookingService {
     private logger = new Logger('Booking Service');
 
     constructor(
+
       @InjectRepository(FacilityRepository)
       @InjectRepository(RoomRepository)
       @InjectRepository(UserRepository)
@@ -20,6 +22,7 @@ export class BookingService {
         private readonly facilityRepository:FacilityRepository,
         private readonly roomRepository:RoomRepository,
         private readonly userRepository:UserRepository,
+        @InjectRepository(BookingRepository)
         private readonly bookingRepository: BookingRepository
     ){}
 
@@ -37,16 +40,10 @@ export class BookingService {
 
     }
 
-    async getBookings(
-        req: any,
-        user: User,
-      ): Promise<Booking[]> {
-        return this.bookingRepository.getBookings(user);
-      }
 
       async deletebooking(
         book_id: number,
-        user: User,
+        userid: number,
       ): Promise<void> {
         const result = await this.bookingRepository.delete(book_id);
     
@@ -91,5 +88,6 @@ export class BookingService {
         
        return{ data:list}
       }
+
 
 }

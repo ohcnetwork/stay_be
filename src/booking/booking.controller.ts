@@ -30,24 +30,15 @@ export class BookingController {
     createBooking(
         @Param('userId') userid: number,
         @Param('roomId') roomid: number,
-        @Param('hotelId') hotelId:number,
+        @Param('hotelId') hotelid: number,
         @Body() createbookingDto: CreateBookingDto,
-
         ): Promise<any>{                          
-        this.logger.verbose("booking created");
-        return this.bookingService.createBooking(userid,roomid,hotelId,createbookingDto); 
-    
+        this.logger.verbose("booking created with  ");
+        return this.bookingService.createBooking(userid,roomid,hotelid,createbookingDto); 
     }
 
     //get all bookings of user
 
-    @Get('user-bookings')
-    getBookings(@Request() req: any,
-        @GetUser() user: User,
-    ): Promise<Booking[]> {
-        this.logger.verbose("retrieving all bookings of thee user");
-        return this.bookingService.getBookings(req, user);
-    }
 
     //cancelbooking
     @Delete('/:book_id')
@@ -67,6 +58,7 @@ export class BookingController {
     getUserBookingDetails(@Param('userId',ParseIntPipe) userId:number):Promise<any>{
         return this.bookingService.getUserBookingDetails(userId);
     }
+
 
 
 

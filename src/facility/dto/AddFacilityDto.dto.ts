@@ -1,14 +1,16 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString, IsNumberString ,Matches, MinLength } from 'class-validator';
+import { IsString} from 'class-validator';
 
 export class AddFacilityDto {
-    @ApiModelProperty({ example:null })
-    @IsString()
-    hotelName:string;
+    
 
     @ApiModelProperty({ example:null })
     @IsString()
-    hotelOwnerId:number;
+    name:string;
+
+    @ApiModelProperty({ example:null })
+    @IsString()
+    ownerID:number;
 
     @ApiModelProperty({ example:null })
     @IsString()
@@ -36,6 +38,19 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    facilityDescription:string;
+    facilities:string;
+
+    @ApiModelProperty({ example:null })
+    @IsString()
+    contact:string;
+
+    @ApiModelProperty({ example:null})
+    @IsString()
+    policy:string;
+
+    @ApiModelProperty({ example:null})
+    @IsString()
+    photos:string;
+
 
 }
