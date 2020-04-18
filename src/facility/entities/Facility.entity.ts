@@ -1,17 +1,17 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
 
 @Entity('facility')
-@Unique(['hotelName'])
+
 export class Facility {
     
     @PrimaryGeneratedColumn()
     hotelId:number;
 
     @Column()
-    hotelOwnerId: number;
+    ownerID: number;
 
     @Column({ length:128 })
-    hotelName: string;
+    name: string;
 
     @Column({ length:128 })
     address: string;
@@ -33,5 +33,21 @@ export class Facility {
     longitude:string;
 
     @Column({ length:128 })
-    facilityDescription: string;
+    facilities: string;
+
+    @Column({ length:11})
+    contact:string;
+
+    @Column()
+    policy:string;
+
+    @Column()
+    photos:string;
+
+    @Column()
+    status:string;
+
+    // @ManyToOne(type => Room, room=>room.facility)
+    // room:Room;
+
 }
