@@ -5,7 +5,8 @@ import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomStatusValidationPipe} from './pipes/room-status-validation.pipe'
 import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
-import {ApiUseTags} from "@nestjs/swagger";
+import { ApiUseTags } from '@nestjs/swagger';
+
 
 @ApiUseTags('Rooms Management')
 @Controller('api/v1/rooms')
@@ -22,11 +23,15 @@ export class RoomsController {
         return this.roomsService.getRoomById(id);
     }
 
-    @Post()
+    @Post('/:hotelid')
     @UsePipes(ValidationPipe)
-    createRoom(@Body() createRoomDto : CreateRoomDto):Promise<Room>
+
+        createRoom(
+        @Param('hotelid') id:number,
+        @Body() createRoomDto : CreateRoomDto,
+    ):Promise<Room>
     {
-        return this.roomsService.createRoom(createRoomDto); 
+        return this.roomsService.createRoom(createRoomDto,id);  
     }
 
     @Delete('/:id')
@@ -34,11 +39,25 @@ export class RoomsController {
         return this.roomsService.deleteRoom(id);
     }
 
-    @Patch('/:id/status')
+    @Patch('/status/:id')
     updateRoomStatus(
      @Param('id',ParseIntPipe)id:number,
      @Body('status',RoomStatusValidationPipe) status:RoomStatus):Promise<Room>
      {
             return this.roomsService.updateRoomStatus(id,status);
      } 
+     @Get('/hotel/:hotelId')
+	 getHotelDetail(@Param('hotelId',ParseIntPipe) hotelId: number): Promise<any> {
+		 return this.roomsService.getHotelDetail(hotelId);
+	 }
+	 @Get('/hotelid/:facilityId')
+	 getHotelId(@Param('facilityId',ParseIntPipe) facilityId:number):Promise<any> {
+		 return this.roomsService.getHotelId(facilityId);
+     }
+     @Get('/get/details')
+     getPrice():Promise<any>{
+
+         return this.roomsService.getPrice();
+     }
+
 }

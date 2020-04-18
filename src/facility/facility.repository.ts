@@ -7,4 +7,8 @@ export class FacilityRepository extends Repository<Facility> {
         const query = this.createQueryBuilder('facility');
         return await query.getMany();
     }
+    async getDistricts():Promise<any>{
+        const query = this.createQueryBuilder("facility");
+        return await query.select("DISTINCT(facility.district)").getRawMany();
+    }
 }

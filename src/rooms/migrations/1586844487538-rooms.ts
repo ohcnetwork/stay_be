@@ -14,11 +14,11 @@ export class Rooms1586844487538 implements MigrationInterface {
                 generationStrategy: 'increment',
               },
               {
-                name: 'title',
-                type: 'varchar',
+                name: 'hotelId',
+                type: 'bigint',
               },
               {
-                name: 'address',
+                name: 'title',
                 type: 'varchar',
               },
               {
@@ -39,8 +39,8 @@ export class Rooms1586844487538 implements MigrationInterface {
               },
               {
                 name: 'photos',
-                type: 'varchar',
-                isNullable: false,
+                type: 'jsonb',
+                isNullable: true,
               },
               {
                 name: 'cost',
@@ -52,25 +52,7 @@ export class Rooms1586844487538 implements MigrationInterface {
                 type: 'varchar',
                 default: '\'AVAILABLE\'',
               },
-              {
-                name: 'policy',
-                type: 'varchar',
-              },
-              // {
-      
-              //   name: 'createdAt',
-              //   type: 'timestamp',
-              //   default: 'CURRENT_TIMESTAMP',
-              //   isNullable: false,
-              // },
               
-              // {
-      
-              //   name: 'updatedAt',
-              //   type: 'timestamp',
-              //   default: 'CURRENT_TIMESTAMP',
-              //   isNullable: false,
-              // },
             ],
           }), true);
     }

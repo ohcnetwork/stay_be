@@ -52,5 +52,10 @@ export class FacilityController {
         this.logger.verbose("searching by district");
         return this.facilityService.searchDistrict(req.facility,searchByDistrictDto);
     }
+    @Get('/get/districts')
+    getPrice():Promise<any>{
+
+        return this.facilityService.getDistricts();
+    }
 
 }

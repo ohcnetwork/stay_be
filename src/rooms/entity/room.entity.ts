@@ -7,11 +7,13 @@ export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
+
+    @Column()
+    hotelId:number;
+
     @Column()
     title:string;
 
-    @Column()
-    address:string;
 
     @Column()
     features:string;
@@ -25,8 +27,8 @@ export class Room extends BaseEntity{
     @Column()
     beds:number;
 
-    @Column()
-    photos:string;
+    @Column({type:'jsonb',nullable:true})
+    photos:any;
 
     @Column()
     cost:number;
@@ -34,14 +36,6 @@ export class Room extends BaseEntity{
     @Column()
     status: RoomStatus;
 
-    @Column()
-    policy: string;
-
-    @OneToMany(type=> User, user => user.room, {
-        cascade: ['update'],
-    })
-    @JoinColumn({name: 'id'})
-    user: User;
 
     @OneToOne(type => Booking, booking => booking.room) 
     booking: Booking;
