@@ -38,11 +38,25 @@ export class RoomsController {
         return this.roomsService.deleteRoom(id);
     }
 
-    @Patch('/:id/status')
+    @Patch('/status/:id')
     updateRoomStatus(
      @Param('id',ParseIntPipe)id:number,
      @Body('status',RoomStatusValidationPipe) status:RoomStatus):Promise<Room>
      {
             return this.roomsService.updateRoomStatus(id,status);
      } 
+     @Get('/hotel/:hotelId')
+	 getHotelDetail(@Param('hotelId',ParseIntPipe) hotelId: number): Promise<any> {
+		 return this.roomsService.getHotelDetail(hotelId);
+	 }
+	 @Get('/hotelid/:facilityId')
+	 getHotelId(@Param('facilityId',ParseIntPipe) facilityId:number):Promise<any> {
+		 return this.roomsService.getHotelId(facilityId);
+     }
+     @Get('/get/details')
+     getPrice():Promise<any>{
+
+         return this.roomsService.getPrice();
+     }
+
 }

@@ -1,14 +1,10 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn,  } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column  } from 'typeorm';
 import { RoomStatus } from "../room-status.enum";
-import { Facility } from 'src/facility/entities/Facility.entity';
 @Entity()
 export class Room extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(() => Facility,facility => facility.room,{cascade:['update']})
-    @JoinColumn({name:'hotelId'})
-    facility:Facility;
 
     @Column()
     hotelId:number;
@@ -37,5 +33,7 @@ export class Room extends BaseEntity{
 
     @Column()
     status: RoomStatus;
+
+
 
 }

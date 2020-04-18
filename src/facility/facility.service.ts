@@ -153,4 +153,8 @@ export class FacilityService {
         }
 
     }
+    //get all districts
+    async getDistricts():Promise<any>{
+        return await this.facilityRepository.getDistricts();
+    }
 }
