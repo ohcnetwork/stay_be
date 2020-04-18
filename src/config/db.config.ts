@@ -4,12 +4,12 @@ import * as fs from 'fs';
 const dbConfig = config.get('db');
 
 export const DbConfig: TypeOrmModuleOptions = {
-  type: dbConfig.type,
-  host: dbConfig.host,
-  port: dbConfig.port,
-  username: dbConfig.username,
-  password: dbConfig.password,
-  database: dbConfig.database,
+  type: 'postgres',
+  host: dbConfig.host || process.env.DBHOST,
+  port: dbConfig.port || process.env.DBPORT,
+  username: dbConfig.username || process.env.USERNAME,
+  password: dbConfig.password || process.env.PASSWORD ,
+  database: dbConfig.database || process.env.DATABASE,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: [__dirname + '/../**/migrations/*{.ts,.js}'],
   synchronize: false,
