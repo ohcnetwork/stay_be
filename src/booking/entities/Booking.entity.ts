@@ -1,3 +1,4 @@
+
 import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne,  JoinColumn, BaseEntity, Entity } from "typeorm";
 import { User } from "src/auth/entities/User.entity";
 import { Room } from "src/rooms/entity/room.entity";
@@ -43,5 +44,6 @@ export class Booking extends BaseEntity {
     //relation for roomid
     @Column()
     hotelId: number;
+
 
 }
