@@ -44,9 +44,8 @@ export class BookingController {
     @Delete('/:book_id')
     deleteTask(
         @Param('book_id', ParseIntPipe) book_id: number,
-        @GetUser() user: User,
     ): Promise<void> {
-        return this.bookingService.deletebooking(book_id, user);
+        return this.bookingService.deletebooking(book_id);
     }
 
     //get booking details

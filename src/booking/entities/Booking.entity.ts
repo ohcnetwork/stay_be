@@ -21,8 +21,8 @@ export class Booking extends BaseEntity {
     @CreateDateColumn()
     updatedAt: Date;
 
-   //@ManyToOne(type => User, user => user.booking, { eager:false} )
-   // user: User;
+ //  @ManyToOne(type => User, user => user.booking, { eager:false} )
+  //  user: User;
 
 
 
@@ -30,11 +30,11 @@ export class Booking extends BaseEntity {
     roomId: number;
     
 
- //   @OneToOne(type => Room, room => room.booking, {
- //       cascade: ['update'],
- //   })
- //   @JoinColumn()
- //   room: Room;
+    @OneToOne(type => Room, room => room.booking, {
+        cascade: ['update'],
+    })
+    @JoinColumn()
+    room: Room;
 
 
     @Column()

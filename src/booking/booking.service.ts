@@ -43,7 +43,6 @@ export class BookingService {
 
       async deletebooking(
         book_id: number,
-        userid: number,
       ): Promise<void> {
         const result = await this.bookingRepository.delete(book_id);
     
