@@ -10,8 +10,8 @@ export class BookingRepository extends Repository<Booking> {
     
     
     async getAllBooking(): Promise<Booking[]>{
-        const query = this.createQueryBuilder('bookings');
-        query.where('room.status != "CANCELLED"'); 
+        const query = await this.createQueryBuilder('bookings');
+        
         return await query.getMany();
     }
 
