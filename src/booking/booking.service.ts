@@ -81,9 +81,10 @@ export class BookingService {
         const [user1,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
         for(var i=0;i<count;i++){
+          if (user1[i].statusBooking === "BOOKED")
+          {
          const hotel = await this.facilityRepository.findOne({hotelId:user1[i].hotelId})
-         if (hotel.status != "CANCELLED")
-         {
+        
          const room = await this.roomRepository.findOne({id:user1[i].roomId})
          list[i]={name:hotel.name,
           address:hotel.address,
