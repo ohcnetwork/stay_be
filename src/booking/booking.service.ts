@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookingRepository } from './booking.repository';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
@@ -25,6 +25,18 @@ export class BookingService {
         @InjectRepository(BookingRepository)
         private readonly bookingRepository: BookingRepository
     ){}
+
+
+    async validateUser(user:User): Promise<any> {
+      const found = await this.userRepository.findOne({id:user.id})
+      console.log(found.type)
+      if(found.type === 'facilityowner'){
+          return found
+      }
+      else {
+          throw new UnauthorizedException;
+      }
+  }
 
     async getAllBooking(req: any): Promise<any> {
         return this.bookingRepository.getAllBooking();
@@ -55,46 +67,46 @@ export class BookingService {
 
         
       }
-      async getHotelBookingDetails(hotelId:number): Promise<any> {
-        const [hotel,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
+      async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
+        if(await this.validateUser(user)) {
+        const [book,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
         var list = []
         for(var i=0;i<count;i++){
-          if (hotel[i].statusBooking != "CANCELLED")
+          if (book[i].statusBooking != "CANCELLED")
           {
-         const user = await this.userRepository.findOne({id:hotel[i].userId})
-         const room = await this.roomRepository.findOne({id:hotel[i].roomId})
+         const user = await this.userRepository.findOne({id:book[i].userId})
+         const room = await this.roomRepository.findOne({id:book[i].roomId})
          list[i]={name:user.name,
           email:user.email,
           category:room.category,
-          checkinDate:hotel[i].checkin,
-          bookingDate:hotel[i].createdAt,
-          bookingId:hotel[i].book_id}
+          checkinDate:book[i].checkin,
+          bookingDate:book[i].createdAt,
+          bookingId:book[i].book_id}
          }
         }
         return { data:list,}
         
-      }
+      }}
 
 
       async getUserBookingDetails(user:User): Promise<any> {
         console.log(user);
-        const [user1,count] = await this.bookingRepository.findAndCount({userId:user.id});
+        const [book,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
         for(var i=0;i<count;i++){
-          if (user1[i].statusBooking === "BOOKED")
-          {
-         const hotel = await this.facilityRepository.findOne({hotelId:user1[i].hotelId})
-        
-         const room = await this.roomRepository.findOne({id:user1[i].roomId})
+         const hotel = await this.facilityRepository.findOne({hotelId:book[i].hotelId})
+         if (hotel.status != "CANCELLED")
+         {
+         const room = await this.roomRepository.findOne({id:book[i].roomId})
          list[i]={name:hotel.name,
           address:hotel.address,
           district:hotel.district,
           category:room.category,
           cost:room.cost,
-          checkinDate:user1[i].checkin,
-          checkoutDate:user1[i].checkout,
-          bookingDate:user1[i].createdAt,
-          bookingId:user1[i].book_id}
+          checkinDate:book[i].checkin,
+          checkoutDate:book[i].checkout,
+          bookingDate:book[i].createdAt,
+          bookingId:book[i].book_id}
         }
         }
         
@@ -103,5 +115,11 @@ export class BookingService {
        return{ data:list}
       }
 
+      async checkInUser(id:number): Promise<any> {
+        console.log(id)
+        const booking = await this.bookingRepository.findOne({book_id:id})
+        booking.statusCheckin = "CHECKEDIN";
+        this.bookingRepository.save(booking);
+      }
 
 }
