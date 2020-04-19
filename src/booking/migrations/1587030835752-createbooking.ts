@@ -58,6 +58,23 @@ export class createbooking1587030835752 implements MigrationInterface {
 
                   },
 
+                  {
+                    name: 'status',
+                    type: 'varchar',
+                    default: '\'BOOKED\'',
+                    
+
+                  },
+
+                  
+                  {
+                    name: 'status',
+                    type: 'varchar',
+                    default: '\'PENDING\'',
+                    
+
+                  },
+
             ],
 
         }), true);

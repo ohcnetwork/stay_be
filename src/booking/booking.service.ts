@@ -41,17 +41,26 @@ export class BookingService {
 
       async deletebooking(
         book_id: number,
-      ): Promise<void> {
-        const result = await this.bookingRepository.delete(book_id);
+      ): Promise<any> {
+        const result = await this.bookingRepository.findOne(book_id);
     
-        if (result.affected === 0) {
+        if(result) {
+          result.status = "CANCELLED"
+          await this.bookingRepository.save(result);
+        }
+        else {
           throw new NotFoundException(`Task with ID "${book_id}" not found`);
         }
+
+
+        
       }
       async getHotelBookingDetails(hotelId:number): Promise<any> {
         const [hotel,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
         var list = []
         for(var i=0;i<count;i++){
+          if (hotel[i].status != "CANCELLED")
+          {
          const user = await this.userRepository.findOne({id:hotel[i].userId})
          const room = await this.roomRepository.findOne({id:hotel[i].roomId})
          list[i]={name:user.name,
@@ -60,16 +69,21 @@ export class BookingService {
           checkinDate:hotel[i].checkin,
           bookingDate:hotel[i].createdAt,
           bookingId:hotel[i].book_id}
+         }
         }
         return { data:list,}
         
       }
+
+
       async getUserBookingDetails(user:User): Promise<any> {
         console.log(user);
         const [user1,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
         for(var i=0;i<count;i++){
          const hotel = await this.facilityRepository.findOne({hotelId:user1[i].hotelId})
+         if (hotel.status != "CANCELLED")
+         {
          const room = await this.roomRepository.findOne({id:user1[i].roomId})
          list[i]={name:hotel.name,
           address:hotel.address,
@@ -80,6 +94,7 @@ export class BookingService {
           checkoutDate:user1[i].checkout,
           bookingDate:user1[i].createdAt,
           bookingId:user1[i].book_id}
+        }
         }
         
           
