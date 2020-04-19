@@ -1,8 +1,9 @@
-import { Injectable,Logger} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
 import { UpdateFacilityDto } from './dto';
+import { User } from '@sentry/node';
 
 @Injectable()
 export class FacilityService {
@@ -15,9 +16,9 @@ export class FacilityService {
     }
     
 
-    async addfacility(data:any): Promise<any> {
+    async addfacility(data:any,user:User): Promise<any> {
         try {
-
+            if(user.type = 'facilityowner'){
                 data.status = 'ACTIVE';
                 const registerStay = await this.facilityRepository.save(data);
                 const {...result } = registerStay;
@@ -26,6 +27,10 @@ export class FacilityService {
                     message: 'Success',
                     data: result,
                 }
+            }
+            else{
+                throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
+            }
         } catch (e) {
             return {
                 success: false,
@@ -40,8 +45,10 @@ export class FacilityService {
     }
    
 
-    async getFacility(id:number): Promise<any> {
-        const facility = await this.facilityRepository.find({ ownerID:id })
+    async getFacility(user:User): Promise<any> {
+        const id = user.id
+        console.log(id,typeof id)
+        const facility = await this.facilityRepository.find({ ownerID:1 })
         if(facility) {
             const {...result}=facility;
             return{
@@ -61,7 +68,7 @@ export class FacilityService {
         try{
             const facility = await this.facilityRepository.findOne({ hotelId:id})
             if(facility){
-            this.facilityRepository.delete(facility);
+            facility.status = "NOT_AVAILABLE"
             
             return{
                 sucess:true,

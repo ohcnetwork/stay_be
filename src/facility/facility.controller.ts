@@ -1,7 +1,8 @@
-import { Body,Controller,Post, Logger, Get, Patch,Request,ParseIntPipe, Param, Delete } from '@nestjs/common';
+import { Body,Controller,Post, Logger, Get, Patch,Request,ParseIntPipe, Param, Delete, Req,UseGuards } from '@nestjs/common';
 import { FacilityService } from './facility.service';
-import { ApiUseTags } from '@nestjs/swagger';
+import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AddFacilityDto,UpdateFacilityDto, SearchByDistrictDto } from './dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
@@ -21,24 +22,32 @@ export class FacilityController {
         return this.facilityService.getAllFacility();
     }
 
-    @Get("/:id")
-    getFacility(@Param('id',ParseIntPipe) id:number){
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Get("/userFacilities")
+    getFacility(@Req() req:any){
         this.logger.verbose('retrieving faclility of the user');
-        return this.facilityService.getFacility(id);
+        return this.facilityService.getFacility(req.user);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Post('add-facility')
-    addfacility(@Body() addfacilityDto: AddFacilityDto) {
+    addfacility(@Body() addfacilityDto: AddFacilityDto,@Req() req:any) {
         this.logger.verbose("facility created");
-        return this.facilityService.addfacility(addfacilityDto);
+        return this.facilityService.addfacility(addfacilityDto,req.user);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Delete('/:id')
     deleteFacility(@Param('id',ParseIntPipe)id:number) {
         this.logger.verbose("facility removed");
         return this.facilityService.deleteFacility(id);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Patch('/:id/update-Facility')
     updateFacility(
         @Param('id',ParseIntPipe) id:number,
@@ -47,6 +56,7 @@ export class FacilityController {
         return this.facilityService.updateFacility(id,updateFacilityDto);
     }
     
+
     @Post('search-District')
     searchDistrict(@Request() req: any,@Body() searchByDistrictDto:SearchByDistrictDto) {
         this.logger.verbose("searching by district");

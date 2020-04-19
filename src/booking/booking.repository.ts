@@ -3,6 +3,7 @@ import { Booking } from "./entities/Booking.entity";
 import { User } from "src/auth/entities/User.entity";
 import { CreateBookingDto } from "./dto/CreateBookingDto.dto";
 import { Logger, InternalServerErrorException } from "@nestjs/common";
+import { RoomRepository } from '../rooms/room.repository';
 
 @EntityRepository(Booking)
 export class BookingRepository extends Repository<Booking> {
@@ -14,19 +15,19 @@ export class BookingRepository extends Repository<Booking> {
     }
 
     async createBooking(
-        userid: number,
-        roomid: number,
-        hotelid:number,
+        user: User,
         createbookingDto: CreateBookingDto,
+        roomRepository:RoomRepository,
         ): Promise<any>{
-        const { checkin,checkout } = createbookingDto;
+        const { roomid,checkin,checkout } = createbookingDto;
 
         const booking = new Booking();
         booking.checkin = checkin;
         booking.checkout = checkout;
-        booking.userId =userid;
+        booking.userId =user.id;
         booking.roomId = roomid;
-        booking.hotelId = hotelid;
+        const room = await roomRepository.findOne(roomid);
+        booking.hotelId=room.hotelId;
         await booking.save();
 
         //const data = {userid:userId, roomid:roomId,}

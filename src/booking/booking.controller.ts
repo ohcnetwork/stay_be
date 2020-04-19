@@ -1,11 +1,9 @@
-import { Controller, Logger, UseGuards, Body, Post, Get, Request, Delete, Param, ParseIntPipe } from '@nestjs/common';
-import { ApiUseTags } from '@nestjs/swagger';
+import { Controller, Logger, UseGuards, Body, Post, Get, Request, Delete, Param, ParseIntPipe, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { BookingService } from './booking.service';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
-import { User } from 'src/auth/entities/User.entity';
-import { Booking } from './entities/Booking.entity';
+
 
 
 @ApiUseTags('Booking')
@@ -25,22 +23,23 @@ export class BookingController {
     }
 
     //post booking detail
-    
-    @Post('/:userId/:roomId/:hotelId')
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/createBooking')
     createBooking(
-        @Param('userId') userid: number,
-        @Param('roomId') roomid: number,
-        @Param('hotelId') hotelid: number,
+        @Req() req: any,
         @Body() createbookingDto: CreateBookingDto,
         ): Promise<any>{                          
         this.logger.verbose("booking created with  ");
-        return this.bookingService.createBooking(userid,roomid,hotelid,createbookingDto); 
+        return this.bookingService.createBooking(req.user,createbookingDto); 
     }
 
     //get all bookings of user
 
 
     //cancelbooking
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Delete('/:book_id')
     deleteTask(
         @Param('book_id', ParseIntPipe) book_id: number,
@@ -48,14 +47,21 @@ export class BookingController {
         return this.bookingService.deletebooking(book_id);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     //get booking details
     @Get('/HotelDetails/:hotelId')
     getHotelBookingDetails(@Param('hotelId',ParseIntPipe) hotelId:number): Promise<any> {
         return this.bookingService.getHotelBookingDetails(hotelId);
     }
-    @Get('/UserDetails/:userId')
-    getUserBookingDetails(@Param('userId',ParseIntPipe) userId:number):Promise<any>{
-        return this.bookingService.getUserBookingDetails(userId);
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/UserDetails')
+    getUserBookingDetails(@Req() req:any):Promise<any>{
+        console.log(req.user);
+        return this.bookingService.getUserBookingDetails(req.user);
+        
     }
 
 

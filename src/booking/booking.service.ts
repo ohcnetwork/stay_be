@@ -31,12 +31,10 @@ export class BookingService {
     }
 
     async createBooking(
-        userid: number,
-        roomid: number,
-        hotelid:number,
+        user:User,
         createbookingDto: CreateBookingDto,
         ): Promise<any>{
-        return this.bookingRepository.createBooking(userid,roomid,hotelid,createbookingDto);        
+        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);        
 
     }
 
@@ -66,21 +64,22 @@ export class BookingService {
         return { data:list,}
         
       }
-      async getUserBookingDetails(userId:number): Promise<any> {
-        const [user,count] = await this.bookingRepository.findAndCount({userId:userId});
+      async getUserBookingDetails(user:User): Promise<any> {
+        console.log(user);
+        const [user1,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
         for(var i=0;i<count;i++){
-         const hotel = await this.facilityRepository.findOne({hotelId:user[i].hotelId})
-         const room = await this.roomRepository.findOne({id:user[i].roomId})
+         const hotel = await this.facilityRepository.findOne({hotelId:user1[i].hotelId})
+         const room = await this.roomRepository.findOne({id:user1[i].roomId})
          list[i]={name:hotel.name,
           address:hotel.address,
           district:hotel.district,
           category:room.category,
           cost:room.cost,
-          checkinDate:user[i].checkin,
-          checkoutDate:user[i].checkout,
-          bookingDate:user[i].createdAt,
-          bookingId:user[i].book_id}
+          checkinDate:user1[i].checkin,
+          checkoutDate:user1[i].checkout,
+          bookingDate:user1[i].createdAt,
+          bookingId:user1[i].book_id}
         }
         
           

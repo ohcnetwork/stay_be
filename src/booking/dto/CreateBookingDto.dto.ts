@@ -4,6 +4,9 @@ import { IsDate } from "class-validator";
 export class CreateBookingDto {
 
     @ApiModelProperty({ example:null })
+    roomid:number;
+
+    @ApiModelProperty({ example:null })
     //@IsDate()
     checkin:Date;
 
