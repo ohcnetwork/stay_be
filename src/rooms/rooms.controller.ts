@@ -13,7 +13,7 @@ import { ApiUseTags } from '@nestjs/swagger';
 export class RoomsController {
     constructor(private roomsService: RoomsService) {}
 
-    @Get()
+    @Get('/')
     getRooms(@Query(ValidationPipe) filterDto:GetRoomsFilterDto){
         return this.roomsService.getRooms(filterDto);
     }
