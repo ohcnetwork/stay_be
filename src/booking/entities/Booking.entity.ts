@@ -44,10 +44,10 @@ export class Booking extends BaseEntity {
     hotelId: number;
 
     @Column()
-    status: string;
+    statusBooking: string;
 
     @Column()
-    checkinstatus: string;
+    statusCheckin: string;
 
 
 }

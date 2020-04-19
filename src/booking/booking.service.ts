@@ -45,7 +45,7 @@ export class BookingService {
         const result = await this.bookingRepository.findOne(book_id);
     
         if(result) {
-          result.status = "CANCELLED"
+          result.statusBooking = "CANCELLED"
           await this.bookingRepository.save(result);
         }
         else {
@@ -59,7 +59,7 @@ export class BookingService {
         const [hotel,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
         var list = []
         for(var i=0;i<count;i++){
-          if (hotel[i].status != "CANCELLED")
+          if (hotel[i].statusBooking != "CANCELLED")
           {
          const user = await this.userRepository.findOne({id:hotel[i].userId})
          const room = await this.roomRepository.findOne({id:hotel[i].roomId})
