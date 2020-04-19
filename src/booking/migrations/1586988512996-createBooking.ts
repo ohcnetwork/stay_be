@@ -59,7 +59,7 @@ export class createbooking1586988512996 implements MigrationInterface {
                   },
 
                   {
-                    name: 'status',
+                    name: 'statusBooking',
                     type: 'varchar',
                     default: '\'BOOKED\'',
                     
@@ -68,7 +68,7 @@ export class createbooking1586988512996 implements MigrationInterface {
 
                   
                   {
-                    name: 'status',
+                    name: 'statusCheckin',
                     type: 'varchar',
                     default: '\'PENDING\'',
                     

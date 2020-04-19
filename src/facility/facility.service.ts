@@ -75,7 +75,7 @@ export class FacilityService {
             const facility = await this.facilityRepository.findOne({ hotelId:id})
             if(facility){
             facility.status = "NOT_AVAILABLE"
-            
+            await this.userRepository.save(facility);
             return{
                 sucess:true,
                 message: 'Deleted Successfully'
