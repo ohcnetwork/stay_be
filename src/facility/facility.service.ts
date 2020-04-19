@@ -1,24 +1,30 @@
-import { Injectable,Logger} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
 import { UpdateFacilityDto } from './dto';
+import { User } from 'src/auth/entities/User.entity';
+import { UserRepository } from 'src/auth/user.repository';
 
 @Injectable()
 export class FacilityService {
     private logger = new Logger('Facility Controller');
     constructor(
    @InjectRepository(FacilityRepository)
-   private readonly facilityRepository: FacilityRepository){}
+   @InjectRepository(UserRepository)
+   private readonly facilityRepository: FacilityRepository,
+   private readonly userRepository:UserRepository){}
    gethello(): string { 
         return 'Welcome to stay service';
     }
     
 
-    async addfacility(data:any): Promise<any> {
-        try {
-
+    async addfacility(data:any,user1:User): Promise<any> {
+            const user = await this.userRepository.findOne({id:user1.id})
+            this.logger.verbose(user.type)
+            if(user.type === 'facilityowner'){
                 data.status = 'ACTIVE';
+                data.ownerID=user.id;
                 const registerStay = await this.facilityRepository.save(data);
                 const {...result } = registerStay;
                 return{
@@ -26,12 +32,11 @@ export class FacilityService {
                     message: 'Success',
                     data: result,
                 }
-        } catch (e) {
-            return {
-                success: false,
-                message: 'Something went wrong adding facility failed\n'+e
             }
-        }
+            else{
+                throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
+            }
+        
         
     }
 
@@ -40,7 +45,11 @@ export class FacilityService {
     }
    
 
-    async getFacility(id:number): Promise<any> {
+    async getFacility(user1:User): Promise<any> {
+        const id = user1.id
+        const user = await this.userRepository.findOne({id:user1.id})
+            this.logger.verbose(user.type)
+            if(user.type === 'facilityowner'){
         const facility = await this.facilityRepository.find({ ownerID:id })
         if(facility) {
             const {...result}=facility;
@@ -57,11 +66,15 @@ export class FacilityService {
             }
         }
     }
+    else{
+        throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
+    }
+    }
     async deleteFacility(id:number):Promise<any> {
         try{
             const facility = await this.facilityRepository.findOne({ hotelId:id})
             if(facility){
-            this.facilityRepository.delete(facility);
+            facility.status = "NOT_AVAILABLE"
             
             return{
                 sucess:true,
@@ -100,22 +113,25 @@ export class FacilityService {
             if(data.longitude) {
                 facility.longitude = data.longitude
             }
-            if(facility.panchayath!="null"){
+            if(data.panchayath!="null"){
                 facility.panchayath = data.panchayath
             }
-            if(facility.district!="null"){
+            if(data.district!="null"){
                 facility.district=data.district
             }
-            if(facility.policy){
+            if(data.policy){
                 facility.policy=data.policy;
             }
-            if(facility.contact){
+            if(data.starCategory){
+                facility.starCategory=data.starCategory;
+            }
+            if(data.contact){
                 facility.contact= data.contact;
             }
-            if(facility.status){
+            if(data.status){
                 facility.status=data.status
             }
-            if(facility.photos)
+            if(data.photos)
             {
                 facility.photos=data.photos
             }
