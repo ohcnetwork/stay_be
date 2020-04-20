@@ -4,6 +4,15 @@ export class GetRoomsFilterDto{
     @IsOptional()
     category:string;
 
+    @IsNotEmpty()
+    checkin:Date;
+
+    @IsNotEmpty()
+    checkout:Date;
+
+    @IsOptional()
+    hotelid:number;
+
     @IsOptional()
     minimum:number;
 
@@ -19,4 +28,10 @@ export class GetRoomsFilterDto{
 
     @IsOptional()
     beds:number;
+
+    @IsOptional()
+    type:string;
+
+    @IsOptional()
+    roomid:number;
 }

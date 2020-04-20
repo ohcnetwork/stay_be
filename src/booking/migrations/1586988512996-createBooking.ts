@@ -16,12 +16,12 @@ export class createbooking1586988512996 implements MigrationInterface {
 
                 {
                     name: 'checkin',
-                    type: 'Date',
+                    type: 'varchar',
                 },
 
                 {
                     name: 'checkout',
-                    type: 'Date',
+                    type: 'varchar',
                 },
 
                 {
@@ -57,6 +57,25 @@ export class createbooking1586988512996 implements MigrationInterface {
                     type: 'bigint',
 
                   },
+
+                  {
+                    name: 'statusBooking',
+                    type: 'varchar',
+                    default: '\'BOOKED\'',
+                    
+
+                  },
+
+                  
+                  {
+                    name: 'statusCheckin',
+                    type: 'varchar',
+                    default: '\'PENDING\'',
+                    
+
+                  },
+
+
 
             ],
 

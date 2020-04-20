@@ -10,10 +10,6 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
-    ownerID:number;
-
-    @ApiModelProperty({ example:null })
-    @IsString()
     address:string;
 
     @ApiModelProperty({ example:null })
@@ -50,7 +46,7 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null})
     @IsString()
-    photos:string;
+    photos:any;
 
 
 }

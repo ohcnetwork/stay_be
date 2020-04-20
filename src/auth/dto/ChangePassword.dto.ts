@@ -2,9 +2,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
-  @ApiModelProperty({example: null})
-  id:number;  //added for testing
-    
+ 
   @ApiModelProperty({ example: null })
   @IsString()
   readonly currentPassword: string;

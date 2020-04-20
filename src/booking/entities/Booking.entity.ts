@@ -11,10 +11,10 @@ export class Booking extends BaseEntity {
     book_id:number;
 
     @Column()
-    checkin: Date;
+    checkin:string;
 
     @Column()
-    checkout: Date;
+    checkout: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -24,8 +24,6 @@ export class Booking extends BaseEntity {
 
  //  @ManyToOne(type => User, user => user.booking, { eager:false} )
   //  user: User;
-
-
 
     @Column()
     roomId: number;
@@ -44,6 +42,12 @@ export class Booking extends BaseEntity {
     //relation for roomid
     @Column()
     hotelId: number;
+
+    @Column()
+    statusBooking: string;
+
+    @Column()
+    statusCheckin: string;
 
 
 }

@@ -108,9 +108,8 @@ async login(user: any) {
 }
 
   async changePassword(user:User,data:ChangePasswordDto): Promise<any> {
-    //const id = user.id;
-    //const found = await this.userRepository.findOne({id});
-    const found = await this.userRepository.findOne({id:data.id})  
+    const id = user.id;
+    const found = await this.userRepository.findOne({id});
     const match = await bcrypt.compare(data.currentPassword
      , found.password);
     if(!match) {

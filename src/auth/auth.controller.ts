@@ -41,7 +41,7 @@ export class AuthController {
       return this.authService.register(registerDto);
     }
   
-  
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Put('change-password')
   changePass(@Request() req: any, @Body() changePasswordDto: ChangePasswordDto){
