@@ -6,6 +6,7 @@ import { RoomRepository } from './room.repository';
 import { FacilityRepository } from '../facility/facility.repository';
 import { BookingRepository} from '../booking/booking.repository';
 import { BookingModule } from 'src/booking/booking.module';
+import { UserRepository } from 'src/auth/user.repository';
 
 
 
@@ -14,6 +15,7 @@ import { BookingModule } from 'src/booking/booking.module';
     TypeOrmModule.forFeature([RoomRepository]),
     TypeOrmModule.forFeature([FacilityRepository]),
     TypeOrmModule.forFeature([BookingRepository]),
+    TypeOrmModule.forFeature([UserRepository]),
     BookingModule,
   ],
   controllers: [RoomsController],
