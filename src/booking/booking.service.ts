@@ -7,7 +7,7 @@ import { Booking } from './entities/Booking.entity';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { RoomRepository } from 'src/rooms/room.repository';
 import { UserRepository } from 'src/auth/user.repository';
-import { QueryFailedError } from 'typeorm';
+import { QueryFailedError, LessThanOrEqual, MoreThanOrEqual, LessThan, Between } from 'typeorm';
 
 
 @Injectable()
@@ -48,8 +48,26 @@ export class BookingService {
         user:User,
         createbookingDto: CreateBookingDto,
         ): Promise<any>{
-        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);        
+         const book = await this.bookingRepository.find({
+            where: [
+                {roomId:createbookingDto.roomid,checkin:LessThanOrEqual(createbookingDto.checkin) ,checkout:MoreThanOrEqual(createbookingDto.checkout)},
+                {roomId:createbookingDto.roomid,checkin:LessThan(createbookingDto.checkin) ,checkout:MoreThanOrEqual(createbookingDto.checkout)},
+                {roomId:createbookingDto.roomid,checkin:MoreThanOrEqual(createbookingDto.checkin) ,checkout:LessThanOrEqual(createbookingDto.checkout)},
+                {roomId:createbookingDto.roomid,checkin:Between(createbookingDto.checkin,createbookingDto.checkout)},
+                {roomId:createbookingDto.roomid,checkin:LessThanOrEqual(createbookingDto.checkin),checkout:Between(createbookingDto.checkin,createbookingDto.checkout)} ,                   
 
+              ],
+        });
+        console.log(book)
+        if(book.length === 0){
+        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);        
+        }
+        else {
+          return {
+            success:false,
+            message:"Room Already Booked"
+          }
+        }
     }
 
 
@@ -106,6 +124,8 @@ export class BookingService {
          const hotel = await this.facilityRepository.findOne({hotelId:book[i].hotelId})
          
          const room = await this.roomRepository.findOne({id:book[i].roomId})
+         
+         console.log(hotel,room)
          list[i]={name:hotel.name,
           address:hotel.address,
           district:hotel.district,
