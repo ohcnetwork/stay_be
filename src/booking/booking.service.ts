@@ -28,10 +28,11 @@ export class BookingService {
     ){}
 
 
-    async validateUser(user:User): Promise<any> {
+    async validateUser(user:User,id:any): Promise<any> {
       const found = await this.userRepository.findOne({id:user.id})
-      console.log(found.type)
-      if(found.type === 'facilityowner'){
+      const hotel = await this.facilityRepository.findOne({hotelId:id})
+      console.log(found.type,hotel.hotelId)
+      if(found.type === 'facilityowner' && hotel.ownerID === found.id){
           return found
       }
       else {
@@ -69,24 +70,29 @@ export class BookingService {
         
       }
       async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
-        if(await this.validateUser(user)) {
+        if(await this.validateUser(user,hotelId)) {
         const [book,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
         var list = []
         for(var i=0;i<count;i++){
-          if (book[i].statusBooking != "CANCELLED")
+          if (book[i].statusBooking === "BOOKED")
           {
          const user = await this.userRepository.findOne({id:book[i].userId})
          const room = await this.roomRepository.findOne({id:book[i].roomId})
+         console.log(user)
          list[i]={name:user.name,
           email:user.email,
           category:room.category,
           checkinDate:book[i].checkin,
           bookingDate:book[i].createdAt,
+          statusBooking:book[i].statusBooking,
           statusCheckin:book[i].statusCheckin,
           bookingId:book[i].book_id}
          }
         }
-        return { data:list,}
+        var filtered = list.filter(function (el) {
+          return el != null;
+        });
+        return { data:filtered,}
         
       }}
 
@@ -121,10 +127,12 @@ export class BookingService {
 
       
 
-      async checkInOutUser(id:number,data:any): Promise<any> {
+      async checkInOutUser(user:User,id:number,data:any): Promise<any> {
+        const book = await this.bookingRepository.findOne({book_id:id})
+        if(await this.validateUser(user,book.roomId)){
         if(["PENDING","CHECKEDIN","CHECKEDOUT"].includes(data.status))
           {
-            const book = await this.bookingRepository.findOne({book_id:id})
+            
             book.statusCheckin=data.status;
             this.bookingRepository.save(book)
             return {
@@ -135,6 +143,7 @@ export class BookingService {
           else{
             throw new HttpException("status not valid",HttpStatus.EXPECTATION_FAILED);
           }
+        }
       }
 
 }

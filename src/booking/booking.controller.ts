@@ -70,9 +70,9 @@ export class BookingController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Put('/checkin/:bookId1')
-    checkInOutUser(@Param('bookId1',ParseIntPipe) bookId:number,@Body() body:ChangeStatusDto): Promise<any> {
+    checkInOutUser(@Req() req:any,@Param('bookId1',ParseIntPipe) bookId:number,@Body() body:ChangeStatusDto): Promise<any> {
         this.logger.verbose("user checked out")
-        return this.bookingService.checkInOutUser(bookId,body);
+        return this.bookingService.checkInOutUser(req.user,bookId,body);
     }
 
 

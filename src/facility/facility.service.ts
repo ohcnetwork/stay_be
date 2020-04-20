@@ -30,6 +30,16 @@ export class FacilityService {
         }
     }
 
+    async findHotel(user:User,id:any): Promise<any>{
+        const found =await this.userRepository.findOne({id:user.id})
+        const hotel = await this.facilityRepository.findOne({hotelId:id})
+        if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+            return found
+        }
+        else {
+            throw new UnauthorizedException;
+        }
+    }
     async addfacility(data:any,user:User): Promise<any> {
                 if(await this.validateUser(user)) {
                     console.log(user)
@@ -79,7 +89,7 @@ export class FacilityService {
     }
     }
     async deleteFacility(user:User,id:number):Promise<any> {
-            if(await this.validateUser(user)){
+            if(await this.findHotel(user,id)){
             const facility = await this.facilityRepository.findOne({ hotelId:id })
             if(facility){
             facility.status = "NOT_AVAILABLE"
@@ -100,7 +110,7 @@ export class FacilityService {
 
     }
     async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
-        if(await this.validateUser(user)){
+        if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({ hotelId:id })
         if(facility){
             if(data.name) {

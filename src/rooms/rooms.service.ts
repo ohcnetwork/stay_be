@@ -21,10 +21,11 @@ export class RoomsService {
         private userRepository : UserRepository,
     ){}    
     
-    async validateUser(user:User): Promise<any> {
+    async validateUser(user:User,id:any): Promise<any> {
         const found = await this.userRepository.findOne({id:user.id})
-        console.log(found.type)
-        if(found.type === 'facilityowner'){
+        const hotel = await this.facilityRepository.findOne({hotelId:id})
+        console.log(found.type,hotel.hotelId)
+        if(found.type === 'facilityowner' && hotel.ownerID === found.id){
             return found
         }
         else {
@@ -45,13 +46,13 @@ export class RoomsService {
     }
     
     async createRoom(user:User,createRoomDto: CreateRoomDto,id:number){
-        if(await this.validateUser(user)){
+        if(await this.validateUser(user,id)){
         return this.roomRepository.createRoom(createRoomDto,id);       
         }
     }
     async deleteRoom(user:User,id:number):Promise<void>{
-       if(await this.validateUser(user)) {
-           const result= await this.roomRepository.findOne(id);
+        const result= await this.roomRepository.findOne(id);
+       if(await this.validateUser(user,result.hotelId)) {
            if(!result)
             {
             throw new NotFoundException(`Room with id ${id} not found.`);
@@ -64,8 +65,9 @@ export class RoomsService {
     }
 
     async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
-        if(await this.validateUser(user)){
-        const room = await this.getRoomById(id);
+        const room = await this.getRoomById(id); 
+        if(await this.validateUser(user,room.hotelId)){
+        
         room.status=status;
         await room.save();
         return room;}
