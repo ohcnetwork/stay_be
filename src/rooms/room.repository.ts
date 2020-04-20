@@ -118,7 +118,7 @@ export class RoomRepository extends Repository<Room>{
         }
         else{
             console.log("Room not available");
-          throw new NotFoundException(`Rooms with hotel id ${hotelid} not available`);
+          throw new NotFoundException('Not Available');
         }
     }
  }
