@@ -18,7 +18,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
   } else {
-    app.enableCors({ origin: 'localhost' });
+    app.enableCors({ origin: '*' });
   }
 
   app.useStaticAssets(join(__dirname, '../../../public'));
