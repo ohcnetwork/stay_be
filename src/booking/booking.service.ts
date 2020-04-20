@@ -96,8 +96,7 @@ export class BookingService {
         const [book,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
         for(var i=0;i<count;i++){
-            if (book[i].statusBooking === "BOOKED")
-         {
+        
          const hotel = await this.facilityRepository.findOne({hotelId:book[i].hotelId})
          
          const room = await this.roomRepository.findOne({id:book[i].roomId})
@@ -108,10 +107,11 @@ export class BookingService {
           cost:room.cost,
           checkinDate:book[i].checkin,
           checkoutDate:book[i].checkout,
+          bookingStatus:book[i].statusBooking,
           bookingDate:book[i].createdAt,
           bookingId:book[i].book_id,
-        statusCheckin:book[i].statusCheckin}
-        }
+          statusCheckin:book[i].statusCheckin}
+        
         }
         
           
@@ -122,7 +122,7 @@ export class BookingService {
       
 
       async checkInOutUser(id:number,data:any): Promise<any> {
-        if(["PENDING","CHECKIN","CHECKOUT"].includes(data.status))
+        if(["PENDING","CHECKEDIN","CHECKEDOUT"].includes(data.status))
           {
             const book = await this.bookingRepository.findOne({book_id:id})
             book.statusCheckin=data.status;

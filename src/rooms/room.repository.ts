@@ -15,10 +15,8 @@ export class RoomRepository extends Repository<Room>{
         facilityRepository:FacilityRepository,
         ):Promise<any>{
         const query = this.createQueryBuilder('room');
-        //Query parameters
         const {beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid} = filterDto;
         const notAvailable= [];
-        //If type is hotel
         if(type.localeCompare("hotel")===0){
 
         const query = this.createQueryBuilder('room');
@@ -85,7 +83,7 @@ export class RoomRepository extends Repository<Room>{
         hotels.push(finalHotel);
     }
     return hotels;
-    } //If type is rooms or something else
+    }
     else {
         //query to find rooms based on check in and check out
         if(checkin && checkout)
@@ -105,10 +103,9 @@ export class RoomRepository extends Repository<Room>{
 
                 notAvailable.push(bookId[i].roomId);  
             }
-            //return the list of hotels in which rooms are available
             if(hotelid){
                 query.where("room.id NOT IN (:...ids) AND room.hotelId = :hotelId",{ids:notAvailable,hotelId:hotelid});
-            }//return whether the room is available or not
+            }
             if(roomid)
             {
                 query.where("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
@@ -126,7 +123,6 @@ export class RoomRepository extends Repository<Room>{
     }
  }
 
-    //get the minimum and maximum price and all different categories
     async getPrice():Promise<any>{
         const details = [];
         const query = this.createQueryBuilder("room");
