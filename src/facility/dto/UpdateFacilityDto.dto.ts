@@ -54,17 +54,14 @@ export class UpdateFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsOptional()
-    @IsNumberString()
     contact:string;
 
     @ApiModelProperty({ example:null })
     @IsOptional()
-    @IsNumberString()
-    photos:string;
+    photos:any;
 
     @ApiModelProperty({ example:null })
     @IsOptional()
-    @IsNumberString()
     status:string;
 
 }

@@ -51,11 +51,15 @@ export class RoomsService {
     }
     async deleteRoom(user:User,id:number):Promise<void>{
        if(await this.validateUser(user)) {
-           const result= await this.roomRepository.delete(id);
-        if(result.affected===0)
-        {
+           const result= await this.roomRepository.findOne(id);
+           if(!result)
+            {
             throw new NotFoundException(`Room with id ${id} not found.`);
-        }
+         }
+         else{
+           result.status=RoomStatus.NOT_AVAILABLE
+           await this.roomRepository.save(result);
+         }
     }
     }
 
