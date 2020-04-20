@@ -1,4 +1,4 @@
-import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe, UnauthorizedException} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
@@ -18,11 +18,19 @@ export class FacilityService {
         return 'Welcome to stay service';
     }
     
+    async validateUser(user:User): Promise<any> {
+        const found = await this.userRepository.findOne({id:user.id})
+        console.log(found.type)
+        if(found.type === 'facilityowner'){
+            return found
+        }
+        else {
+            throw new UnauthorizedException;
+        }
+    }
 
-    async addfacility(data:any,user1:User): Promise<any> {
-            const user = await this.userRepository.findOne({id:user1.id})
-            this.logger.verbose(user.type)
-            if(user.type === 'facilityowner'){
+    async addfacility(data:any,user:User): Promise<any> {
+                if(await this.validateUser(user)) {
                 data.status = 'ACTIVE';
                 data.ownerID=user.id;
                 const registerStay = await this.facilityRepository.save(data);
@@ -45,12 +53,10 @@ export class FacilityService {
     }
    
 
-    async getFacility(user1:User): Promise<any> {
-        const id = user1.id
-        const user = await this.userRepository.findOne({id:user1.id})
-            this.logger.verbose(user.type)
-            if(user.type === 'facilityowner'){
-        const facility = await this.facilityRepository.find({ ownerID:id })
+    async getFacility(user:User): Promise<any> {
+   
+            if(await this.validateUser(user)){
+        const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
             return{
@@ -70,8 +76,9 @@ export class FacilityService {
         throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
     }
     }
-    async deleteFacility(id:number):Promise<any> {
+    async deleteFacility(user:User,id:number):Promise<any> {
         try{
+            if(await this.validateUser(user)){
             const facility = await this.facilityRepository.findOne({ hotelId:id})
             if(facility){
             facility.status = "NOT_AVAILABLE"
@@ -87,6 +94,7 @@ export class FacilityService {
                     message: 'Deletion Failed'
                 }
             }
+        }
         } catch(e) {
             return {
                 success: false,
@@ -95,7 +103,8 @@ export class FacilityService {
         }
 
     }
-    async updateFacility(id:number,data:UpdateFacilityDto): Promise <any> {
+    async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
+        if(await this.validateUser(user)){
         const facility = await this.facilityRepository.findOne({ hotelId:id })
         if(facility){
             if(data.name) {
@@ -149,7 +158,8 @@ export class FacilityService {
             }
         }
     }
-    async searchDistrict(facility1:Facility,data:any): Promise<any> {
+}
+    async searchDistrict(data:any): Promise<any> {
         const district = data.district
         const facility = await this.facilityRepository.find({district});
         if(facility) {

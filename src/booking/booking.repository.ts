@@ -10,8 +10,7 @@ export class BookingRepository extends Repository<Booking> {
     
     
     async getAllBooking(): Promise<Booking[]>{
-        const query = await this.createQueryBuilder('bookings');
-        
+        const query = this.createQueryBuilder('bookings'); 
         return await query.getMany();
     }
 
