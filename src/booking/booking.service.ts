@@ -129,7 +129,7 @@ export class BookingService {
 
       async checkInOutUser(user:User,id:number,data:any): Promise<any> {
         const book = await this.bookingRepository.findOne({book_id:id})
-        if(await this.validateUser(user,book.roomId)){
+        if(await this.validateUser(user,book.hotelId)){
         if(["PENDING","CHECKEDIN","CHECKEDOUT"].includes(data.status))
           {
             
