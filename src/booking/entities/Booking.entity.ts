@@ -11,10 +11,10 @@ export class Booking extends BaseEntity {
     book_id:number;
 
     @Column()
-    checkin: Date;
+    checkin:string;
 
     @Column()
-    checkout: Date;
+    checkout: string;
 
     @CreateDateColumn()
     createdAt: Date;

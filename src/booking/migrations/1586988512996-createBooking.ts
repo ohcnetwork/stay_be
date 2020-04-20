@@ -16,12 +16,12 @@ export class createbooking1586988512996 implements MigrationInterface {
 
                 {
                     name: 'checkin',
-                    type: 'Date',
+                    type: 'varchar',
                 },
 
                 {
                     name: 'checkout',
-                    type: 'Date',
+                    type: 'varchar',
                 },
 
                 {

@@ -8,10 +8,10 @@ export class CreateBookingDto {
 
     @ApiModelProperty({ example:null })
     //@IsDate()
-    checkin:Date;
+    checkin:string;
 
     //@IsDate()
     @ApiModelProperty({ example:null })
-    checkout:Date;
+    checkout:string;
 
 }
