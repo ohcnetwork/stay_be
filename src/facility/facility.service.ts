@@ -19,8 +19,9 @@ export class FacilityService {
     }
     
     async validateUser(user:User): Promise<any> {
+        console.log(user)
         const found = await this.userRepository.findOne({id:user.id})
-        console.log(found.type)
+        console.log(found.type,found.email)
         if(found.type === 'facilityowner'){
             return found
         }
@@ -31,6 +32,7 @@ export class FacilityService {
 
     async addfacility(data:any,user:User): Promise<any> {
                 if(await this.validateUser(user)) {
+                    console.log(user)
                 data.status = 'ACTIVE';
                 data.ownerID=user.id;
                 const registerStay = await this.facilityRepository.save(data);
@@ -77,12 +79,11 @@ export class FacilityService {
     }
     }
     async deleteFacility(user:User,id:number):Promise<any> {
-        try{
             if(await this.validateUser(user)){
-            const facility = await this.facilityRepository.findOne({ hotelId:id})
+            const facility = await this.facilityRepository.findOne({ hotelId:id })
             if(facility){
             facility.status = "NOT_AVAILABLE"
-            await this.userRepository.save(facility);
+            await this.facilityRepository.save(facility);
             return{
                 sucess:true,
                 message: 'Deleted Successfully'
@@ -95,12 +96,7 @@ export class FacilityService {
                 }
             }
         }
-        } catch(e) {
-            return {
-                success: false,
-                message: 'Deletion Failed'
-            }
-        }
+       
 
     }
     async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
