@@ -67,11 +67,20 @@ export class BookingController {
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
-    @Put('/checkin/check/:bookId1')
+    @Put('/checkin/:bookId1')
     checkInUser(@Param('bookId1',ParseIntPipe) bookId:number): Promise<any> {
-        this.logger.verbose("bookid given for checkin")
+        this.logger.verbose("user checked in")
         return this.bookingService.checkInUser(bookId);
     }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Put('/checkout/:bookId1')
+    checkOutUser(@Param('bookId1',ParseIntPipe) bookId:number): Promise<any> {
+        this.logger.verbose("user checked out")
+        return this.bookingService.checkOutUser(bookId);
+    }
+    
 
 
 

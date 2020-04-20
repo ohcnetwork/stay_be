@@ -125,4 +125,11 @@ export class BookingService {
         this.bookingRepository.save(booking);
       }
 
+      async checkOutUser(id:number): Promise<any> {
+        console.log(id)
+        const booking = await this.bookingRepository.findOne({book_id:id})
+        booking.statusCheckin = "CHECKOUT";
+        this.bookingRepository.save(booking);
+      }
+
 }
