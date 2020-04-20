@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { BookingService } from './booking.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
-
+import { ChangeStatusDto} from './dto/ChangeStatusDto.dto';
 
 
 @ApiUseTags('Booking')
@@ -65,23 +65,15 @@ export class BookingController {
         
     }
 
+
+    
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Put('/checkin/:bookId1')
-    checkInUser(@Param('bookId1',ParseIntPipe) bookId:number): Promise<any> {
-        this.logger.verbose("user checked in")
-        return this.bookingService.checkInUser(bookId);
-    }
-
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard('jwt'))
-    @Put('/checkout/:bookId1')
-    checkOutUser(@Param('bookId1',ParseIntPipe) bookId:number): Promise<any> {
+    checkInOutUser(@Param('bookId1',ParseIntPipe) bookId:number,@Body() body:ChangeStatusDto): Promise<any> {
         this.logger.verbose("user checked out")
-        return this.bookingService.checkOutUser(bookId);
+        return this.bookingService.checkInOutUser(bookId,body);
     }
-    
-
 
 
 

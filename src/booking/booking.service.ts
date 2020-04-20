@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException,HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookingRepository } from './booking.repository';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
@@ -7,6 +7,7 @@ import { Booking } from './entities/Booking.entity';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { RoomRepository } from 'src/rooms/room.repository';
 import { UserRepository } from 'src/auth/user.repository';
+import { QueryFailedError } from 'typeorm';
 
 
 @Injectable()
@@ -118,18 +119,22 @@ export class BookingService {
        return{ data:list}
       }
 
-      async checkInUser(id:number): Promise<any> {
-        console.log(id)
-        const booking = await this.bookingRepository.findOne({book_id:id})
-        booking.statusCheckin = "CHECKEDIN";
-        this.bookingRepository.save(booking);
-      }
+      
 
-      async checkOutUser(id:number): Promise<any> {
-        console.log(id)
-        const booking = await this.bookingRepository.findOne({book_id:id})
-        booking.statusCheckin = "CHECKOUT";
-        this.bookingRepository.save(booking);
+      async checkInOutUser(id:number,data:any): Promise<any> {
+        if(["PENDING","CHECKIN","CHECKOUT"].includes(data.status))
+          {
+            const book = await this.bookingRepository.findOne({book_id:id})
+            book.statusCheckin=data.status;
+            this.bookingRepository.save(book)
+            return {
+              status:true,
+              message:"Status Changed",
+            }
+          }
+          else{
+            throw new HttpException("status not valid",HttpStatus.EXPECTATION_FAILED);
+          }
       }
 
 }
