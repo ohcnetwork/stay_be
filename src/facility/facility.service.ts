@@ -1,4 +1,4 @@
-import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe, UnauthorizedException} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
@@ -18,11 +18,31 @@ export class FacilityService {
         return 'Welcome to stay service';
     }
     
+    async validateUser(user:User): Promise<any> {
+        console.log(user)
+        const found = await this.userRepository.findOne({id:user.id})
+        console.log(found.type,found.email)
+        if(found.type === 'facilityowner'){
+            return found
+        }
+        else {
+            throw new UnauthorizedException;
+        }
+    }
 
-    async addfacility(data:any,user1:User): Promise<any> {
-            const user = await this.userRepository.findOne({id:user1.id})
-            this.logger.verbose(user.type)
-            if(user.type === 'facilityowner'){
+    async findHotel(user:User,id:any): Promise<any>{
+        const found =await this.userRepository.findOne({id:user.id})
+        const hotel = await this.facilityRepository.findOne({hotelId:id})
+        if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+            return found
+        }
+        else {
+            throw new UnauthorizedException;
+        }
+    }
+    async addfacility(data:any,user:User): Promise<any> {
+                if(await this.validateUser(user)) {
+                    console.log(user)
                 data.status = 'ACTIVE';
                 data.ownerID=user.id;
                 const registerStay = await this.facilityRepository.save(data);
@@ -45,12 +65,10 @@ export class FacilityService {
     }
    
 
-    async getFacility(user1:User): Promise<any> {
-        const id = user1.id
-        const user = await this.userRepository.findOne({id:user1.id})
-            this.logger.verbose(user.type)
-            if(user.type === 'facilityowner'){
-        const facility = await this.facilityRepository.find({ ownerID:id })
+    async getFacility(user:User): Promise<any> {
+   
+            if(await this.validateUser(user)){
+        const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
             return{
@@ -70,12 +88,12 @@ export class FacilityService {
         throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
     }
     }
-    async deleteFacility(id:number):Promise<any> {
-        try{
-            const facility = await this.facilityRepository.findOne({ hotelId:id})
+    async deleteFacility(user:User,id:number):Promise<any> {
+            if(await this.findHotel(user,id)){
+            const facility = await this.facilityRepository.findOne({ hotelId:id })
             if(facility){
             facility.status = "NOT_AVAILABLE"
-            await this.userRepository.save(facility);
+            await this.facilityRepository.save(facility);
             return{
                 sucess:true,
                 message: 'Deleted Successfully'
@@ -87,15 +105,12 @@ export class FacilityService {
                     message: 'Deletion Failed'
                 }
             }
-        } catch(e) {
-            return {
-                success: false,
-                message: 'Deletion Failed'
-            }
         }
+       
 
     }
-    async updateFacility(id:number,data:UpdateFacilityDto): Promise <any> {
+    async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
+        if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({ hotelId:id })
         if(facility){
             if(data.name) {
@@ -149,7 +164,8 @@ export class FacilityService {
             }
         }
     }
-    async searchDistrict(facility1:Facility,data:any): Promise<any> {
+}
+    async searchDistrict(data:any): Promise<any> {
         const district = data.district
         const facility = await this.facilityRepository.find({district});
         if(facility) {

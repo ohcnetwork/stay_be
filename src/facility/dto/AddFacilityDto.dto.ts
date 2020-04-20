@@ -46,7 +46,7 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null})
     @IsString()
-    photos:string;
+    photos:any;
 
 
 }

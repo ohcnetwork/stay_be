@@ -41,26 +41,27 @@ export class FacilityController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Delete('/:id')
-    deleteFacility(@Param('id',ParseIntPipe)id:number) {
+    deleteFacility(@Req() req:any,@Param('id',ParseIntPipe)id:number) {
         this.logger.verbose("facility removed");
-        return this.facilityService.deleteFacility(id);
+        return this.facilityService.deleteFacility(req.user,id);
     }
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Patch('/:id/update-Facility')
     updateFacility(
+        @Req() req:any,
         @Param('id',ParseIntPipe) id:number,
         @Body() updateFacilityDto: UpdateFacilityDto) {
         this.logger.verbose("facility updated");
-        return this.facilityService.updateFacility(id,updateFacilityDto);
+        return this.facilityService.updateFacility(req.user,id,updateFacilityDto);
     }
     
 
     @Post('search-District')
-    searchDistrict(@Request() req: any,@Body() searchByDistrictDto:SearchByDistrictDto) {
+    searchDistrict(@Body() searchByDistrictDto:SearchByDistrictDto) {
         this.logger.verbose("searching by district");
-        return this.facilityService.searchDistrict(req.facility,searchByDistrictDto);
+        return this.facilityService.searchDistrict(searchByDistrictDto);
     }
     @Get('/get/districts')
     getPrice():Promise<any>{

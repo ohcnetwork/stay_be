@@ -1,9 +1,9 @@
-import { Controller, Logger, UseGuards, Body, Post, Get, Request, Delete, Param, ParseIntPipe, Req } from '@nestjs/common';
+import { Controller, Logger, UseGuards, Body, Post, Get, Request, Delete, Param, ParseIntPipe, Req, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiUseTags } from '@nestjs/swagger';
 import { BookingService } from './booking.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
-
+import { ChangeStatusDto} from './dto/ChangeStatusDto.dto';
 
 
 @ApiUseTags('Booking')
@@ -52,8 +52,8 @@ export class BookingController {
     @UseGuards(AuthGuard('jwt'))
     //get booking details
     @Get('/HotelDetails/:hotelId')
-    getHotelBookingDetails(@Param('hotelId',ParseIntPipe) hotelId:number): Promise<any> {
-        return this.bookingService.getHotelBookingDetails(hotelId);
+    getHotelBookingDetails(@Req() req:any,@Param('hotelId',ParseIntPipe) hotelId:number): Promise<any> {
+        return this.bookingService.getHotelBookingDetails(req.user,hotelId);
     }
 
     @ApiBearerAuth()
@@ -65,6 +65,15 @@ export class BookingController {
         
     }
 
+
+    
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @Put('/checkin/:bookId1')
+    checkInOutUser(@Req() req:any,@Param('bookId1',ParseIntPipe) bookId:number,@Body() body:ChangeStatusDto): Promise<any> {
+        this.logger.verbose("user checked out")
+        return this.bookingService.checkInOutUser(req.user,bookId,body);
+    }
 
 
 

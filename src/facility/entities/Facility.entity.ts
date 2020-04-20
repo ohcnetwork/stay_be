@@ -41,8 +41,8 @@ export class Facility {
     @Column()
     policy:string;
 
-    @Column()
-    photos:string;
+    @Column({type:'jsonb',nullable:true})
+    photos:any;
 
     @Column()
     status:string;

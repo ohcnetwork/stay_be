@@ -73,7 +73,7 @@ export class Createfacility1586659778148 implements MigrationInterface {
               },
               {
                   name: 'photos',
-                  type: 'varchar',
+                  type: 'jsonb',
                   isNullable: true
               },
               
