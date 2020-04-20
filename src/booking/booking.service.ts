@@ -81,7 +81,7 @@ export class BookingService {
           category:room.category,
           checkinDate:book[i].checkin,
           bookingDate:book[i].createdAt,
-          checkin:book[i].checkin,
+          statusCheckin:book[i].statusCheckin,
           bookingId:book[i].book_id}
          }
         }
@@ -108,7 +108,7 @@ export class BookingService {
           checkoutDate:book[i].checkout,
           bookingDate:book[i].createdAt,
           bookingId:book[i].book_id,
-        checkin:book[i].checkin}
+        statusCheckin:book[i].statusCheckin}
         }
         }
         
