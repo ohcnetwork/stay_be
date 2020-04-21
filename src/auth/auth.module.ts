@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import * as config from 'config';
 import { AuthController } from './auth.controller';
 import { LocalStrategy, JwtStrategy } from './strategy';
+import {HandlebarsAdapter, MailerModule} from "@nest-modules/mailer";
+import {nestMailer} from "../config/constants";
 
 const jwtConfig = config.get('jwt');
 
@@ -18,6 +20,18 @@ const jwtConfig = config.get('jwt');
     JwtModule.register({
       secret: jwtConfig.secret || process.env.JWT,
       signOptions: { expiresIn: '24h' },
+    }),
+    MailerModule.forRootAsync({
+      useFactory: () => ({
+        transport: nestMailer.transport,
+        template: {
+          dir: './templates',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true
+          },
+        },
+      }),
     }),
   ],
   controllers: [AuthController],

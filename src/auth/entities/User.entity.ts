@@ -38,6 +38,9 @@ export class User {
   @Column({ nullable: true })
   referal: string;
 
+  @Column({nullable: true})
+  resetToken: string;
+
   @Column({ nullable: true })
   lastLogin: Date;
 
