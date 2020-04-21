@@ -63,10 +63,7 @@ export class BookingService {
         return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);        
         }
         else {
-          return {
-            success:false,
-            message:"Room Already Booked"
-          }
+          throw new HttpException("Room already booked",HttpStatus.FORBIDDEN)
         }
     }
 
