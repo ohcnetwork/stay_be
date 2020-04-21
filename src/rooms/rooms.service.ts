@@ -67,6 +67,7 @@ export class RoomsService {
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
         if(await this.validateUser(user,id)){
         const room = await this.getRoomById(id);
+
         room.status=status;
         await room.save();
         return room;}
