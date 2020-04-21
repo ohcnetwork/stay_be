@@ -19,8 +19,8 @@ export class RoomsService {
         private roomRepository : RoomRepository,
         @InjectRepository(UserRepository)
         private userRepository : UserRepository,
-    ){}    
-    
+    ){}
+
     async validateUser(user:User,id:any): Promise<any> {
         const found = await this.userRepository.findOne({id:user.id})
         const hotel = await this.facilityRepository.findOne({hotelId:id})
@@ -35,19 +35,19 @@ export class RoomsService {
     async getRooms(filterDto:GetRoomsFilterDto):Promise<Room[]>{
         return this.roomRepository.getRooms(filterDto,this.facilityRepository);
     }
-    
+
     async getRoomById(id:number):Promise<Room>{
         const found = await this.roomRepository.findOne(id);
-        if(!found) 
+        if(!found)
         {
             throw new NotFoundException(`Room with id ${id} not found.`);
-        } 
+        }
         return found;
     }
-    
+
     async createRoom(user:User,createRoomDto: CreateRoomDto,id:number){
         if(await this.validateUser(user,id)){
-        return this.roomRepository.createRoom(createRoomDto,id);       
+        return this.roomRepository.createRoom(createRoomDto,id);
         }
     }
     async deleteRoom(user:User,id:number):Promise<void>{
@@ -65,9 +65,9 @@ export class RoomsService {
     }
 
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
-	     const room = await this.getRoomById(id);
-        if(await this.validateUser(user,room.hotelId)){
-        
+        if(await this.validateUser(user,id)){
+        const room = await this.getRoomById(id);
+
         room.status=status;
         await room.save();
         return room;}
@@ -96,5 +96,5 @@ export class RoomsService {
         async getPrice():Promise<any>{
             return await this.roomRepository.getPrice();
         }
-    
+
 }
