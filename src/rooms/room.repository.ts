@@ -20,7 +20,6 @@ export class RoomRepository extends Repository<Room>{
         if(type.localeCompare("hotel")===0){
 
         const query = this.createQueryBuilder('room');
-       
         if(district)
         {   const id = [];
             const facility = await facilityRepository.find({district});
@@ -34,7 +33,6 @@ export class RoomRepository extends Repository<Room>{
             else{
                 throw new NotFoundException(`Not available at ${district} `);
             }
-
         }
         if(beds)
         {
@@ -61,7 +59,7 @@ export class RoomRepository extends Repository<Room>{
                   ],
             });
             for(let i=0;i<bookId.length;i++){
-                notAvailable.push(bookId[i].room.id);  
+                notAvailable.push(bookId && bookId[i].room &&  bookId[i].room.id);
             }
             if(bookId.length>0)
             {
@@ -75,9 +73,9 @@ export class RoomRepository extends Repository<Room>{
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
     const list= [];
-    for(let i=0;i<count;i++)
+    for(let i=0; i < count;i++)
     {
-        const id = room[i].facility.id;
+        const id = (room[i] && room[i].facility.id);
         if(list.indexOf(id)=== -1 )
         {
             list.push(id);

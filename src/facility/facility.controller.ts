@@ -3,12 +3,14 @@ import { FacilityService } from './facility.service';
 import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AddFacilityDto,UpdateFacilityDto, SearchByDistrictDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import {CommandBus} from "@nestjs/cqrs";
+import {RoleCheckCommand} from "./cqrs/roleCheck.command";
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
 export class FacilityController {
     private logger = new Logger('Facility Controller');
-    constructor(private readonly facilityService: FacilityService) {}
+    constructor(private readonly facilityService: FacilityService, private commandBus: CommandBus) {}
 
     @Get()
     gethello(): string {
@@ -53,6 +55,7 @@ export class FacilityController {
         @Req() req:any,
         @Param('id',ParseIntPipe) id:number,
         @Body() updateFacilityDto: UpdateFacilityDto) {
+        this.commandBus.execute(new RoleCheckCommand(req.user.id, id,'admin'))
         this.logger.verbose("facility updated");
         return this.facilityService.updateFacility(req.user,id,updateFacilityDto);
     }

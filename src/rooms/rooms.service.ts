@@ -33,7 +33,7 @@ export class RoomsService {
         }
     }
     async getRooms(filterDto:GetRoomsFilterDto):Promise<Room[]>{
-        return this.roomRepository.getRooms(filterDto,this.facilityRepository);
+        return this.roomRepository.getRooms(filterDto, this.facilityRepository);
     }
 
     async getRoomById(id:number):Promise<Room>{

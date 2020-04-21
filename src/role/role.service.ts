@@ -1,4 +1,4 @@
-import { Injectable,Logger, NotFoundException , HttpException, HttpStatus } from '@nestjs/common';
+import {Injectable, Logger, NotFoundException, HttpException, HttpStatus, UnauthorizedException} from '@nestjs/common';
 import { RoleRepository } from './role.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../auth/user.repository';
@@ -76,5 +76,11 @@ export class RoleService {
         throw new HttpException("such an id does not exist",HttpStatus.FORBIDDEN);
     }
 
+}
+
+
+async checkRole(userId: number, type: string, facilityId: number): Promise<Boolean> {
+    {}
+    throw new UnauthorizedException(' User not authorized to perform this action')
 }
 }
