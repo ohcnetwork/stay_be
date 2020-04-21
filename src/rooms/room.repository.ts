@@ -22,13 +22,19 @@ export class RoomRepository extends Repository<Room>{
         const query = this.createQueryBuilder('room');
        
         if(district)
-        {
+        {   const id = [];
             const facility = await facilityRepository.find({district});
-            for(const i in facility)
+            for(let i=0;i<facility.length;i++)
             {
-                const id = facility[i].hotelId;
-                query.andWhere('room.hotelId = :id',{id}); 
+                 id.push(facility[i].hotelId);
             }
+            if(id.length>0){
+                query.andWhere('room.hotelId IN (:...id)',{id}); 
+            }
+            else{
+                throw new NotFoundException(`Not available at ${district} `);
+            }
+
         }
         if(beds)
         {
@@ -54,11 +60,13 @@ export class RoomRepository extends Repository<Room>{
 
                   ],
             });
-            for(const i in bookId){
-
+            for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].roomId);  
             }
-            query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
+            if(bookId.length>0)
+            {
+             query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
+            }
         }
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
@@ -99,17 +107,33 @@ export class RoomRepository extends Repository<Room>{
 
                   ],
             });
-            for(const i in bookId){
+            for(let i = 0; i<bookId.length;i++){
 
                 notAvailable.push(bookId[i].roomId);  
             }
-            if(hotelid){
-                query.where("room.id NOT IN (:...ids) AND room.hotelId = :hotelId",{ids:notAvailable,hotelId:hotelid});
-            }
-            if(roomid)
+            if(bookId.length>0)
             {
-                query.where("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
+                if(hotelid){
+                    query.where("room.id NOT IN (:...ids) AND room.hotelId = :hotelId",{ids:notAvailable,hotelId:hotelid});
+                }
+                if(roomid)
+                {
+                    query.where("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
+                }
             }
+            else{
+                if(hotelid){
+                    query.andWhere("room.hotelId = :hotelId",{hotelId:hotelid});
+                }
+                if(roomid)
+                {
+                    query.andWhere("room.id = :roomId",{roomId:roomid});
+                }
+            }
+            if(category){
+                query.andWhere('room.category = :category',{category});
+            }
+          
         }
         const rooms= await query.getMany();
         if(rooms.length>0)
@@ -117,8 +141,8 @@ export class RoomRepository extends Repository<Room>{
         return rooms;
         }
         else{
-            console.log("Room not available");
-          throw new NotFoundException('Not Available');
+            console.log("Rooms not available");
+          throw new NotFoundException(`Rooms not available`);
         }
     }
  }
