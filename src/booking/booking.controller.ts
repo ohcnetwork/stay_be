@@ -32,7 +32,7 @@ export class BookingController {
         @Body() createbookingDto: CreateBookingDto,
         ): Promise<any>{                          
         this.logger.verbose("booking created with  ");
-        return this.bookingService.createBooking(req.user,createbookingDto); 
+        return this.bookingService.createBooking(req.user,createbookingDto,); 
     }
 
     //get all bookings of user

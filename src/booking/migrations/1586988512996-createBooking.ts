@@ -52,11 +52,7 @@ export class createbooking1586988512996 implements MigrationInterface {
 
                   },
 
-                  {
-                    name: 'hotelId',
-                    type: 'bigint',
-
-                  },
+        
 
                   {
                     name: 'statusBooking',

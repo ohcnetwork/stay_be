@@ -26,7 +26,7 @@ export class RoomRepository extends Repository<Room>{
             const facility = await facilityRepository.find({district});
             for(let i=0;i<facility.length;i++)
             {
-                 id.push(facility[i].hotelId);
+                 id.push(facility[i].id);
             }
             if(id.length>0){
                 query.andWhere('room.hotelId IN (:...id)',{id}); 
@@ -61,7 +61,7 @@ export class RoomRepository extends Repository<Room>{
                   ],
             });
             for(let i=0;i<bookId.length;i++){
-                notAvailable.push(bookId[i].roomId);  
+                notAvailable.push(bookId[i].room.id);  
             }
             if(bookId.length>0)
             {
@@ -77,7 +77,7 @@ export class RoomRepository extends Repository<Room>{
     const list= [];
     for(let i=0;i<count;i++)
     {
-        const id = room[i].hotelId;
+        const id = room[i].facility.id;
         if(list.indexOf(id)=== -1 )
         {
             list.push(id);
@@ -87,7 +87,7 @@ export class RoomRepository extends Repository<Room>{
     const hotels = [];
     for(const i in list)
     {
-        const finalHotel = await facilityRepository.findOne({hotelId:list[i]});
+        const finalHotel = await facilityRepository.findOne({id:list[i]});
         hotels.push(finalHotel);
     }
     return hotels;
@@ -109,7 +109,7 @@ export class RoomRepository extends Repository<Room>{
             });
             for(let i = 0; i<bookId.length;i++){
 
-                notAvailable.push(bookId[i].roomId);  
+                notAvailable.push(bookId[i].room.id);  
             }
             if(bookId.length>0)
             {
@@ -159,14 +159,15 @@ export class RoomRepository extends Repository<Room>{
     
             
     //Create Room
-    async createRoom(createRoomDto: CreateRoomDto,id:number):Promise<any>{
+    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository):Promise<any>{
 
         const roomId = [];
+        const facility = await facilityRepository.findOne(id);
         const {noOfRooms,photos,title,features,description,category,beds,cost}=createRoomDto;
         for(let i=0; i<noOfRooms;i++)
         { 
         const room = new Room();
-        room.hotelId = id;
+        room.facility = facility;
         room.title=title;
         room.features=features;
         room.description=description;
