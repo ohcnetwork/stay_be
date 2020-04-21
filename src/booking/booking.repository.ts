@@ -21,13 +21,16 @@ export class BookingRepository extends Repository<Booking> {
         ): Promise<any>{
         const { roomid,checkin,checkout } = createbookingDto;
 
+       // const found = await bookingRepository.findOne({room.id:roomid})
+
         const booking = new Booking();
         booking.checkin = checkin;
         booking.checkout = checkout;
-        booking.userId =user.id;
-        booking.roomId = roomid;
+        booking.user =user;
         const room = await roomRepository.findOne(roomid);
-        booking.hotelId=room.hotelId;
+        booking.room = room;
+       
+   // booking.hotelId=room.hotelId;
         await booking.save();
 
         //const data = {userid:userId, roomid:roomId,}
@@ -38,5 +41,32 @@ export class BookingRepository extends Repository<Booking> {
 
     
     }
+
+    async getUserBookingDetails(user:User): Promise<any>{
+        const query = this.createQueryBuilder('bookings');
+        query.innerJoin('bookings.user','user')
+             .innerJoin('bookings.room','room')
+             .innerJoin('room.facility','facility')
+             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district'])
+             .where('user.id = :id', {id:user.id});
+
+        return await query.getMany();
+    }
+
+    async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
+        const query = this.createQueryBuilder('bookings');
+        query.innerJoin('bookings.user','user')
+             .innerJoin('bookings.room','room')
+             .innerJoin('room.facility','facility')
+             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','user.name','user.email'])
+             .where('facility.id = :id', {id:hotelId});
+
+             return await query.getMany();
+
+
+    }
+
     
 }

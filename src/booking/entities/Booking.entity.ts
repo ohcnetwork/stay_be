@@ -25,24 +25,30 @@ export class Booking extends BaseEntity {
  //  @ManyToOne(type => User, user => user.booking, { eager:false} )
   //  user: User;
 
-    @Column()
-    roomId: number;
+  //  @Column()
+    //roomId: number;
     
 
-    @OneToOne(type => Room, room => room.booking, {
+   /* @OneToOne(type => Room, room => room.booking, {
         cascade: ['update'],
     })
     @JoinColumn()
+    room: Room;*/
+
+
+   // @Column()
+    //userId: number;  //user_id
+
+    @ManyToOne(type => User, user => user.booking)
+    @JoinColumn({name:'userId'})
+    user: User;
+
+    @ManyToOne(type => Room, room => room.booking)
+    @JoinColumn({name:'roomId'})
     room: Room;
+    
 
-
-    @Column()
-    userId: number;  //user_id
-
-    //relation for roomid
-    @Column()
-    hotelId: number;
-
+    
     @Column()
     statusBooking: string;
 

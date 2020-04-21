@@ -5,7 +5,8 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 
 import { Room } from '../../rooms/entity/room.entity';
@@ -45,6 +46,10 @@ export class User {
 
   @CreateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(type => Booking, booking => booking.user)
+  booking: Booking[];
+
 
 
 //  @ManyToOne(type => Room, room => room.user)

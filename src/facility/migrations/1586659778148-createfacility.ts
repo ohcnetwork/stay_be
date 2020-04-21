@@ -7,7 +7,7 @@ export class Createfacility1586659778148 implements MigrationInterface {
             name: 'facility',
             columns: [
               {
-                name: 'hotelId',
+                name: 'id',
                 type: 'bigint',
                 isPrimary: true,
                 isGenerated: true,

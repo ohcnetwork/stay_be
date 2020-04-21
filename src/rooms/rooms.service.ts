@@ -23,8 +23,8 @@ export class RoomsService {
 
     async validateUser(user:User,id:any): Promise<any> {
         const found = await this.userRepository.findOne({id:user.id})
-        const hotel = await this.facilityRepository.findOne({hotelId:id})
-        console.log(found.type,hotel.hotelId)
+        const hotel = await this.facilityRepository.findOne({id:id})
+        console.log(found.type,hotel.id)
         if(found.type === 'facilityowner' && hotel.ownerID === found.id){
             return found
         }
@@ -47,12 +47,12 @@ export class RoomsService {
 
     async createRoom(user:User,createRoomDto: CreateRoomDto,id:number){
         if(await this.validateUser(user,id)){
-        return this.roomRepository.createRoom(createRoomDto,id);
+        return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository);
         }
     }
     async deleteRoom(user:User,id:number):Promise<void>{
         const result= await this.roomRepository.findOne(id);
-       if(await this.validateUser(user,result.hotelId)) {
+       if(await this.validateUser(user,result.facility.id)) {
            if(!result)
             {
             throw new NotFoundException(`Room with id ${id} not found.`);
@@ -66,15 +66,16 @@ export class RoomsService {
 
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
         const room = await this.getRoomById(id);
-        if(await this.validateUser(user,room.hotelId)){
+        if(await this.validateUser(user,room.facility.id)){
         room.status=status;
         await room.save();
         return room;}
     }
 
     async getHotelDetail(id:number):Promise<any>{
-        const room = await this.roomRepository.find({hotelId:id,status:RoomStatus.AVAILABLE})
-        const hotel = await this.facilityRepository.findOne({hotelId:id});
+        const hotel = await this.facilityRepository.findOne({id});
+        const room = await this.roomRepository.find({facility:hotel,status:RoomStatus.AVAILABLE})
+        
         console.log(room,hotel)
         if(hotel){
             return {
@@ -87,7 +88,7 @@ export class RoomsService {
         async getHotelId(id:number): Promise<any>{
             const room = await this.roomRepository.findOne({id:id})
             return {
-                data: room.hotelId
+                data: room.facility.id
             }
         }
 

@@ -30,8 +30,8 @@ export class BookingService {
 
     async validateUser(user:User,id:any): Promise<any> {
       const found = await this.userRepository.findOne({id:user.id})
-      const hotel = await this.facilityRepository.findOne({hotelId:id})
-      console.log(found.type,hotel.hotelId)
+      const hotel = await this.facilityRepository.findOne({id:id})
+      //console.log(found.type,hotel.hotelId)
       if(found.type === 'facilityowner' && hotel.ownerID === found.id){
           return found
       }
@@ -48,7 +48,12 @@ export class BookingService {
         user:User,
         createbookingDto: CreateBookingDto,
         ): Promise<any>{
-         const book = await this.bookingRepository.find({
+       //   const { roomid,checkin,checkout } = createbookingDto;
+        // const found = await this.bookingRepository.findOne({booking.room.id:roomid})
+        
+
+
+        /* const book = await this.bookingRepository.find({
             where: [
                 {roomId:createbookingDto.roomid,checkin:LessThanOrEqual(createbookingDto.checkin) ,checkout:MoreThanOrEqual(createbookingDto.checkout)},
                 {roomId:createbookingDto.roomid,checkin:LessThan(createbookingDto.checkin) ,checkout:MoreThanOrEqual(createbookingDto.checkout)},
@@ -64,7 +69,9 @@ export class BookingService {
         }
         else {
           throw new HttpException("Room already booked",HttpStatus.FORBIDDEN)
-        }
+        }*/
+
+        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);
     }
 
 
@@ -84,7 +91,7 @@ export class BookingService {
 
         
       }
-      async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
+     /* async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
         if(await this.validateUser(user,hotelId)) {
         const [book,count] = await this.bookingRepository.findAndCount({hotelId:hotelId});
         var list = []
@@ -109,10 +116,30 @@ export class BookingService {
         });
         return { data:filtered,}
         
-      }}
+      }}*/
 
+
+      //get all booking details for given user
+      async getHotelBookingDetails(user:User,hotelId:number): Promise<any> {
+        if(await this.validateUser(user,hotelId)) {
+
+        return this.bookingRepository.getHotelBookingDetails(user,hotelId);
+
+        }
+      
+
+      }
 
       async getUserBookingDetails(user:User): Promise<any> {
+
+        return this.bookingRepository.getUserBookingDetails(user);
+
+      }
+
+
+
+
+    /*  async getUserBookingDetails(user:User): Promise<any> {
         console.log(user);
         const [book,count] = await this.bookingRepository.findAndCount({userId:user.id});
         var list = []
@@ -140,13 +167,13 @@ export class BookingService {
           
         
        return{ data:list}
-      }
+      }*/
 
       
 
       async checkInOutUser(user:User,id:number,data:any): Promise<any> {
         const book = await this.bookingRepository.findOne({book_id:id})
-        if(await this.validateUser(user,book.hotelId)){
+        if(await this.validateUser(user,book.room.facility.id)){
         if(["PENDING","CHECKEDIN","CHECKEDOUT"].includes(data.status))
           {
             

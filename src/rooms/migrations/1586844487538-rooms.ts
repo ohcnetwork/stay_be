@@ -14,7 +14,7 @@ export class Rooms1586844487538 implements MigrationInterface {
                 generationStrategy: 'increment',
               },
               {
-                name: 'hotelId',
+                name: 'facilityId',
                 type: 'bigint',
               },
               {

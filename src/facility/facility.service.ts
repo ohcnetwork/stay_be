@@ -32,7 +32,7 @@ export class FacilityService {
 
     async findHotel(user:User,id:any): Promise<any>{
         const found =await this.userRepository.findOne({id:user.id})
-        const hotel = await this.facilityRepository.findOne({hotelId:id})
+        const hotel = await this.facilityRepository.findOne({id:id})
         if(found.type === 'facilityowner' && hotel.ownerID === found.id){
             return found
         }
@@ -90,7 +90,7 @@ export class FacilityService {
     }
     async deleteFacility(user:User,id:number):Promise<any> {
             if(await this.findHotel(user,id)){
-            const facility = await this.facilityRepository.findOne({ hotelId:id })
+            const facility = await this.facilityRepository.findOne({ id:id })
             if(facility){
             facility.status = "NOT_AVAILABLE"
             await this.facilityRepository.save(facility);
@@ -111,7 +111,7 @@ export class FacilityService {
     }
     async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
         if(await this.findHotel(user,id)){
-        const facility = await this.facilityRepository.findOne({ hotelId:id })
+        const facility = await this.facilityRepository.findOne({id:id })
         if(facility){
             if(data.name) {
                 facility.name=data.name

@@ -1,11 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique, OneToMany} from 'typeorm';
+import { Room } from 'src/rooms/entity/room.entity';
 
 @Entity('facility')
 
 export class Facility {
     
     @PrimaryGeneratedColumn()
-    hotelId:number;
+    id:number;
 
     @Column()
     ownerID: number;
@@ -46,5 +47,9 @@ export class Facility {
 
     @Column()
     status:string;
+
+    @OneToMany(type => Room, room => room.facility)
+    room: Room[];
+
 
 }
