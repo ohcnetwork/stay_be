@@ -48,8 +48,14 @@ export class BookingService {
         user:User,
         createbookingDto: CreateBookingDto,
         ): Promise<any>{
-       //   const { roomid,checkin,checkout } = createbookingDto;
-        // const found = await this.bookingRepository.findOne({booking.room.id:roomid})
+       //  const { roomid,checkin,checkout } = createbookingDto;
+       // const found = await this.roomRepository.findOne({id:roomid})
+      //  const booking = Booking;
+       // if (found) {
+      //    const book = await this.bookingRepository.find({
+       //     where: [ 'booking.room = found && book.statusBooking === "BOOKED"]
+       //   })
+       // }
         
 
 
@@ -172,7 +178,9 @@ export class BookingService {
       
 
       async checkInOutUser(user:User,id:number,data:any): Promise<any> {
-        const book = await this.bookingRepository.findOne({book_id:id})
+        return this.bookingRepository.checkInOutUser(user,id,data,this.bookingRepository);
+
+        /*const book = await this.bookingRepository.findOne({book_id:id})
         if(await this.validateUser(user,book.room.facility.id)){
         if(["PENDING","CHECKEDIN","CHECKEDOUT"].includes(data.status))
           {
@@ -187,7 +195,7 @@ export class BookingService {
           else{
             throw new HttpException("status not valid",HttpStatus.EXPECTATION_FAILED);
           }
-        }
+        }*/
       }
 
 }
