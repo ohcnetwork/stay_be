@@ -29,6 +29,12 @@ export class CreateUser1574837153062 implements MigrationInterface {
           isNullable: true,
         },
         {
+          name: 'resetToken',
+          type:'varchar',
+          isUnique: true,
+          isNullable: true,
+        },
+        {
           name: 'type',
           type:'varchar'
         },

@@ -9,7 +9,8 @@ import { RoomsModule } from './rooms/rooms.module';
 import { RoomsController } from './rooms/rooms.controller';
 import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
-
+import {HandlebarsAdapter, MailerModule} from '@nestjs-modules/mailer';
+import {nestMailer} from "./config/constants";
 
 @Module({
   imports: [
@@ -18,6 +19,18 @@ import { BookingModule } from './booking/booking.module';
     RoomsModule,
     BookingModule,
     TypeOrmModule.forRoot(DbConfig),
+    MailerModule.forRootAsync({
+      useFactory: () => ({
+        transport: nestMailer.transport,
+        template: {
+          dir: './templates',
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true
+          },
+        },
+      }),
+    }),
   ],
   controllers: [AuthController,FacilityController,RoomsController, BookingController],
   providers: [],
