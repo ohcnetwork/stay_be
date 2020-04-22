@@ -22,7 +22,7 @@ export class RoomRepository extends Repository<Room>{
         const notAvailable= [];
         if(type.localeCompare("hotel")===0){
             console.log(beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid)
-        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id']);
+        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'});
        
         if(district)
         {   const id = [];
@@ -53,13 +53,14 @@ export class RoomRepository extends Repository<Room>{
         if(checkin && checkout)
         {
            console.log('inside here',checkin,checkout)
-            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
-           query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
-            const bookId=await query1.getMany()
+            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
+           query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout})
+           const bookId=await query1.getMany()
             console.log(bookId)
             for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].room.id);  
             }
+            console.log(notAvailable)
             if(bookId.length>0)
             {
              query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
@@ -94,9 +95,9 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room');
         if(checkin && checkout)
-        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
-        query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
-         const bookId=await query1.getMany()
+        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
+        query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout})
+        const bookId=await query1.getMany()
          console.log(bookId)
             for(let i = 0; i<bookId.length;i++){
 
