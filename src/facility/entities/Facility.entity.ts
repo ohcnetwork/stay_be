@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique, OneToMany} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, BaseEntity} from 'typeorm';
 import { Room } from 'src/rooms/entity/room.entity';
 
 @Entity('facility')
 
-export class Facility {
+export class Facility extends BaseEntity {
     
     @PrimaryGeneratedColumn()
     id:number;

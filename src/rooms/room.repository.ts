@@ -1,4 +1,4 @@
-import { Repository, EntityRepository ,getRepository,Between,LessThanOrEqual, MoreThanOrEqual, LessThan} from 'typeorm';
+import { Repository, EntityRepository } from 'typeorm';
 import { Room } from './entity/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomStatus } from './room-status.enum';
@@ -6,12 +6,9 @@ import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
 import { NotFoundException } from '@nestjs/common';
-import { Facility } from 'src/facility/entities/Facility.entity';
 
 
 @EntityRepository(Room)
-//@EntityRepository(Booking)
-//@EntityRepository(Facility)
 export class RoomRepository extends Repository<Room>{
 
     async getRooms(filterDto: GetRoomsFilterDto,
@@ -22,7 +19,7 @@ export class RoomRepository extends Repository<Room>{
         const notAvailable= [];
         if(type.localeCompare("hotel")===0){
             console.log(beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid)
-        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'});
+        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id']);
        
         if(district)
         {   const id = [];
@@ -53,14 +50,13 @@ export class RoomRepository extends Repository<Room>{
         if(checkin && checkout)
         {
            console.log('inside here',checkin,checkout)
-            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
-           query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout})
-           const bookId=await query1.getMany()
+            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
+           query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
+            const bookId=await query1.getMany()
             console.log(bookId)
             for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].room.id);  
             }
-            console.log(notAvailable)
             if(bookId.length>0)
             {
              query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
@@ -95,9 +91,9 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room');
         if(checkin && checkout)
-        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
-        query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout})
-        const bookId=await query1.getMany()
+        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
+        query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
+         const bookId=await query1.getMany()
          console.log(bookId)
             for(let i = 0; i<bookId.length;i++){
 
@@ -152,11 +148,11 @@ export class RoomRepository extends Repository<Room>{
     
             
     //Create Room
-    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository):Promise<any>{
+    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
 
         const roomId = [];
         const facility = await facilityRepository.findOne(id);
-        const {noOfRooms,photos,title,features,description,category,beds,cost}=createRoomDto;
+        const {noOfRooms,title,features,description,category,beds,cost}=createRoomDto;
         for(let i=0; i<noOfRooms;i++)
         { 
         const room = new Room();
@@ -166,7 +162,7 @@ export class RoomRepository extends Repository<Room>{
         room.description=description;
         room.category=category;
         room.beds=beds;
-        room.photos=photos; //need to be done
+        room.photos=imgUrls; 
         room.cost=cost;
         room.status=RoomStatus.AVAILABLE;
         await room.save();
