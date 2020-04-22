@@ -9,7 +9,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { RoomsController } from './rooms/rooms.controller';
 import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
-import {HandlebarsAdapter, MailerModule} from '@nest-modules/mailer';
+import {HandlebarsAdapter, MailerModule} from '@nestjs-modules/mailer';
 import {nestMailer} from "./config/constants";
 
 @Module({

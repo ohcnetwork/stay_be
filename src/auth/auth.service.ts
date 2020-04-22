@@ -6,7 +6,7 @@ import {JwtService} from '@nestjs/jwt';
 import {User} from './entities/User.entity';
 import {ChangePasswordDto, ForgetPasswordDtoDto, ResetPasswordDto} from './dto';
 import * as uuidv1 from 'uuid/v1';
-import {MailerService} from "@nest-modules/mailer";
+import {MailerService} from "@nestjs-modules/mailer";
 
 @Injectable()
 export class AuthService {

@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import * as config from 'config';
 import { AuthController } from './auth.controller';
 import { LocalStrategy, JwtStrategy } from './strategy';
-import {HandlebarsAdapter, MailerModule} from "@nest-modules/mailer";
+import {HandlebarsAdapter, MailerModule} from "@nestjs-modules/mailer";
 import {nestMailer} from "../config/constants";
 
 const jwtConfig = config.get('jwt');
