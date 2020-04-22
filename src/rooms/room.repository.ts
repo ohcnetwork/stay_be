@@ -6,20 +6,23 @@ import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
 import { NotFoundException } from '@nestjs/common';
+import { Facility } from 'src/facility/entities/Facility.entity';
 
 
 @EntityRepository(Room)
+//@EntityRepository(Booking)
+//@EntityRepository(Facility)
 export class RoomRepository extends Repository<Room>{
 
     async getRooms(filterDto: GetRoomsFilterDto,
         facilityRepository:FacilityRepository,
         ):Promise<any>{
-        const query = this.createQueryBuilder('room');
+        
         const {beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid} = filterDto;
         const notAvailable= [];
         if(type.localeCompare("hotel")===0){
-
-        const query = this.createQueryBuilder('room');
+            console.log(beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid)
+        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id']);
        
         if(district)
         {   const id = [];
@@ -29,7 +32,7 @@ export class RoomRepository extends Repository<Room>{
                  id.push(facility[i].id);
             }
             if(id.length>0){
-                query.andWhere('room.hotelId IN (:...id)',{id}); 
+                query.andWhere('room.facility.id IN (:...id)',{id}); 
             }
             else{
                 throw new NotFoundException(`Not available at ${district} `);
@@ -49,17 +52,11 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         if(checkin && checkout)
         {
-            const bookingRepository = getRepository(Booking); 
-            const bookId = await bookingRepository.find({
-                where: [
-                    {checkin:LessThanOrEqual(checkin) ,checkout:MoreThanOrEqual(checkout)},
-                    {checkin:LessThan(checkin) ,checkout:MoreThanOrEqual(checkout)},
-                    {checkin:MoreThanOrEqual(checkin) ,checkout:LessThanOrEqual(checkout)},
-                    {checkin:Between(checkin,checkout)},
-                    {checkin:LessThanOrEqual(checkin),checkout:Between(checkin,checkout)} ,                   
-
-                  ],
-            });
+           console.log('inside here',checkin,checkout)
+            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
+           query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
+            const bookId=await query1.getMany()
+            console.log(bookId)
             for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].room.id);  
             }
@@ -75,9 +72,10 @@ export class RoomRepository extends Repository<Room>{
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
     const list= [];
+    console.log(room)
     for(let i=0;i<count;i++)
     {
-        const id = room[i].facility.id;
+        const id = (room[i]&&room[i].facility.id);
         if(list.indexOf(id)=== -1 )
         {
             list.push(id);
@@ -94,19 +92,12 @@ export class RoomRepository extends Repository<Room>{
     }
     else {
         //query to find rooms based on check in and check out
+        const query = this.createQueryBuilder('room');
         if(checkin && checkout)
-        {   
-            const bookingRepository = getRepository(Booking); 
-            const bookId = await bookingRepository.find({
-                where: [
-                    {checkin:LessThanOrEqual(checkin) ,checkout:MoreThanOrEqual(checkout)},
-                    {checkin:LessThan(checkin) ,checkout:MoreThanOrEqual(checkout)},
-                    {checkin:MoreThanOrEqual(checkin) ,checkout:LessThanOrEqual(checkout)},
-                    {checkin:Between(checkin,checkout)},
-                    {checkin:LessThanOrEqual(checkin),checkout:Between(checkin,checkout)} ,                   
-
-                  ],
-            });
+        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id']);
+        query1.where('(bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout))',{checkin,checkout})
+         const bookId=await query1.getMany()
+         console.log(bookId)
             for(let i = 0; i<bookId.length;i++){
 
                 notAvailable.push(bookId[i].room.id);  
@@ -114,7 +105,7 @@ export class RoomRepository extends Repository<Room>{
             if(bookId.length>0)
             {
                 if(hotelid){
-                    query.where("room.id NOT IN (:...ids) AND room.hotelId = :hotelId",{ids:notAvailable,hotelId:hotelid});
+                    query.where("room.id NOT IN (:...ids) AND room.facility.id = :hotelId",{ids:notAvailable,hotelId:hotelid});
                 }
                 if(roomid)
                 {
@@ -123,7 +114,7 @@ export class RoomRepository extends Repository<Room>{
             }
             else{
                 if(hotelid){
-                    query.andWhere("room.hotelId = :hotelId",{hotelId:hotelid});
+                    query.andWhere("room.facility.id = :hotelId",{hotelId:hotelid});
                 }
                 if(roomid)
                 {
@@ -136,6 +127,7 @@ export class RoomRepository extends Repository<Room>{
           
         }
         const rooms= await query.getMany();
+        console.log(rooms)
         if(rooms.length>0)
         {
         return rooms;
