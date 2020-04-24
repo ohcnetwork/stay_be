@@ -48,7 +48,7 @@ export class RoomsService {
     async createRoom(user:User,createRoomDto: CreateRoomDto,id:number,files:any){
         const imgUrls=[];
         if(await this.validateUser(user,id)){
-            for(let i=0;i<files.length;i++)
+            for(let i=0;i< files && i<files.length;i++)
             {
                 const imgLink = files[i].location;
                 const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
