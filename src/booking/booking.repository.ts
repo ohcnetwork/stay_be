@@ -27,9 +27,8 @@ export class BookingRepository extends Repository<Booking> {
             
         query.innerJoin('bookings.room','room')
                 .innerJoin('room.facility','facility')
-                .select(['bookings.checkin','bookings.statusBooking','bookings.checkout','room.id'])
-                .where('(room.id = :id)AND (bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{id:roomid,Cancelled:"CANCELLED",checkin,checkout})
-           
+                .select(['bookings.checkin','bookings.statusBooking','bookings.checkout','room.id','bookings.statusCheckin'])
+                .where('(room.id = :id) AND (bookings.statusCheckin != :Checkout) AND (bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{id:roomid,Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})           
               const query1 =   await query.getOne();
 
        // const found = await bookingRepository.findOne({room.id:roomid})

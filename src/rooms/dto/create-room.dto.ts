@@ -22,17 +22,10 @@ export class CreateRoomDto{
     beds:number;
 
     @ApiModelProperty({ example:null})
-    @IsOptional()
-    photos:any;
-
-    @ApiModelProperty({ example:null})
     @IsNotEmpty()
     noOfRooms:number;
-
 
     @ApiModelProperty({ example:null})
     @IsNotEmpty()
     cost:number;
-
-
 }

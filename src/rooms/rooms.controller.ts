@@ -1,4 +1,4 @@
-import { Controller, Get ,Post, Body,Param, Delete,Patch,Query, ValidationPipe, UsePipes, ParseIntPipe,UseGuards, Req} from '@nestjs/common';
+import { Controller, Get ,Post, Body,Param, Delete,Patch,Query, ValidationPipe, UsePipes, ParseIntPipe,UseGuards,UseInterceptors, UploadedFile,Req} from '@nestjs/common';
 import {RoomsService} from './rooms.service';
 import {CreateRoomDto} from './dto/create-room.dto';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
@@ -7,6 +7,18 @@ import { Room } from './entity/room.entity';
 import { RoomStatus } from './room-status.enum';
 import { ApiUseTags,ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import {imageFileFilter} from './middleware/file-upload.utils';
+import * as multer from 'multer';
+import * as AWS from 'aws-sdk';
+import * as multerS3 from 'multer-s3';
+
+const AWS_S3_BUCKET_NAME = 'process.env.AWS_S3_BUCKET_NAME';
+const s3 = new AWS.S3();
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
 @ApiUseTags('Rooms Management')
 @Controller('api/v1/rooms')
@@ -27,14 +39,28 @@ export class RoomsController {
     @UseGuards(AuthGuard('jwt'))
     @Post('/:hotelid')
     @UsePipes(ValidationPipe)
+    @UseInterceptors(
+      FilesInterceptor('file',5,{
+      storage: multerS3({
+        s3: s3,
+        bucket: AWS_S3_BUCKET_NAME,
+        acl: 'public-read',
+        key: function(request, file, cb) {
+          cb(null, `${Date.now().toString()} - ${file.originalname}`);
+        },
+      }),
+      fileFilter: imageFileFilter,
+    }),
+    )
 
         createRoom(
-            @Req() req:any,
+        @Req() req:any,
         @Param('hotelid') id:number,
+        @UploadedFile() file,
         @Body() createRoomDto : CreateRoomDto,
     ):Promise<Room>
-    {
-        return this.roomsService.createRoom(req.user,createRoomDto,id);  
+    { 
+        return this.roomsService.createRoom(req.user,createRoomDto,id,req.files);  
     }
 
     @ApiBearerAuth()

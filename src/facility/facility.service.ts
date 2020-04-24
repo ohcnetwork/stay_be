@@ -1,7 +1,6 @@
-import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe, UnauthorizedException} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, UnauthorizedException} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Facility } from './entities/Facility.entity';
 import { UpdateFacilityDto } from './dto';
 import { User } from 'src/auth/entities/User.entity';
 import { UserRepository } from 'src/auth/user.repository';
@@ -26,7 +25,7 @@ export class FacilityService {
             return found
         }
         else {
-            throw new UnauthorizedException;
+            throw new UnauthorizedException('You are not authorized!!');
         }
     }
 
@@ -40,18 +39,20 @@ export class FacilityService {
             throw new UnauthorizedException;
         }
     }
-    async addfacility(data:any,user:User): Promise<any> {
+    async addfacility(data:any,user:User,files:any): Promise<any> {
+                const imgUrls=[];
                 if(await this.validateUser(user)) {
-                    console.log(user)
-                data.status = 'ACTIVE';
+                console.log(user)
                 data.ownerID=user.id;
-                const registerStay = await this.facilityRepository.save(data);
-                const {...result } = registerStay;
-                return{
-                    success: true,
-                    message: 'Success',
-                    data: result,
+                for(let i=0;i<files.length;i++)
+                {
+                    const imgLink = files[i].location;
+                    const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
+                    imgUrls.push(replaceLink);
                 }
+                return this.facilityRepository.createFacility(data,user.id,imgUrls);
+
+                
             }
             else{
                 throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);

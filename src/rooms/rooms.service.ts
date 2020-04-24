@@ -45,9 +45,16 @@ export class RoomsService {
         return found;
     }
 
-    async createRoom(user:User,createRoomDto: CreateRoomDto,id:number){
+    async createRoom(user:User,createRoomDto: CreateRoomDto,id:number,files:any){
+        const imgUrls=[];
         if(await this.validateUser(user,id)){
-        return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository);
+            for(let i=0;i<files.length;i++)
+            {
+                const imgLink = files[i].location;
+                const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
+                imgUrls.push(replaceLink);
+            }
+            return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
         }
     }
     async deleteRoom(user:User,id:number):Promise<void>{

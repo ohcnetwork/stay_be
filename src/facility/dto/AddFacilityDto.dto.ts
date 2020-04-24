@@ -44,9 +44,4 @@ export class AddFacilityDto {
     @IsString()
     policy:string;
 
-    @ApiModelProperty({ example:null})
-    @IsString()
-    photos:any;
-
-
 }
