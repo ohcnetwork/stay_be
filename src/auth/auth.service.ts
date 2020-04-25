@@ -1,4 +1,4 @@
-import {Injectable, Logger, UnauthorizedException} from '@nestjs/common';
+import {Injectable, Logger, UnauthorizedException, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {UserRepository} from './user.repository';
 import * as bcrypt from 'bcryptjs';
@@ -202,12 +202,6 @@ export class AuthService {
             };
           });
     }
-    return {
-      success: false,
-      message: 'Error',
-      data: {
-        email: 'User does not exist'
-      },
-    };
+   throw new NotFoundException("user not found")
   }
 }
