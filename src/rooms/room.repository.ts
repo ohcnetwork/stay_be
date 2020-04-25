@@ -89,7 +89,14 @@ export class RoomRepository extends Repository<Room>{
         const finalHotel = await facilityRepository.findOne({id:list[i]});
         hotels.push(finalHotel);
     }
+    if(hotels.length>0)
+    {
     return hotels;
+    }
+    else{
+        console.log("hotels not available");
+      throw new NotFoundException(`hotels not available`);
+    }
     }
     else {
         //query to find rooms based on check in and check out
