@@ -183,7 +183,7 @@ export class AuthService {
         subject: 'Reset Password Link',
         template: 'forgotPwd',
         context: {
-          link: ` https://stay.coronasafe.network/reset-password/${token}`,
+          link: ` https://stay.coronasafe.in/reset-password/${token}`,
           email: user.email,
           userName: user.name
         }
