@@ -3,7 +3,7 @@ import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class ResetPasswordDto {
     @ApiModelProperty({example: null})
-    email:string;
+    token:string;
 
   @ApiModelProperty({ example: null })
   @IsString()
