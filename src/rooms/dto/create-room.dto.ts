@@ -7,7 +7,7 @@ export class CreateRoomDto{
     title:string;
 
     @ApiModelProperty({ example:null})
-    @IsNotEmpty()
+    @IsOptional()
     features:string;
 
     @ApiModelProperty({ example:null})
