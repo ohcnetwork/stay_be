@@ -3,7 +3,6 @@ import { FacilityService } from './facility.service';
 import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AddFacilityDto,UpdateFacilityDto, SearchByDistrictDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
-import { hostname } from 'os';
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
