@@ -39,6 +39,7 @@ export class createguestdetail1587902899303 implements MigrationInterface {
                 {
                     name: 'number',
                     type: 'bigint',
+                    isNullable: true,
                 },
 
 
