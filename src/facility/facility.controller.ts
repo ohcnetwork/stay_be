@@ -31,7 +31,7 @@ export class FacilityController {
         return this.facilityService.getFacility(req.user);
     }
 
-    @Get("facility/:hotelId")
+    @Get(":hotelId")
     getFacilityById(@Param ('hotelId',ParseIntPipe) hotelId :number) {
         this.logger.verbose("facility retrieved");
         return this.facilityService.getFacilityById(hotelId);
