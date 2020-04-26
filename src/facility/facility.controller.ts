@@ -3,6 +3,7 @@ import { FacilityService } from './facility.service';
 import {ApiBearerAuth, ApiUseTags} from '@nestjs/swagger';
 import { AddFacilityDto,UpdateFacilityDto, SearchByDistrictDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import { hostname } from 'os';
 
 @ApiUseTags('Facility Management')
 @Controller('api/v1/facility')
@@ -29,6 +30,13 @@ export class FacilityController {
         this.logger.verbose('retrieving faclility of the user');
         return this.facilityService.getFacility(req.user);
     }
+
+    @Get("facility/:hotelId")
+    getFacilityById(@Param ('hotelId',ParseIntPipe) hotelId :number) {
+        this.logger.verbose("facility retrieved");
+        return this.facilityService.getFacilityById(hotelId);
+    }
+
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
