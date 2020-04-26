@@ -1,4 +1,4 @@
-import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe, UnauthorizedException} from '@nestjs/common';
+import { Injectable,Logger, HttpException, HttpStatus, ParseIntPipe, UnauthorizedException, NotFoundException} from '@nestjs/common';
 import { FacilityRepository } from './facility.repository'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Facility } from './entities/Facility.entity';
@@ -87,6 +87,20 @@ export class FacilityService {
     else{
         throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
     }
+    }
+
+    async getFacilityById(id:number):Promise<any>{
+
+            const facility = await this.facilityRepository.findOne({id});
+            if(facility)
+            {
+                return facility;
+            }
+            else {
+                throw new NotFoundException("No Such Facility")
+            }
+        
+        
     }
     async deleteFacility(user:User,id:number):Promise<any> {
             if(await this.findHotel(user,id)){
