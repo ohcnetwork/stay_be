@@ -16,7 +16,7 @@ export class GuestDetail extends BaseEntity {
     @Column()
     gender:string;
 
-    @Column()
+    @Column({nullable:true})
     number:number;
 
     @CreateDateColumn()
