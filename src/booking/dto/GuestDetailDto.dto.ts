@@ -7,13 +7,14 @@ export class GuestDetailDto {
     @ApiModelProperty({ example:null })
     readonly name:string;
 
-    @ApiModelProperty({ example:null })
+    @ApiModelProperty()
     readonly age:number;
 
-    @ApiModelProperty({ example:null })
+    @ApiModelProperty()
     readonly gender:string;
 
-    @ApiModelProperty({ example:null })
+     @ApiModelProperty({ required: false, example: null })
+    @IsOptional()
     readonly number:number;
 
     
