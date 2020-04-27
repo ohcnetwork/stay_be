@@ -44,6 +44,13 @@ export class FacilityController {
         return this.facilityService.getFacility(req.user);
     }
 
+    @Get(":hotelId")
+    getFacilityById(@Param ('hotelId',ParseIntPipe) hotelId :number) {
+        this.logger.verbose("facility retrieved");
+        return this.facilityService.getFacilityById(hotelId);
+    }
+
+
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post('add-facility')

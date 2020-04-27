@@ -1,7 +1,8 @@
 
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne,  JoinColumn, BaseEntity, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToOne,  JoinColumn, BaseEntity, Entity, OneToMany } from "typeorm";
 import { User } from "src/auth/entities/User.entity";
 import { Room } from "src/rooms/entity/room.entity";
+import { GuestDetail } from "./GuestDetail.entity";
 
 @Entity('bookings')
 export class Booking extends BaseEntity {
@@ -46,6 +47,9 @@ export class Booking extends BaseEntity {
     @ManyToOne(type => Room, room => room.booking)
     @JoinColumn({name:'roomId'})
     room: Room;
+
+    @OneToMany(type => GuestDetail, guestdetail => guestdetail.booking)
+    guestdetail: GuestDetail[];
     
 
     
