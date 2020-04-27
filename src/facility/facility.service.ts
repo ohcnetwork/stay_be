@@ -48,7 +48,7 @@ export class FacilityService {
                 if(await this.validateUser(user)) {
                 console.log(user)
                 data.ownerID=user.id;
-                for(let i=0;i<files.length;i++)
+                for(let i=0;i<files && files.length;i++)
                 {
                     const imgLink = files[i].location;
                     const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
