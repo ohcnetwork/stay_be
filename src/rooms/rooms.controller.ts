@@ -9,7 +9,7 @@ import { ApiUseTags,ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {imageFileFilter} from './middleware/file-upload.utils';
-import * as multer from 'multer';
+//import * as multer from 'multer';
 //import * as AWS from 'aws-sdk';
 const AWS = require('aws-sdk');
 import * as multerS3 from 'multer-s3';
