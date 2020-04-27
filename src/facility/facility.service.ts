@@ -33,6 +33,8 @@ export class FacilityService {
     async findHotel(user:User,id:any): Promise<any>{
         const found =await this.userRepository.findOne({id:user.id})
         const hotel = await this.facilityRepository.findOne({id:id})
+        console.log(hotel)
+        console.log(found)
         if(found.type === 'facilityowner' && hotel.ownerID === found.id){
             return found
         }
@@ -123,14 +125,14 @@ export class FacilityService {
        
 
     }
-    async updateFacility(user:User,id:number,data:UpdateFacilityDto): Promise <any> {
+    async updateFacility(user:User,id:number,data:any): Promise <any> {
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
         if(facility){
             if(data.name) {
                 facility.name=data.name
             }
-            if(data.facilities) {
+            if(data.facilities===null || data.facilities) {
                 facility.facilities=data.facilities
             }
             if(data.address) {
@@ -142,16 +144,16 @@ export class FacilityService {
             if(data.longitude) {
                 facility.longitude = data.longitude
             }
-            if(data.panchayath!="null"){
+            if(data.panchayath===null || data.panchayath){
                 facility.panchayath = data.panchayath
             }
-            if(data.district!="null"){
+            if(data.district){
                 facility.district=data.district
             }
             if(data.policy){
                 facility.policy=data.policy;
             }
-            if(data.starCategory){
+            if(data.starCategory===null || data.starCategory){
                 facility.starCategory=data.starCategory;
             }
             if(data.contact){
