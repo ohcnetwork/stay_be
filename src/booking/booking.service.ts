@@ -77,7 +77,9 @@ export class BookingService {
           throw new HttpException("Room already booked",HttpStatus.FORBIDDEN)
         }*/
 
+
         if(createbookingDto.checkin<createbookingDto.checkout){
+
         return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository);
         }
         else{

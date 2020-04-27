@@ -20,7 +20,9 @@ export class RoomRepository extends Repository<Room>{
         const notAvailable= [];
         //if filter type is hotel
         if(type.localeCompare("hotel")===0){
+
         const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'});
+
        
         if(district)
         {   const id = [];
@@ -50,9 +52,11 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         if(checkin && checkout)
         {
-           const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
-           query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout});
-           const bookId=await query1.getMany();
+
+
+            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
+            query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
+            const bookId=await query1.getMany()
             for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].room.id);  
             }
@@ -89,16 +93,15 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room');
         if(checkin && checkout)
-        { 
-            const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking']);
-            query1.where('(bookings.statusBooking != :Cancelled) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",checkin,checkout});
-            const bookId=await query1.getMany();
-            if(bookId)
-            {
-                for(let i = 0; i<bookId.length;i++)
-                {
-                    notAvailable.push(bookId[i].room.id);  
-                }
+
+        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
+            query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
+         const bookId=await query1.getMany()
+         console.log(bookId)
+            for(let i = 0; i<bookId.length;i++){
+
+                notAvailable.push(bookId[i].room.id);  
+
             }
            
             if(bookId.length>0)
@@ -148,26 +151,30 @@ export class RoomRepository extends Repository<Room>{
     }
     
             
-     //Create Room
-    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository):Promise<any>{
+
+    //Create Room
+    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
+
 
         const roomId = [];
         const facility = await facilityRepository.findOne(id);
-        const {noOfRooms,photos,title,features,description,category,beds,cost}=createRoomDto;
+        const {noOfRooms,title,features,description,category,beds,cost}=createRoomDto;
         for(let i=0; i<noOfRooms;i++)
         { 
-            const room = new Room();
-            room.facility = facility;
-            room.title=title;
-            room.features=features;
-            room.description=description;
-            room.category=category;
-            room.beds=beds;
-            room.photos=photos; //need to be done
-            room.cost=cost;
-            room.status=RoomStatus.AVAILABLE;
-            await room.save();
-            roomId.push(room);
+
+        const room = new Room();
+        room.facility = facility;
+        room.title=title;
+        room.features=features;
+        room.description=description;
+        room.category=category;
+        room.beds=beds;
+        room.photos=imgUrls; 
+        room.cost=cost;
+        room.status=RoomStatus.AVAILABLE;
+        await room.save();
+        roomId.push(room);
+
         }
         return roomId;
         

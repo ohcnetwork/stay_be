@@ -23,7 +23,6 @@ export class GetRoomsFilterDto{
     maximum:number;
 
     @IsOptional()
-    @IsNotEmpty()
     search: string;
 
     @IsOptional()
