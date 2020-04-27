@@ -41,6 +41,6 @@ export class Room extends BaseEntity{
     @JoinColumn()
     facility:Facility;
 
-    @Column()
-    facilityId:number;
+   // @Column()
+   // facilityId:number;
 }
