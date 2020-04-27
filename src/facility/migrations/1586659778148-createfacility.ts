@@ -47,10 +47,12 @@ export class Createfacility1586659778148 implements MigrationInterface {
               {
                 name: 'starCategory',
                 type: 'bigint',
+                isNullable:true,
               },
               {
                   name: 'facilities',
-                  type: 'varchar'
+                  type: 'varchar',
+                  isNullable:true,
               },
               {
       

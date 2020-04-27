@@ -11,30 +11,33 @@ import { NotFoundException } from '@nestjs/common';
 @EntityRepository(Room)
 export class RoomRepository extends Repository<Room>{
 
+    //Get the list of rooms and hotels based on filters
     async getRooms(filterDto: GetRoomsFilterDto,
         facilityRepository:FacilityRepository,
         ):Promise<any>{
         
         const {beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid} = filterDto;
         const notAvailable= [];
+        //if filter type is hotel
         if(type.localeCompare("hotel")===0){
-            console.log(beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid)
-        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id']);
+
+        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'});
+
        
         if(district)
         {   const id = [];
             const facility = await facilityRepository.find({district});
-            for(let i=0;i<facility.length;i++)
+            if(facility)
             {
-                 id.push(facility[i].id);
+                for(let i=0;i<facility.length;i++)
+                {
+                    id.push(facility[i].id);
+                }
+                if(id){
+                    query.andWhere('room.facility.id IN (:...id)',{id}); 
+                }
             }
-            if(id.length>0){
-                query.andWhere('room.facility.id IN (:...id)',{id}); 
-            }
-            else{
-                throw new NotFoundException(`Not available at ${district} `);
-            }
-
+            
         }
         if(beds)
         {
@@ -49,11 +52,11 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         if(checkin && checkout)
         {
-           console.log('inside here',checkin,checkout)
+
+
             const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
             query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
             const bookId=await query1.getMany()
-            console.log(bookId)
             for(let i=0;i<bookId.length;i++){
                 notAvailable.push(bookId[i].room.id);  
             }
@@ -69,7 +72,6 @@ export class RoomRepository extends Repository<Room>{
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
     const list= [];
-    console.log(room)
     for(let i=0;i<count;i++)
     {
         const id = (room[i]&&room[i].facility.id);
@@ -86,11 +88,12 @@ export class RoomRepository extends Repository<Room>{
         hotels.push(finalHotel);
     }
     return hotels;
-    }
+    } //if filter type is rooms or something
     else {
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room');
         if(checkin && checkout)
+
         { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
             query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
          const bookId=await query1.getMany()
@@ -98,7 +101,9 @@ export class RoomRepository extends Repository<Room>{
             for(let i = 0; i<bookId.length;i++){
 
                 notAvailable.push(bookId[i].room.id);  
+
             }
+           
             if(bookId.length>0)
             {
                 if(hotelid){
@@ -124,18 +129,17 @@ export class RoomRepository extends Repository<Room>{
           
         }
         const rooms= await query.getMany();
-        console.log(rooms)
-        if(rooms.length>0)
+        if(rooms)
         {
         return rooms;
         }
         else{
-            console.log("Rooms not available");
-          throw new NotFoundException(`Rooms not available`);
+                console.log("Rooms not available");
         }
     }
  }
 
+    //To get the maximum and minimum price of rooms and different categories available
     async getPrice():Promise<any>{
         const details = [];
         const query = this.createQueryBuilder("room");
@@ -147,14 +151,17 @@ export class RoomRepository extends Repository<Room>{
     }
     
             
+
     //Create Room
     async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
+
 
         const roomId = [];
         const facility = await facilityRepository.findOne(id);
         const {noOfRooms,title,features,description,category,beds,cost}=createRoomDto;
         for(let i=0; i<noOfRooms;i++)
         { 
+
         const room = new Room();
         room.facility = facility;
         room.title=title;
@@ -167,6 +174,7 @@ export class RoomRepository extends Repository<Room>{
         room.status=RoomStatus.AVAILABLE;
         await room.save();
         roomId.push(room);
+
         }
         return roomId;
         

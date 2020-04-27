@@ -1,5 +1,5 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { IsString} from 'class-validator';
+import { IsString,IsOptional} from 'class-validator';
 
 export class AddFacilityDto {
     
@@ -22,6 +22,7 @@ export class AddFacilityDto {
 
 
     @ApiModelProperty({ example:null })
+    @IsOptional()
     starCategory:number;
 
     @ApiModelProperty({ example:null })
@@ -34,6 +35,7 @@ export class AddFacilityDto {
 
     @ApiModelProperty({ example:null })
     @IsString()
+    @IsOptional()
     facilities:string;
 
     @ApiModelProperty({ example:null })

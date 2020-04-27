@@ -3,10 +3,6 @@ import { IsString, IsNumberString , IsOptional } from 'class-validator';
 
 export class UpdateFacilityDto {
 
-    @ApiModelProperty({ example:null })
-    @IsOptional()
-    hotelId:number;
-
 
     @ApiModelProperty({ example:null })
     @IsOptional()
@@ -23,7 +19,7 @@ export class UpdateFacilityDto {
     @IsString()
     readonly panchayath:string;
 
-    @ApiModelProperty({ example:null })
+    @ApiModelProperty({ required:false, example:null })
     @IsOptional()
     @IsString()
     readonly district:string;
