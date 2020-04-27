@@ -1,4 +1,5 @@
 import { ApiModelProperty } from "@nestjs/swagger";
+import { IsOptional } from "class-validator";
 
 
 export class GuestDetailDto {
