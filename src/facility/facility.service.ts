@@ -49,7 +49,7 @@ export class FacilityService {
                 if(await this.validateUser(user)) {
                 console.log(user)
                 data.ownerID=user.id;
-                if(files.length>0){
+                if(files){
                 for(let i=0;i<files.length;i++)
                 {
                     const imgLink = files[i].location;
