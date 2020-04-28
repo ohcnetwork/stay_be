@@ -13,20 +13,26 @@ export class FacilityRepository extends Repository<Facility> {
         return await query.select("DISTINCT(facility.district)").getRawMany();
     }
     //Create Facility
-    async createFacility(addFacilityDto: AddFacilityDto,id:number,imgUrls:any):Promise<any>{
+    async createFacility(addFacilityDto: any,id:number,imgUrls:any):Promise<any>{
 
         const {name,address,panchayath,district,facilities,starCategory,latitude,longitude,contact,policy}=addFacilityDto;
         const facility = new Facility();
         facility.name = name;
         facility.address = address;        
         facility.panchayath =panchayath ;        
-        facility.district = district;        
-        facility.starCategory =starCategory ;        
+        facility.district = district;   
+        if(starCategory === "null")
+            facility.starCategory=null;
+        else
+            facility.starCategory=starCategory;        
         facility.latitude = latitude;        
         facility.longitude =longitude ;        
         facility.contact = contact;        
         facility.policy = policy;  
-        facility.facilities=facilities;      
+        if(facilities === "null")
+            facility.facilities=null;
+        else
+            facility.facilities=facilities;      
         facility.ownerID = id;        
         facility.photos = imgUrls;   
         facility.status= 'ACTIVE';

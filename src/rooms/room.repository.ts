@@ -153,7 +153,7 @@ export class RoomRepository extends Repository<Room>{
             
 
     //Create Room
-    async createRoom(createRoomDto: CreateRoomDto,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
+    async createRoom(createRoomDto: any,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
 
 
         const roomId = [];
@@ -165,7 +165,10 @@ export class RoomRepository extends Repository<Room>{
         const room = new Room();
         room.facility = facility;
         room.title=title;
-        room.features=features;
+        if(features ==="null")
+            room.features=null;
+        else
+            room.features=features;
         room.description=description;
         room.category=category;
         room.beds=beds;

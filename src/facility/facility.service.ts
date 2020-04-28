@@ -44,19 +44,20 @@ export class FacilityService {
         }
     }
     async addfacility(data:any,user:User,files:any): Promise<any> {
+        try{
                 const imgUrls=[];
                 if(await this.validateUser(user)) {
                 console.log(user)
                 data.ownerID=user.id;
-                if(files)
+
+                if(files){
+                for(let i=0;i<files.length;i++)
                 {
-                    for(let i=0;i<files.length;i++)
-                    {
-                        const imgLink = files[i].location;
-                        const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
-                        imgUrls.push(replaceLink);
-                    }
-                }
+                    const imgLink = files[i].location;
+                    const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
+                    imgUrls.push(replaceLink);
+                }}
+
                 return this.facilityRepository.createFacility(data,user.id,imgUrls);
 
                 
@@ -65,7 +66,9 @@ export class FacilityService {
                 throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
             }
         
-        
+        } catch(e){
+            return e;
+        }
     }
 
     async getAllFacility(): Promise<any> {
