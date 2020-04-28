@@ -43,32 +43,44 @@ export class FacilityService {
             throw new UnauthorizedException;
         }
     }
-    async addfacility(data:any,user:User,files:any): Promise<any> {
+   async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
                 const imgUrls=[];
-                if(await this.validateUser(user)) {
-                console.log(user)
-                data.ownerID=user.id;
-
-                if(files){
-                for(let i=0;i<files.length;i++)
+                const str1= "stay-cdn.s3.amazonaws.com";
+                const str2= "stay-cdn.s3.ap-south-1.amazonaws.com";
+                let replaceLink;
+                if(await this.validateUser(user))
                 {
-                    const imgLink = files[i].location;
-                    const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
-                    imgUrls.push(replaceLink);
-                }}
+                    data.ownerID=user.id;
+                    if(files)
+                    {
 
-                return this.facilityRepository.createFacility(data,user.id,imgUrls);
-
-                
+                        for(let i=0;i<files.length;i++)
+                        {
+                            const imgLink = files[i].location;
+                            if(imgLink.includes(str1))
+                            {
+                             replaceLink = imgLink.replace(str1,"stay.cdn.coronasafe.network");
+                            }
+                            if(imgLink.includes(str2))
+                            {
+                             replaceLink = imgLink.replace(str2,"stay.cdn.coronasafe.network");
+                            }
+                            imgUrls.push(replaceLink);
+    
+                        }
+                        return this.facilityRepository.createFacility(data,user.id,imgUrls);
+                    }
+                }
+                else
+                {
+                    throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
+                }
+            
+            } catch(e)
+            {
+                return e;
             }
-            else{
-                throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
-            }
-        
-        } catch(e){
-            return e;
-        }
     }
 
     async getAllFacility(): Promise<any> {
