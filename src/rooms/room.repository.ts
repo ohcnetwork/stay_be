@@ -1,11 +1,9 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Room } from './entity/room.entity';
-import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomStatus } from './room-status.enum';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
-import { NotFoundException } from '@nestjs/common';
 
 
 @EntityRepository(Room)
@@ -27,17 +25,18 @@ export class RoomRepository extends Repository<Room>{
         if(district)
         {   const id = [];
             const facility = await facilityRepository.find({district});
-            if(facility)
+            for(let i=0;i<facility.length;i++)
             {
-                for(let i=0;i<facility.length;i++)
-                {
-                    id.push(facility[i].id);
-                }
-                if(id){
-                    query.andWhere('room.facility.id IN (:...id)',{id}); 
-                }
+                id.push(facility[i].id);
             }
-            
+            if(id.length>0)
+            {
+             query.andWhere('room.facility.id IN (:...id)',{id}); 
+            }
+            else
+            {
+                return id;
+            }
         }
         if(beds)
         {
@@ -52,18 +51,18 @@ export class RoomRepository extends Repository<Room>{
         //query to find rooms based on check in and check out
         if(checkin && checkout)
         {
-
-
             const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
             query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
             const bookId=await query1.getMany()
-            for(let i=0;i<bookId.length;i++){
+            for(let i=0;i<bookId.length;i++)
+            {
                 notAvailable.push(bookId[i].room.id);  
             }
             if(bookId.length>0)
             {
-             query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
+                query.andWhere("room.id NOT IN (:...ids)",{ids:notAvailable});
             }
+            
         }
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
@@ -94,18 +93,19 @@ export class RoomRepository extends Repository<Room>{
         const query = this.createQueryBuilder('room');
         if(checkin && checkout)
 
-        { const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
-            query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
+        { 
+         const query1 = this.createQueryBuilder().from(Booking,'bookings').innerJoin('bookings.room','room').select(['bookings.book_id','bookings.checkin','bookings.checkout','room.id','bookings.statusBooking','bookings.statusCheckin']);
+         query1.where('(bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
          const bookId=await query1.getMany()
-         console.log(bookId)
-            for(let i = 0; i<bookId.length;i++){
-
-                notAvailable.push(bookId[i].room.id);  
-
-            }
-           
-            if(bookId.length>0)
-            {
+         if(bookId)
+         {
+                for(let i = 0; i<bookId.length;i++)
+                {
+                    notAvailable.push(bookId[i].room.id);  
+                }
+         }
+         if(bookId.length>0)
+         {
                 if(hotelid){
                     query.where("room.id NOT IN (:...ids) AND room.facility.id = :hotelId",{ids:notAvailable,hotelId:hotelid});
                 }
@@ -113,8 +113,8 @@ export class RoomRepository extends Repository<Room>{
                 {
                     query.where("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
                 }
-            }
-            else{
+         }
+         else{
                 if(hotelid){
                     query.andWhere("room.facility.id = :hotelId",{hotelId:hotelid});
                 }
@@ -123,18 +123,32 @@ export class RoomRepository extends Repository<Room>{
                     query.andWhere("room.id = :roomId",{roomId:roomid});
                 }
             }
-            if(category){
-                query.andWhere('room.category = :category',{category});
-            }
-          
+
+
+                if(category)
+                {
+                    query.andWhere('room.category = :category',{category});
+                }
+
+                if(minimum && maximum)
+                {
+                    query.andWhere('room.cost >= :minimum AND room.cost <= :maximum',{minimum,maximum});
+                }
+                
+                if(beds)
+                {
+                    query.andWhere('room.beds = :beds',{beds});
+                }
+            
         }
         const rooms= await query.getMany();
         if(rooms)
         {
         return rooms;
         }
-        else{
-                console.log("Rooms not available");
+        else
+        {
+             console.log("Rooms with provided specification not available!!");
         }
     }
  }
