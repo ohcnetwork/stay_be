@@ -49,6 +49,7 @@ export class FacilityService {
                 if(await this.validateUser(user)) {
                 console.log(user)
                 data.ownerID=user.id;
+
                 if(files){
                 for(let i=0;i<files.length;i++)
                 {
@@ -56,6 +57,7 @@ export class FacilityService {
                     const replaceLink = imgLink.replace("stay-cdn.s3.amazonaws.com","stay.cdn.coronasafe.network");
                     imgUrls.push(replaceLink);
                 }}
+
                 return this.facilityRepository.createFacility(data,user.id,imgUrls);
 
                 
