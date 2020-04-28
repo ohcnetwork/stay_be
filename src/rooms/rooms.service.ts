@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, HttpException, HttpStatus} from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import {RoomRepository} from './room.repository';
