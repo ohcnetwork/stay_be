@@ -141,7 +141,7 @@ export class FacilityService {
             if(data.name) {
                 facility.name=data.name
             }
-            if(data.facilities===null || data.facilities) {
+            if(data.facilities==="" || data.facilities) {
                 facility.facilities=data.facilities
             }
             if(data.address) {
