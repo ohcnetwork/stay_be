@@ -9,6 +9,7 @@
   <title>Your reservation is now confirmed</title>
 
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   <style>
     @media screen {
@@ -93,8 +94,8 @@
                   </td>
                 <tr>
                   <td width="80%">
-                    <h1 class="sm-text-lg all-font-roboto" style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">Customer Receipt</h1>
-                    <p class="sm-text-xs" style="margin: 0; color: #a0aec0; font-size: 14px;">Your reservation is now confirmed</p>
+                    <h1 class="sm-text-lg all-font-roboto" style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">Facility Provider Receipt</h1>
+                    <p class="sm-text-xs" style="margin: 0; color: #a0aec0; font-size: 14px;">You have a new registration</p>
                   </td>
                   
                 </tr>
@@ -103,7 +104,7 @@
                   
                   <td>
                     <br><br>
-                    <p class="sm-text-xs" style="margin: 0; font-weight: 400; font-size: 14px;">Hey {{username}}}, thanks for booking with us - your reservation is now confirmed ✔</p>
+                    <p class="sm-text-xs" style="margin: 0; font-weight: 400; font-size: 14px;">Hey {{username}}}, you have a new confirmed reservation ✔</p>
                     </td>
                 </tr>
                 <tr>
@@ -119,10 +120,6 @@
               <table class="sm-leading-32" style="line-height: 28px; font-size: 14px;" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                 <div style="background-color: #edf2f7; height: 2px; line-height: 2px;">&zwnj;</div>
                 <tr>
-                  <td class="sm-inline-block" style="color: #718096;" width="50%">Booking Id</td>
-                  <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{book_id}}</td>
-                </tr>
-                <tr>
                   <td class="sm-inline-block" style="color: #718096;" width="50%">Guest</td>
                   <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{userName}}</td>
                 </tr>
@@ -131,21 +128,31 @@
                   <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{numberOfGuests}}</td>
                 </tr>
                 <tr>
-                    <td class="sm-w-1-4 sm-inline-block" style="color: #718096;" width="50%">Hotel</td>
-                    <td class="sm-w-3-4 sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{hotelName}}</td>
+                  <td class="sm-inline-block" style="color: #718096;" width="50%">Room Type</td>
+                  <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{type}}</td>
+                </tr>
+            </table>
+            <br><br>
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    
+                    <th scope="col">Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Mobile</th>
                   </tr>
-                <tr>
-                  <td class="sm-w-1-4 sm-inline-block" style="color: #718096;" width="50%">Address</td>
-                  <td class="sm-w-3-4 sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{address}}</td>
-                </tr>
-                <tr>
-                  <td class="sm-w-1-4 sm-inline-block" style="color: #718096;" width="50%">Room Type</td>
-                  <td class="sm-w-3-4 sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{type}}</td>
-                </tr>
-                <tr>
-                  <td class="sm-w-1-4 sm-inline-block" style="color: #718096;" width="50%">Mobile number</td>
-                  <td class="sm-w-3-4 sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{phone}}</td>
-                </tr>
+                </thead>
+                <tbody>
+                {{#each guestdetail}}
+                  <tr>
+                    <td>{{name}}</td>
+                    <td>{{gender}}</td>
+                    <td>{{age}}</td>
+                    <td>{{number}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
               </table>
               <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                 <tr>
