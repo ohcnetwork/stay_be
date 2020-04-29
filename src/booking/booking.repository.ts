@@ -101,7 +101,8 @@ export class BookingRepository extends Repository<Booking> {
                           checkout: querybook.checkout,
                           book_id: querybook.book_id,
                           type: querybook.room.category,
-                          phone:querybook.room.facility.contact
+                          phone:querybook.room.facility.contact,
+                          guestdetail:guestdetails
                             
 
                         }
