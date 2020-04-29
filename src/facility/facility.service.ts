@@ -147,7 +147,7 @@ export class FacilityService {
 
     }
     async updateFacility(user:User,id:number,data:any): Promise <any> {
-        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasargod','Allapuzha','Pathanamthitta','Wayanad']
+        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasargod','Alappuzha','Pathanamthitta','Wayanad']
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
         if(facility){

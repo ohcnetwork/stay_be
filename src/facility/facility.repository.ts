@@ -14,7 +14,7 @@ export class FacilityRepository extends Repository<Facility> {
     }
     //Create Facility
     async createFacility(addFacilityDto: any,id:number,imgUrls:any):Promise<any>{
-        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasargod','Allapuzha','Pathanamthitta','Wayanad']
+        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasargod','Alappuzha','Pathanamthitta','Wayanad']
         const {name,address,panchayath,district,facilities,starCategory,latitude,longitude,contact,policy}=addFacilityDto;
         const facility = new Facility();
         facility.name = name;
