@@ -14,13 +14,20 @@ export class FacilityRepository extends Repository<Facility> {
     }
     //Create Facility
     async createFacility(addFacilityDto: any,id:number,imgUrls:any):Promise<any>{
-
+        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasaragod','Alappuzha','Pathanamthitta','Wayanad']
         const {name,address,panchayath,district,facilities,starCategory,latitude,longitude,contact,policy}=addFacilityDto;
         const facility = new Facility();
         facility.name = name;
         facility.address = address;        
-        facility.panchayath =panchayath ;        
-        facility.district = district;   
+        facility.panchayath =panchayath ;  
+        if(L.includes(district)){      
+        facility.district = district;}
+        else{
+            return {
+                success:false,
+                message:'Enter a valid District'
+            }
+        }   
         if(starCategory === "null")
             facility.starCategory=null;
         else
