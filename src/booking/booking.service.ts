@@ -106,7 +106,7 @@ export class BookingService {
              .innerJoin('bookings.room','room')
              .innerJoin('room.facility','facility')
              .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin','user.name','user.email',
-                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district'])
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district','facility.contact'])
       
         .where('bookings.book_id = :id', {id:book_id})
         .getOne();
