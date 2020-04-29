@@ -9,6 +9,7 @@
   <title></title>
 
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   <style>
     @media screen {
@@ -123,7 +124,7 @@
                   <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{book_id}}</td>
                 </tr>
                 <tr>
-                  <td class="sm-inline-block" style="color: #718096;" width="50%">Guest</td>
+                  <td class="sm-inline-block" style="color: #718096;" width="50%">Booked By</td>
                   <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{userName}}</td>
                 </tr>
                 <tr>
@@ -146,6 +147,28 @@
                   <td class="sm-w-1-4 sm-inline-block" style="color: #718096;" width="50%">Hotel Contact</td>
                   <td class="sm-w-3-4 sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{phone}}</td>
                 </tr>
+              </table>
+              <br><br>
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    
+                    <th scope="col">Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Mobile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {{#each guestdetail}}
+                  <tr>
+                    <td>{{name}}</td>
+                    <td>{{gender}}</td>
+                    <td>{{age}}</td>
+                    <td>{{number}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
               </table>
               <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                 <tr>
