@@ -49,8 +49,9 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
-            const str1= "stay-cdn.s3.amazonaws.com";
-            const str2= "stay-cdn.s3.ap-south-1.amazonaws.com";
+            const str1= process.env.AWS_S3_IMAGE_LOCATION1;
+            const str2= process.env.AWS_S3_IMAGE_LOCATION2;
+            const str3= process.env.CORONASAFE_CDN;
             let replaceLink;
             if(await this.validateUser(user,id))
             {
@@ -61,11 +62,11 @@ export class RoomsService {
                         const imgLink = files[i].location;
                         if(imgLink.includes(str1))
                         {
-                         replaceLink = imgLink.replace(str1,"stay.cdn.coronasafe.network");
+                         replaceLink = imgLink.replace(str1,str3);
                         }
                         if(imgLink.includes(str2))
                         {
-                         replaceLink = imgLink.replace(str2,"stay.cdn.coronasafe.network");
+                         replaceLink = imgLink.replace(str2,str3);
                         }
                         imgUrls.push(replaceLink);
 
