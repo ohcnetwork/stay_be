@@ -67,8 +67,8 @@ export class RoomsService {
                                     imgUrls.push(replaceLink);
                                 }
                          }
-                        imgUrls.push(replaceLink);
-                    }
+                     }
+			
 	         }
                 return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
             }
