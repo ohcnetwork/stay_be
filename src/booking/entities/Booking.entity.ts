@@ -59,5 +59,8 @@ export class Booking extends BaseEntity {
     @Column()
     statusCheckin: string;
 
+    @Column()
+    roomNumber: string;
+
 
 }

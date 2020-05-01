@@ -208,10 +208,15 @@ export class BookingRepository extends Repository<Booking> {
                     const book = await bookingRepository.findOne({book_id:id})
                     if (book.statusBooking === "BOOKED") {
                     book.statusCheckin=data.status;
+                    console.log(data.roomNumber);
+                    if(data.status==="CHECKEDIN"){
+                        book.roomNumber=data.roomNumber;
+                    }
                     book.save()
                     return {
                     status:true,
                     message:"Status Changed",
+                    data:book
                   }}
                   else {
                      throw new HttpException ( "Booking was cancelled!",HttpStatus.NOT_ACCEPTABLE);
