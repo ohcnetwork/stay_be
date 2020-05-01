@@ -46,7 +46,7 @@ export class FacilityService {
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
                 const imgUrls=[];
-                const coronasafe_cdn = process.env.CORONASAFE_CDN;
+                const coronasafe_cdn = process.env.CDN_URL;
                 const s3Urls = process.env.S3_URLS.split(",");
                 let replaceLink;
                 if(await this.validateUser(user))
