@@ -46,31 +46,29 @@ export class FacilityService {
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
                 const imgUrls=[];
-                const str1= "stay-cdn.s3.amazonaws.com";
-                const str2= "stay-cdn.s3.ap-south-1.amazonaws.com";
+                const coronasafe_cdn = process.env.CDN_URL;
+                const s3Urls = process.env.S3_URLS.split(",");
                 let replaceLink;
                 if(await this.validateUser(user))
                 {
                     data.ownerID=user.id;
                     if(files)
                     {
-
                         for(let i=0;i<files.length;i++)
                         {
                             const imgLink = files[i].location;
-                            if(imgLink.includes(str1))
+                            for(const url in s3Urls)
                             {
-                             replaceLink = imgLink.replace(str1,"stay.cdn.coronasafe.network");
+                                if(imgLink.includes(url))
+                                {
+                                    replaceLink = imgLink.replace(url,coronasafe_cdn);
+                                    imgUrls.push(replaceLink);
+                                }
                             }
-                            if(imgLink.includes(str2))
-                            {
-                             replaceLink = imgLink.replace(str2,"stay.cdn.coronasafe.network");
-                            }
-                            imgUrls.push(replaceLink);
     
                         }
-                        return this.facilityRepository.createFacility(data,user.id,imgUrls);
                     }
+                    return this.facilityRepository.createFacility(data,user.id,imgUrls);
                 }
                 else
                 {

@@ -49,8 +49,8 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
-            const str1= "stay-cdn.s3.amazonaws.com";
-            const str2= "stay-cdn.s3.ap-south-1.amazonaws.com";
+	        const s3Urls = process.env.S3_URLS.split(",");
+            const coronasafe_cdn= process.env.CDN_URL;
             let replaceLink;
             if(await this.validateUser(user,id))
             {
@@ -59,18 +59,17 @@ export class RoomsService {
                     for(let i=0;i<files.length;i++)
                     {
                         const imgLink = files[i].location;
-                        if(imgLink.includes(str1))
-                        {
-                         replaceLink = imgLink.replace(str1,"stay.cdn.coronasafe.network");
-                        }
-                        if(imgLink.includes(str2))
-                        {
-                         replaceLink = imgLink.replace(str2,"stay.cdn.coronasafe.network");
-                        }
-                        imgUrls.push(replaceLink);
-
-                    }
-	         }
+                        for(const url in s3Urls)
+                         {
+                                if(imgLink.includes(url))
+                                {
+                                    replaceLink = imgLink.replace(url,coronasafe_cdn);
+                                    imgUrls.push(replaceLink);
+                                }
+                         }
+                     }
+			
+	            }
                 return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
             }
             else

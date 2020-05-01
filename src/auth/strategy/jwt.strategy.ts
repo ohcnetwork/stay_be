@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         ExtractJwt.fromBodyField('access_token'),
       ]),
       ignoreExpiration: false,
-      secretOrKey: jwtConfig.secret || process.env.JWT,
+      secretOrKey: process.env.JWT || jwtConfig.secret,
     });
   }
 

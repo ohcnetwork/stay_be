@@ -18,7 +18,7 @@ const jwtConfig = config.get('jwt');
     TypeOrmModule.forFeature([User, UserRepository]),
     PassportModule,
     JwtModule.register({
-      secret: jwtConfig.secret || process.env.JWT,
+      secret: process.env.JWT || jwtConfig.secret,
       signOptions: { expiresIn: '24h' },
     }),
     MailerModule.forRootAsync({

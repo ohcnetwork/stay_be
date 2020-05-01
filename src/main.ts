@@ -41,7 +41,7 @@ async function bootstrap() {
     validationError: { target: false },
   }));
 
-  const port = process.env.PORT || serverConfig.port;
+  const port = process.env.SERVER_PORT || serverConfig.port;
   await app.listen(port);
   logger.log(`Application Listening on Port ${port} `);
   logger.log(`Api documentation avaliable at "/doc/`);
