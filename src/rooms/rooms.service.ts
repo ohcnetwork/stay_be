@@ -49,7 +49,7 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
-	    const s3Urls = process.env.S3_URLS.split(",");
+	        const s3Urls = process.env.S3_URLS.split(",");
             const coronasafe_cdn= process.env.CDN_URL;
             let replaceLink;
             if(await this.validateUser(user,id))
