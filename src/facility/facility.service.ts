@@ -67,8 +67,8 @@ export class FacilityService {
                             }
     
                         }
-                        return this.facilityRepository.createFacility(data,user.id,imgUrls);
                     }
+                    return this.facilityRepository.createFacility(data,user.id,imgUrls);
                 }
                 else
                 {

@@ -69,7 +69,7 @@ export class RoomsService {
                          }
                      }
 			
-	         }
+	            }
                 return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
             }
             else
