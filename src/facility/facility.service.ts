@@ -46,28 +46,25 @@ export class FacilityService {
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
                 const imgUrls=[];
-                const str1= process.env.AWS_S3_IMAGE_LOCATION1;
-                const str2= process.env.AWS_S3_IMAGE_LOCATION2;
-                const str3= process.env.CORONASAFE_CDN;
+                const coronasafe_cdn = process.env.CORONASAFE_CDN;
+                const s3Urls = process.env.S3_URLS.split(",");
                 let replaceLink;
                 if(await this.validateUser(user))
                 {
                     data.ownerID=user.id;
                     if(files)
                     {
-
                         for(let i=0;i<files.length;i++)
                         {
                             const imgLink = files[i].location;
-                            if(imgLink.includes(str1))
+                            for(const url in s3Urls)
                             {
-                             replaceLink = imgLink.replace(str1,str3);
+                                if(imgLink.includes(url))
+                                {
+                                    replaceLink = imgLink.replace(url,coronasafe_cdn);
+                                    imgUrls.push(replaceLink);
+                                }
                             }
-                            if(imgLink.includes(str2))
-                            {
-                             replaceLink = imgLink.replace(str2,str3);
-                            }
-                            imgUrls.push(replaceLink);
     
                         }
                         return this.facilityRepository.createFacility(data,user.id,imgUrls);
