@@ -40,7 +40,7 @@ export class RoomRepository extends Repository<Room>{
         }
         if(beds)
         {
-            query.andWhere('room.beds = :beds',{beds});
+            query.andWhere('room.beds <= :beds',{beds});
         }
         if(category){
             query.andWhere('room.category = :category',{category});
@@ -137,7 +137,7 @@ export class RoomRepository extends Repository<Room>{
                 
                 if(beds)
                 {
-                    query.andWhere('room.beds = :beds',{beds});
+                    query.andWhere('room.beds <= :beds',{beds});
                 }
             
         }
