@@ -83,7 +83,7 @@ export class BookingService {
 
         if(createbookingDto.checkin<createbookingDto.checkout){
 
-        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository,this.mailerService);
+        return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository,this.mailerService,this.userRepository);
         }
         else{
           throw new HttpException("checkin date must be less than checkout date",HttpStatus.BAD_REQUEST)
