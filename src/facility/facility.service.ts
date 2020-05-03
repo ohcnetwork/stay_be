@@ -57,11 +57,11 @@ export class FacilityService {
                         for(let i=0;i<files.length;i++)
                         {
                             const imgLink = files[i].location;
-                            for(const url in s3Urls)
+                            for(const k in s3Urls)
                             {
-                                if(imgLink.includes(url))
+                                if(imgLink.includes(s3Urls[k]))
                                 {
-                                    replaceLink = imgLink.replace(url,coronasafe_cdn);
+                                    replaceLink = imgLink.replace(s3Urls[k],coronasafe_cdn);
                                     imgUrls.push(replaceLink);
                                 }
                             }
