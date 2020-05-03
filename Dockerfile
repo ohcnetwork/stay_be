@@ -3,6 +3,7 @@ RUN apk add python python3 make g++
 WORKDIR /usr/src/app
 COPY . ./
 RUN npm install
+RUN npm run build
 RUN npm prune --production
 
 FROM node:12.14-alpine as production
