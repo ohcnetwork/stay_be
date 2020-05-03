@@ -1,4 +1,4 @@
-import { Repository, EntityRepository, QueryBuilder } from "typeorm";
+import { Repository, EntityRepository, QueryBuilder, getRepository } from "typeorm";
 import { Booking } from "./entities/Booking.entity";
 import { User } from "src/auth/entities/User.entity";
 import { CreateBookingDto } from "./dto/CreateBookingDto.dto";
@@ -8,6 +8,8 @@ import { BookingService } from "./booking.service";
 import { Room } from "src/rooms/entity/room.entity";
 import { GuestDetail } from "./entities/GuestDetail.entity";
 import { MailerService } from "@nestjs-modules/mailer";
+import { UserRepository } from "src/auth/user.repository";
+
 
 @EntityRepository(Booking)
 export class BookingRepository extends Repository<Booking> {
@@ -23,6 +25,7 @@ export class BookingRepository extends Repository<Booking> {
         createbookingDto: CreateBookingDto,
         roomRepository:RoomRepository,
         mailerService: MailerService,
+        userRepository:UserRepository,
         ): Promise<any>{
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
 
@@ -73,12 +76,21 @@ export class BookingRepository extends Repository<Booking> {
              .innerJoin('bookings.room','room')
              .innerJoin('room.facility','facility')
              .innerJoin('bookings.guestdetail','guestdetail')
-             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin','user.name',
+             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin','user.name','facility.ownerID',
                     'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number','facility.contact'])
              .where('bookings.book_id = :id', {id:bookid});
            
 
              const querybook = await query.getOne();
+
+           var ownerid = Number(querybook.room.facility.ownerID);
+
+           
+           const owner = await userRepository.findOne(ownerid)
+           console.log(owner)
+
+
+             
             
              
                         
@@ -108,9 +120,30 @@ export class BookingRepository extends Repository<Booking> {
                         }
 
 
-                      })
+
+                      } )
                       
-                      .then(async () => {
+                      .then(
+                          
+                        async () => {
+                            await mailerService.sendMail({
+                                to: owner.email.toLowerCase(),
+                                from: 'stay@robot.coronasafe.network',
+                                subject: 'new booking!',
+                                template: 'booking_confirmationhotel',
+                                context: {
+                                  //email: user.email,
+                                  userName: querybook.user.name,
+                                  numberOfGuests: guestdetails.length,
+                                  type: querybook.room.category,
+                                  guestdetail:querybook.guestdetail
+                                 
+                                    
+        
+                                }
+        
+                              })
+                            
                           return {
                               success:true,
                               message:"mail send",
@@ -165,8 +198,8 @@ export class BookingRepository extends Repository<Booking> {
              .innerJoin('bookings.room','room')
              .innerJoin('room.facility','facility')
              .innerJoin('bookings.guestdetail','guestdetail')
-             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
-                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','user.name','user.email','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
+             .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin','bookings.roomNumber',
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','room.title','user.name','user.email','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
              .where('facility.id = :id', {id:hotelId});
 
              if(await query.getCount()>0){
@@ -208,10 +241,14 @@ export class BookingRepository extends Repository<Booking> {
                     const book = await bookingRepository.findOne({book_id:id})
                     if (book.statusBooking === "BOOKED") {
                     book.statusCheckin=data.status;
+                    if(data.status==="CHECKEDIN"){
+                        book.roomNumber=data.roomNumber;
+                    }
                     book.save()
                     return {
                     status:true,
                     message:"Status Changed",
+                    data:book
                   }}
                   else {
                      throw new HttpException ( "Booking was cancelled!",HttpStatus.NOT_ACCEPTABLE);

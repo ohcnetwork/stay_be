@@ -5,4 +5,8 @@ export class ChangeStatusDto {
     @ApiModelProperty({ example:null })
     status:string;
 
+    @ApiModelProperty({ example:null })
+    roomNumber:string;
+
+
 }
