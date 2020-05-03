@@ -16,7 +16,7 @@ workflows:
           tag: "${CIRCLE_SHA1},latest"
           filters:
             branches:
-              only: docker-circleci
+              only: master
       - aws-eks/update-container-image:
           cluster-name: "${EKS_CLUSTER_NAME}"
           aws-region: "${AWS_DEFAULT_REGION}"
