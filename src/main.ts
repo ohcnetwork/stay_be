@@ -7,7 +7,7 @@ import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
 Sentry.init({
-  dsn: 'https://1ece66a620394c65af3e1dcc783ecd78@o371117.ingest.sentry.io/5201888' }
+  dsn: process.env.SENTRY_DSN }
   );
 
 async function bootstrap() {
@@ -41,7 +41,7 @@ async function bootstrap() {
     validationError: { target: false },
   }));
 
-  const port = process.env.SERVER_PORT || serverConfig.port;
+  const port = process.env.PORT || serverConfig.port;
   await app.listen(port);
   logger.log(`Application Listening on Port ${port} `);
   logger.log(`Api documentation avaliable at "/doc/`);
