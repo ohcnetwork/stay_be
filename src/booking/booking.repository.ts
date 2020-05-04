@@ -126,7 +126,7 @@ export class BookingRepository extends Repository<Booking> {
                       .then(
                           
                         async () => {
-                            await mailerService.sendMail({
+                           return await mailerService.sendMail({
                                 to: owner.email.toLowerCase(),
                                 from: 'stay@robot.coronasafe.network',
                                 subject: 'new booking!',
@@ -142,13 +142,16 @@ export class BookingRepository extends Repository<Booking> {
         
                                 }
         
+                              }) .then( async ()=>{
+                                return {
+                                    success:true,
+                                    message:"mail send",
+                                      data: querybook
+                                };
+
                               })
                             
-                          return {
-                              success:true,
-                              message:"mail send",
-                                data: querybook
-                          };
+                          
                         }).catch(() => {
                             return {
                               success: false,
