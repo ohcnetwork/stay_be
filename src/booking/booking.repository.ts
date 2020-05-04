@@ -136,7 +136,9 @@ export class BookingRepository extends Repository<Booking> {
                                   userName: querybook.user.name,
                                   numberOfGuests: guestdetails.length,
                                   type: querybook.room.category,
-                                  guestdetail:querybook.guestdetail
+                                  guestdetail:querybook.guestdetail,
+                                  checkin:querybook.checkin,
+                                  checkout:querybook.checkout,
                                  
                                     
         
