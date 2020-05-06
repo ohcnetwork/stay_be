@@ -62,7 +62,7 @@ export class RoomsService {
                          {
                                 if(imgLink.includes(s3Urls[k]))
                                 {
-                                    replaceLink = imgLink.replace("https://"+s3Urls[k]+"/","");
+                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
                                     imgUrls.push(replaceLink);
                                 }
                          }
