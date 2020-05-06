@@ -87,10 +87,17 @@ export class FacilityService {
 
     async getFacility(user:User): Promise<any> {
    
-            if(await this.validateUser(user)){
+        if(await this.validateUser(user)){
         const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
+            for(const i in result)
+            {
+                for(const j in result[i].photos)
+                {
+                    result[i].photos[j] = "https://"+process.env.CDN_URL+"/"+result[i].photos[j];
+                }
+            }
             return{
                 success:true,
                 message:"facilities retrieved",
@@ -114,6 +121,10 @@ export class FacilityService {
             const facility = await this.facilityRepository.findOne({id});
             if(facility)
             {
+                for(const i in facility.photos)
+                {
+                    facility.photos[i] = "https://"+process.env.CDN_URL+"/"+facility.photos[i];
+                }
                 return facility;
             }
             else {
