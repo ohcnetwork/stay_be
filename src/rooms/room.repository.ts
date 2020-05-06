@@ -86,6 +86,13 @@ export class RoomRepository extends Repository<Room>{
         const finalHotel = await facilityRepository.findOne({id:list[i]});
         hotels.push(finalHotel);
     }
+    for(const i in hotels)
+    {
+        for(const j in hotels[i].photos)
+        {
+            hotels[i].photos[j] = "https://"+process.env.CDN_URL+"/"+hotels[i].photos[j];
+        }
+    }
     return hotels;
     } //if filter type is rooms or something
     else {
@@ -144,7 +151,14 @@ export class RoomRepository extends Repository<Room>{
         const rooms= await query.getMany();
         if(rooms)
         {
-        return rooms;
+            for(const i in rooms)
+            {
+                for(const j in rooms[i].photos)
+                {
+                    rooms[i].photos[j] = "https://"+process.env.CDN_URL+"/"+rooms[i].photos[j];
+                }
+            }
+            return rooms;
         }
         else
         {
