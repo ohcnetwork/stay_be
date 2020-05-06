@@ -50,7 +50,6 @@ export class RoomsService {
         {
             const imgUrls=[];
 	        const s3Urls = process.env.S3_URLS.split(",");
-            const coronasafe_cdn= process.env.CDN_URL;
             let replaceLink;
             if(await this.validateUser(user,id))
             {
@@ -63,7 +62,7 @@ export class RoomsService {
                          {
                                 if(imgLink.includes(s3Urls[k]))
                                 {
-                                    replaceLink = imgLink.replace(s3Urls[k],coronasafe_cdn);
+                                    replaceLink = imgLink.replace("https://"+s3Urls[k]+"/","");
                                     imgUrls.push(replaceLink);
                                 }
                          }

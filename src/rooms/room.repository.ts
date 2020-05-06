@@ -169,7 +169,6 @@ export class RoomRepository extends Repository<Room>{
     //Create Room
     async createRoom(createRoomDto: any,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
 
-
         const roomId = [];
         const facility = await facilityRepository.findOne(id);
         const {noOfRooms,title,features,description,category,beds,cost}=createRoomDto;
@@ -194,7 +193,5 @@ export class RoomRepository extends Repository<Room>{
 
         }
         return roomId;
-        
-
     }
 }
