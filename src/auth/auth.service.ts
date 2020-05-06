@@ -179,7 +179,7 @@ export class AuthService {
       const token = uuidv1();
       return await this.mailerService.sendMail({
         to: data.email.toLowerCase(),
-        from: process.env.From,
+        from: process.env.FROM,
         subject: 'Reset Password Link',
         template: 'forgotPwd',
         context: {
