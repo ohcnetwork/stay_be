@@ -35,7 +35,7 @@ export class BookingService {
       const found = await this.userRepository.findOne({id:user.id})
       const hotel = await this.facilityRepository.findOne({id:id})
       //console.log(found.type,hotel.hotelId)
-      if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+      if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
           return found
       }
       else {

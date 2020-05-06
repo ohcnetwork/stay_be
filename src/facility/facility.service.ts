@@ -23,7 +23,7 @@ export class FacilityService {
         console.log(user)
         const found = await this.userRepository.findOne({id:user.id})
         console.log(found.type,found.email)
-        if(found.type === 'facilityowner'){
+        if((found.type === 'facilityowner')||(found.type === 'admin')){
             return found
         }
         else {
@@ -36,7 +36,7 @@ export class FacilityService {
         const hotel = await this.facilityRepository.findOne({id:id})
         console.log(hotel)
         console.log(found)
-        if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+        if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
             return found
         }
         else {
