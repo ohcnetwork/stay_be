@@ -183,7 +183,7 @@ export class AuthService {
         subject: 'Reset Password Link',
         template: 'forgotPwd',
         context: {
-          link: ` ${}/reset-password/${token}`,
+          link: ` ${process.env.HOSTNAME}/reset-password/${token}`,
           email: user.email,
           userName: user.name
         }
