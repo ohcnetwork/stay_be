@@ -101,7 +101,7 @@ export class BookingRepository extends Repository<Booking> {
                     
                    return await mailerService.sendMail({
                         to: user.email.toLowerCase(),
-                        from: process.env.From,
+                        from: process.env.FROM,
                         subject: 'Booking confirmed!',
                         template: 'booking_confirmation',
                         context: {
