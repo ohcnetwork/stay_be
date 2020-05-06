@@ -95,7 +95,7 @@ export class FacilityService {
             {
                 for(const j in result[i].photos)
                 {
-                    result[i].photos[j] = "https://"+process.env.CDN_URL+"/"+result[i].photos[j];
+                    result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
                 }
             }
             return{
@@ -123,7 +123,7 @@ export class FacilityService {
             {
                 for(const i in facility.photos)
                 {
-                    facility.photos[i] = "https://"+process.env.CDN_URL+"/"+facility.photos[i];
+                    facility.photos[i] = `https://${process.env.CDN_URL}/${facility.photos[i]}`;
                 }
                 return facility;
             }
