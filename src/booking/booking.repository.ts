@@ -17,6 +17,7 @@ export class BookingRepository extends Repository<Booking> {
     
     async getAllBooking(): Promise<Booking[]>{
         const query = this.createQueryBuilder('bookings'); 
+         query.innerJoinAndSelect('bookings.guestdetail','guestdetail')
         return await query.getMany();
     }
 
