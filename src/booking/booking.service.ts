@@ -114,7 +114,7 @@ export class BookingService {
 
         return await this.mailerService.sendMail({
           to: book.user.email.toLowerCase(),
-          from: 'stay@robot.coronasafe.network',
+          from: process.env.From,
           subject: 'Booking cancellation',
           template: 'booking_cancellation',
           
