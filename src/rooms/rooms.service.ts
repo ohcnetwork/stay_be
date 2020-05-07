@@ -178,7 +178,7 @@ else{
                     if(data.title) {
                         room.title=data.title
                     }
-                    if(data.features) {
+                    if(data.features != "null") {
                         room.features=data.features
                     }
                     if(data.description) {
