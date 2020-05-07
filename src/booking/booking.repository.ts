@@ -9,6 +9,7 @@ import { Room } from "src/rooms/entity/room.entity";
 import { GuestDetail } from "./entities/GuestDetail.entity";
 import { MailerService } from "@nestjs-modules/mailer";
 import { UserRepository } from "src/auth/user.repository";
+import { getDefaultSettings } from "http2";
 
 
 @EntityRepository(Booking)
@@ -17,6 +18,7 @@ export class BookingRepository extends Repository<Booking> {
     
     async getAllBooking(): Promise<Booking[]>{
         const query = this.createQueryBuilder('bookings'); 
+         query.innerJoinAndSelect('bookings.guestdetail','guestdetail')
         return await query.getMany();
     }
 
@@ -27,6 +29,7 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
+          try{
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
 
         const query = this.createQueryBuilder('bookings');
@@ -43,6 +46,41 @@ export class BookingRepository extends Repository<Booking> {
         if (!query1)
         {
             if(guestdetails.length != 0  ) {
+
+              
+             
+
+               const date1 =new Date(checkout)
+               const date2 =new Date(checkin)
+
+               const currentdate = new Date();
+               const year = currentdate.getFullYear();
+               const month = currentdate.getMonth();
+               const day = currentdate.getDay();
+               const today = year + "-" + month + "-" +day;
+              const futureyear = year+2;
+
+              const monthcheckin = date2.getMonth();
+              const daycheckin = date2.getDate();
+              const yearcheckin = date2.getFullYear();
+              const checkindate = yearcheckin + "-" + monthcheckin + "-" +daycheckin;
+
+               const future = futureyear+ "-" +month + "-" + day;
+              
+
+              const monthcheckout = date1.getMonth();
+              const daycheckout = date1.getDate();
+              const yearcheckout = date1.getFullYear();
+              const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
+               
+               
+
+
+               // console.log(checkout.valueOf()-checkin.valueOf())
+                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
+                {
+                  if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
+                  {
                     
                 
                         const booking = new Booking();
@@ -83,16 +121,14 @@ export class BookingRepository extends Repository<Booking> {
 
              const querybook = await query.getOne();
 
+            
+
+
            var ownerid = Number(querybook.room.facility.ownerID);
 
            
            const owner = await userRepository.findOne(ownerid)
-           console.log(owner)
-
-
-             
-            
-             
+           
                         
 
                        // console.log(querybook.facility.address);
@@ -100,7 +136,7 @@ export class BookingRepository extends Repository<Booking> {
                     
                    return await mailerService.sendMail({
                         to: user.email.toLowerCase(),
-                        from: 'stay@robot.coronasafe.network',
+                        from: process.env.FROM,
                         subject: 'Booking confirmed!',
                         template: 'booking_confirmation',
                         context: {
@@ -109,8 +145,8 @@ export class BookingRepository extends Repository<Booking> {
                           numberOfGuests: guestdetails.length,
                           hotelName: querybook.room.facility.name,
                           address: querybook.room.facility.address,
-                          checkin: querybook.checkin,
-                          checkout: querybook.checkout,
+                          checkin: checkindate,
+                          checkout: checkoutdate,
                           book_id: querybook.book_id,
                           type: querybook.room.category,
                           phone:querybook.room.facility.contact,
@@ -128,17 +164,18 @@ export class BookingRepository extends Repository<Booking> {
                         async () => {
                            return await mailerService.sendMail({
                                 to: owner.email.toLowerCase(),
-                                from: 'stay@robot.coronasafe.network',
+                                from: process.env.FROM,
                                 subject: 'new booking!',
                                 template: 'booking_confirmationhotel',
                                 context: {
                                   //email: user.email,
+                                  ownerName:owner.name,
                                   userName: querybook.user.name,
                                   numberOfGuests: guestdetails.length,
                                   type: querybook.room.category,
                                   guestdetail:querybook.guestdetail,
-                                  checkin:querybook.checkin,
-                                  checkout:querybook.checkout,
+                                  checkin: checkindate,
+                                  checkout: checkoutdate,
                                  
                                     
         
@@ -163,7 +200,15 @@ export class BookingRepository extends Repository<Booking> {
                     
                     
                         
-                   
+                        }
+          else{
+            throw new NotFoundException(" booking not available for entered dates ")
+          }
+                      }
+          
+        else{
+            throw new NotFoundException(" 7 days quarantine is compulsory ")
+        }
                     }
         else {
             throw new NotFoundException("enter guest details")
@@ -172,7 +217,9 @@ export class BookingRepository extends Repository<Booking> {
         else {
             throw new NotFoundException("room not available")
         }
-
+}catch(e){
+ return  e.message
+}
     
     }
 

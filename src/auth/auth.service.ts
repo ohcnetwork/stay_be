@@ -179,11 +179,11 @@ export class AuthService {
       const token = uuidv1();
       return await this.mailerService.sendMail({
         to: data.email.toLowerCase(),
-        from: 'stay@robot.coronasafe.network',
+        from: process.env.FROM,
         subject: 'Reset Password Link',
         template: 'forgotPwd',
         context: {
-          link: ` https://stay.coronasafe.in/reset-password/${token}`,
+          link: ` ${process.env.HOSTNAME}/reset-password/${token}`,
           email: user.email,
           userName: user.name
         }

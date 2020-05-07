@@ -35,7 +35,7 @@ export class BookingService {
       const found = await this.userRepository.findOne({id:user.id})
       const hotel = await this.facilityRepository.findOne({id:id})
       //console.log(found.type,hotel.hotelId)
-      if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+      if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
           return found
       }
       else {
@@ -86,7 +86,7 @@ export class BookingService {
         return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository,this.mailerService,this.userRepository);
         }
         else{
-          throw new HttpException("checkin date must be less than checkout date",HttpStatus.BAD_REQUEST)
+          throw new HttpException("Invalid date",HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -110,11 +110,24 @@ export class BookingService {
       
         .where('bookings.book_id = :id', {id:book_id})
         .getOne();
+
+        const date1 =new Date(book.checkout)
+         const date2 =new Date(book.checkin)
+
+         const monthcheckin = date2.getMonth();
+         const daycheckin = date2.getDate();
+         const yearcheckin = date2.getFullYear();
+         const checkindate = yearcheckin + "-" + monthcheckin + "-" +daycheckin;
+
+         const monthcheckout = date1.getMonth();
+         const daycheckout = date1.getDate();
+         const yearcheckout = date1.getFullYear();
+         const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
           
 
         return await this.mailerService.sendMail({
           to: book.user.email.toLowerCase(),
-          from: 'stay@robot.coronasafe.network',
+          from: process.env.FROM,
           subject: 'Booking cancellation',
           template: 'booking_cancellation',
           
@@ -124,8 +137,8 @@ export class BookingService {
                          
                           hotelName: book.room.facility.name,
                           address: book.room.facility.address,
-                          checkin: book.checkin,
-                          checkout: book.checkout,
+                          checkin: checkindate,
+                          checkout: checkoutdate,
                           book_id: book.book_id,
                           type: book.room.category,
                           phone:book.room.facility.contact

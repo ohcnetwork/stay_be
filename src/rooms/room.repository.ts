@@ -4,6 +4,9 @@ import { RoomStatus } from './room-status.enum';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
+
+import { User } from 'src/auth/entities/User.entity';
+
 import { UnauthorizedException } from '@nestjs/common';
 
 
@@ -76,7 +79,8 @@ export class RoomRepository extends Repository<Room>{
             return {
                 sort:"enter a valid string"
             }
-        }        
+
+        }
 
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
@@ -219,6 +223,22 @@ export class RoomRepository extends Repository<Room>{
 
         }
         return roomId;
+    }
+    async validateUserFacility(user:any,id:any): Promise<any>{
+        
+        const query = this.createQueryBuilder('room');
+            query.innerJoin('room.facility','facility')
+                .select(['facility.id','room.id','facility.ownerID'])
+                .where('room.id = :id and facility.ownerID = :userid', {id:id,userid:user.id})
+            const result = await query.getOne()
+            
+            if(user.type==='facilityowner' && result)
+            {
+                return result;
+            }
+            else{
+                throw new UnauthorizedException();
+            }
     }
     async validateUserFacility(user:any,id:any): Promise<any>{
         

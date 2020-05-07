@@ -25,13 +25,14 @@ export class RoomsService {
         const found = await this.userRepository.findOne({id:user.id})
         const hotel = await this.facilityRepository.findOne({id:id})
         console.log(found.type,hotel.id)
-        if(found.type === 'facilityowner' && hotel.ownerID === found.id){
+        if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
             return found
         }
         else {
             throw new UnauthorizedException;
         }
     }
+    
     async getRooms(filterDto:GetRoomsFilterDto):Promise<Room[]>{
         return this.roomRepository.getRooms(filterDto,this.facilityRepository);
     }
@@ -49,7 +50,10 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
-	        const s3Urls = process.env.S3_URLS.split(",");
+
+	    const s3Urls = process.env.S3_URLS.split(",");
+            const coronasafe_cdn= process.env.CDN_URL;
+
             let replaceLink;
             if(await this.validateUser(user,id))
             {
@@ -81,20 +85,23 @@ export class RoomsService {
     }
     async deleteRoom(user:User,id:any):Promise<any>{
 
+        
         const user1=await this.userRepository.findOne({id:user.id})
         if(id.roomid.length>0){
-            for(var i=0;i<id.roomid.length;i++){
-    
-            const result= await this.roomRepository.findOne(id.roomid[i]);
-    
-            if(await this.roomRepository.validateUserFacility(user1,result.id)) {
-              if(!result)
+        for(var i=0;i<id.roomid.length;i++){
+            
+        const result= await this.roomRepository.findOne(id.roomid[i]);
+        
+        if(await this.roomRepository.validateUserFacility(user1,result.id)) {
+          if(!result)
             {
-                throw new NotFoundException(`Room with id ${id.roomid[i]} not found.`);
+            throw new NotFoundException(`Room with id ${id.roomid[i]} not found.`);
+
          }
          else{
            result.status=RoomStatus.NOT_AVAILABLE
            await this.roomRepository.save(result);
+           
          }
     }
     }
@@ -106,7 +113,9 @@ else{
 }
 
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
-        const user1 = await this.userRepository.findOne({id:user.id})
+
+         const user1 = await this.userRepository.findOne({id:user.id})
+
         const room = await this.getRoomById(id);
         if(await this.roomRepository.validateUserFacility(user1,room.id)){
         room.status=status;

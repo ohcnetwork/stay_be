@@ -68,6 +68,7 @@ export class RoomsController {
     @UseGuards(AuthGuard('jwt'))
     @Delete('/deleteroom')
     deleteRoom(@Req() req:any,@Body() body:DeleteRoom):Promise<void>{
+
         return this.roomsService.deleteRoom(req.user,body);
     }
 
