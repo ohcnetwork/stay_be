@@ -124,6 +124,7 @@ else{
     async getHotelDetail(id:number):Promise<any>{
         const hotel = await this.facilityRepository.findOne({id});
         const room = await this.roomRepository.find({facility:hotel,status:RoomStatus.AVAILABLE})
+        var final=[]
         if(room) {
             const {...result}=room;
             for(const i in result)
@@ -133,12 +134,13 @@ else{
                     if(!result[i].photos[j].includes('/'))
                          result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
                 }
+                final.push(result[i])
             }
         
         if(hotel){
             return {
                 name: hotel.name,
-                data: result
+                data: final
             }
         }
         else {
