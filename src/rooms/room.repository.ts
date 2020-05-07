@@ -129,11 +129,11 @@ export class RoomRepository extends Repository<Room>{
          if(bookId.length>0)
          {
                 if(hotelid){
-                    query.where("room.id NOT IN (:...ids) AND room.facility.id = :hotelId",{ids:notAvailable,hotelId:hotelid});
+                    query.andWhere("room.id NOT IN (:...ids) AND room.facility.id = :hotelId",{ids:notAvailable,hotelId:hotelid});
                 }
                 if(roomid)
                 {
-                    query.where("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
+                    query.andWhere("room.id NOT IN (:...ids) AND room.id = :roomId",{ids:notAvailable,roomId:roomid});
                 }
          }
          else{
