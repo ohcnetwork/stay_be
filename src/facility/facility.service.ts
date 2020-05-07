@@ -95,7 +95,8 @@ export class FacilityService {
             {
                 for(const j in result[i].photos)
                 {
-                    result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
+                    if(!result[i].photos[j].includes('/'))
+                         result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
                 }
             }
             return{
@@ -123,7 +124,8 @@ export class FacilityService {
             {
                 for(const i in facility.photos)
                 {
-                    facility.photos[i] = `https://${process.env.CDN_URL}/${facility.photos[i]}`;
+                    if(!facility.photos[i].includes('/'))
+                         facility.photos[i] = `https://${process.env.CDN_URL}/${facility.photos[i]}`;
                 }
                 return facility;
             }

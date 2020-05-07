@@ -90,7 +90,8 @@ export class RoomRepository extends Repository<Room>{
     {
         for(const j in hotels[i].photos)
         {
-            hotels[i].photos[j] = `https://${process.env.CDN_URL}/${hotels[i].photos[j]}`;
+            if(!hotels[i].photos[j].includes('/'))
+                hotels[i].photos[j] = `https://${process.env.CDN_URL}/${hotels[i].photos[j]}`;
         }
     }
     return hotels;
@@ -154,8 +155,9 @@ export class RoomRepository extends Repository<Room>{
             for(const i in rooms)
             {
                 for(const j in rooms[i].photos)
-                {
-                    rooms[i].photos[j] = `https://${process.env.CDN_URL}/${rooms[i].photos[j]}`;
+                {   
+                    if(!rooms[i].photos[j].includes('/'))
+                        rooms[i].photos[j] = `https://${process.env.CDN_URL}/${rooms[i].photos[j]}`;
                 }
             }
             return rooms;
