@@ -126,4 +126,75 @@ export class RoomsService {
             return await this.roomRepository.getPrice();
         }
 
+        //edit rooms
+        async updateRooms(user:User,data:any,files:any): Promise <any> 
+        {
+            const imgUrls=[];
+	        const s3Urls = process.env.S3_URLS.split(",");
+            let replaceLink;
+            const roomsUpdate = [];
+            const idList = data.ids.split(",");
+            for(const i in idList)
+            {
+                // if(await this.findRoom(user,id)){ //add validation 
+                const room = await this.roomRepository.findOne({id:idList[i] })
+                if(room)
+                {
+                    if(data.title) {
+                        room.title=data.title
+                    }
+                    if(data.features) {
+                        room.features=data.features
+                    }
+                    if(data.description) {
+                        room.description=data.description
+                    }
+                    if(data.category){
+                        room.category = data.category
+                    }
+                    if(data.cost){
+                        room.cost= data.cost;
+                    }
+                    if(data.status){
+                        room.status=data.status
+                    }
+                    if(data.beds){
+                        room.beds= data.beds;
+                    }
+                    if(files)
+                    {  
+                        for(let i=0;i<files.length;i++)
+                        {
+                            const imgLink = files[i].location;
+                            for(const k in s3Urls)
+                            {   
+                                if(imgLink.includes(s3Urls[k]))
+                                {
+                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
+                                    imgUrls.push(replaceLink);
+                                }
+                            }
+        
+                        }
+                        if(imgUrls.length>0)
+                            room.photos=imgUrls;
+                    }
+                    await this.roomRepository.save(room);
+                    const {...result} = room
+                    roomsUpdate.push(result);
+                }
+                else 
+                {
+                    return {
+                        sucess:false,
+                        message: "Updatation failed"
+                    }
+                }
+            }
+            return {
+                success:true,
+                statusCode:200,
+                data: roomsUpdate[0]
+            };
+        }
 }
