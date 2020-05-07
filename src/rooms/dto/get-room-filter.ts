@@ -33,4 +33,7 @@ export class GetRoomsFilterDto{
 
     @IsOptional()
     roomid:number;
+
+    @IsOptional()
+    sort:string;
 }
