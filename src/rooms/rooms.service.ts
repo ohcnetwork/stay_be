@@ -124,14 +124,27 @@ else{
     async getHotelDetail(id:number):Promise<any>{
         const hotel = await this.facilityRepository.findOne({id});
         const room = await this.roomRepository.find({facility:hotel,status:RoomStatus.AVAILABLE})
+        if(room) {
+            const {...result}=room;
+            for(const i in result)
+            {
+                for(const j in result[i].photos)
+                {
+                    if(!result[i].photos[j].includes('/'))
+                         result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
+                }
+            }
         
-        console.log(room,hotel)
         if(hotel){
             return {
                 name: hotel.name,
-                data: room
+                data: result
             }
         }
+        else {
+            throw new HttpException("hotel not found",HttpStatus.NOT_FOUND)
+        }
+    }
         }
         //Get hotel id when room id is passed
         async getHotelId(id:number): Promise<any>{
