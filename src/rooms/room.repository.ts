@@ -112,7 +112,7 @@ export class RoomRepository extends Repository<Room>{
     } //if filter type is rooms or something
     else {
         //query to find rooms based on check in and check out
-        const query = this.createQueryBuilder('room');
+        const query = this.createQueryBuilder('room').where('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
         if(checkin && checkout)
 
         { 
