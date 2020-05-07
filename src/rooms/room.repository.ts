@@ -4,7 +4,9 @@ import { RoomStatus } from './room-status.enum';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
+
 import { User } from 'src/auth/entities/User.entity';
+
 import { UnauthorizedException } from '@nestjs/common';
 
 
@@ -77,7 +79,9 @@ export class RoomRepository extends Repository<Room>{
             return {
                 sort:"enter a valid string"
             }
+
         }
+
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
     const list= [];
@@ -95,6 +99,14 @@ export class RoomRepository extends Repository<Room>{
     {
         const finalHotel = await facilityRepository.findOne({id:list[i]});
         hotels.push(finalHotel);
+    }
+    for(const i in hotels)
+    {
+        for(const j in hotels[i].photos)
+        {
+            if(!hotels[i].photos[j].includes('/'))
+                hotels[i].photos[j] = `https://${process.env.CDN_URL}/${hotels[i].photos[j]}`;
+        }
     }
     return hotels;
     } //if filter type is rooms or something
@@ -154,7 +166,15 @@ export class RoomRepository extends Repository<Room>{
         const rooms= await query.getMany();
         if(rooms)
         {
-        return rooms;
+            for(const i in rooms)
+            {
+                for(const j in rooms[i].photos)
+                {   
+                    if(!rooms[i].photos[j].includes('/'))
+                        rooms[i].photos[j] = `https://${process.env.CDN_URL}/${rooms[i].photos[j]}`;
+                }
+            }
+            return rooms;
         }
         else
         {
@@ -178,7 +198,6 @@ export class RoomRepository extends Repository<Room>{
 
     //Create Room
     async createRoom(createRoomDto: any,id:number,facilityRepository:FacilityRepository,imgUrls:any):Promise<any>{
-
 
         const roomId = [];
         const facility = await facilityRepository.findOne(id);
@@ -204,8 +223,22 @@ export class RoomRepository extends Repository<Room>{
 
         }
         return roomId;
+    }
+    async validateUserFacility(user:any,id:any): Promise<any>{
         
-
+        const query = this.createQueryBuilder('room');
+            query.innerJoin('room.facility','facility')
+                .select(['facility.id','room.id','facility.ownerID'])
+                .where('room.id = :id and facility.ownerID = :userid', {id:id,userid:user.id})
+            const result = await query.getOne()
+            
+            if(user.type==='facilityowner' && result)
+            {
+                return result;
+            }
+            else{
+                throw new UnauthorizedException();
+            }
     }
     async validateUserFacility(user:any,id:any): Promise<any>{
         
@@ -224,3 +257,4 @@ export class RoomRepository extends Repository<Room>{
             }
     }
 }
+

@@ -85,13 +85,28 @@ export class FacilityController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Patch('/:id/update-Facility')
+    @UseInterceptors(
+        FilesInterceptor('file',5,{
+        storage: multerS3({
+          s3: s3,
+          bucket: AWS_S3_BUCKET_NAME,
+          acl: 'public-read',
+          key: function(request, file, cb) {
+            cb(null, `${Date.now().toString()} - ${file.originalname}`);
+          },
+        }),
+        fileFilter: imageFileFilter,
+      }),
+      )
     updateFacility(
         @Req() req:any,
         @Param('id',ParseIntPipe) id:number,
-        @Body() updateFacilityDto: UpdateFacilityDto) {
-        this.logger.verbose("facility updated");
-        return this.facilityService.updateFacility(req.user,id,updateFacilityDto);
-    }
+        @Body() updateFacilityDto: UpdateFacilityDto,
+        @UploadedFile() file )
+        {
+            this.logger.verbose("facility updated");
+            return this.facilityService.updateFacility(req.user,id,updateFacilityDto,req.files);
+        }
     
 
     @Post('search-District')

@@ -50,8 +50,8 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
+
 	    const s3Urls = process.env.S3_URLS.split(",");
-            const coronasafe_cdn= process.env.CDN_URL;
             let replaceLink;
             if(await this.validateUser(user,id))
             {
@@ -64,7 +64,7 @@ export class RoomsService {
                          {
                                 if(imgLink.includes(s3Urls[k]))
                                 {
-                                    replaceLink = imgLink.replace(s3Urls[k],coronasafe_cdn);
+                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
                                     imgUrls.push(replaceLink);
                                 }
                          }
@@ -82,33 +82,38 @@ export class RoomsService {
         }
     }
     async deleteRoom(user:User,id:any):Promise<any>{
+
         
         const user1=await this.userRepository.findOne({id:user.id})
         if(id.roomid.length>0){
-        for(var i=0;i<id.roomid.length;i++){
+        for(var i=0;i<id.roomid.length;i++)
+	{
             
-        const result= await this.roomRepository.findOne(id.roomid[i]);
-        
-        if(await this.roomRepository.validateUserFacility(user1,result.id)) {
-          if(!result)
-            {
-            throw new NotFoundException(`Room with id ${id.roomid[i]} not found.`);
-         }
-         else{
-           result.status=RoomStatus.NOT_AVAILABLE
-           await this.roomRepository.save(result);
-           
-         }
-    }
-    }
+        	const result= await this.roomRepository.findOne(id.roomid[i]);
+        	if(await this.roomRepository.validateUserFacility(user1,result.id))
+		{
+		  if(!result)
+		    {
+		    	throw new NotFoundException(`Room with id ${id.roomid[i]} not found.`);
+		    }
+		   else
+		   {
+			result.status=RoomStatus.NOT_AVAILABLE
+			await this.roomRepository.save(result);
+		   }
+    	        }
+     }
 }
+
 else{
     return new HttpException("no id given",HttpStatus.BAD_REQUEST)
 }
 }
 
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
+
          const user1 = await this.userRepository.findOne({id:user.id})
+
         const room = await this.getRoomById(id);
         if(await this.roomRepository.validateUserFacility(user1,room.id)){
         room.status=status;
@@ -141,4 +146,79 @@ else{
             return await this.roomRepository.getPrice();
         }
 
+        //edit rooms
+        async updateRooms(user:User,data:any,files:any): Promise <any> 
+        {
+            const imgUrls=[];
+	        const s3Urls = "process.env.S3_URLS".split(",");
+            let replaceLink;
+            const roomsUpdate = [];
+            console.log(data.ids)
+            const idList = data.ids.split(",");
+            const user1=await this.userRepository.findOne({id:user.id})
+            for(const i in idList)
+            {   
+                 if(await this.roomRepository.validateUserFacility(user1,idList[i])){ //add validation 
+                const room = await this.roomRepository.findOne({id:idList[i] })
+                if(room)
+                {
+                    if(data.title) {
+                        room.title=data.title
+                    }
+                    if(data.features) {
+                        room.features=data.features
+                    }
+                    if(data.description) {
+                        room.description=data.description
+                    }
+                    if(data.category){
+                        room.category = data.category
+                    }
+                    if(data.cost){
+                        room.cost= data.cost;
+                    }
+                    if(data.status){
+                        room.status=data.status
+                    }
+                    if(data.beds){
+                        room.beds= data.beds;
+                    }
+                    if(files)
+                    {  
+                        for(let i=0;i<files.length;i++)
+                        {
+                            const imgLink = files[i].location;
+                            for(const k in s3Urls)
+                            {   
+                                if(imgLink.includes(s3Urls[k]))
+                                {
+                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
+                                    imgUrls.push(replaceLink);
+                                }
+                            }
+        
+                        }
+                        if(imgUrls.length>0)
+                            room.photos=imgUrls;
+                    }
+                    await this.roomRepository.save(room);
+                    const {...result} = room
+                    roomsUpdate.push(result);
+                }
+                else 
+                {
+                    return {
+                        sucess:false,
+                        message: "Updatation failed"
+                    }
+                }
+            }
+        }
+            return {
+                success:true,
+                statusCode:200,
+                data: roomsUpdate[0]
+            };
+        }
 }
+

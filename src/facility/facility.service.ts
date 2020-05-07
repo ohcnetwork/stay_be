@@ -46,7 +46,6 @@ export class FacilityService {
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
                 const imgUrls=[];
-                const coronasafe_cdn = process.env.CDN_URL;
                 const s3Urls = process.env.S3_URLS.split(",");
                 let replaceLink;
                 if(await this.validateUser(user))
@@ -61,7 +60,7 @@ export class FacilityService {
                             {
                                 if(imgLink.includes(s3Urls[k]))
                                 {
-                                    replaceLink = imgLink.replace(s3Urls[k],coronasafe_cdn);
+                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
                                     imgUrls.push(replaceLink);
                                 }
                             }
@@ -88,10 +87,18 @@ export class FacilityService {
 
     async getFacility(user:User): Promise<any> {
    
-            if(await this.validateUser(user)){
+        if(await this.validateUser(user)){
         const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
+            for(const i in result)
+            {
+                for(const j in result[i].photos)
+                {
+                    if(!result[i].photos[j].includes('/'))
+                         result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
+                }
+            }
             return{
                 success:true,
                 message:"facilities retrieved",
@@ -115,6 +122,11 @@ export class FacilityService {
             const facility = await this.facilityRepository.findOne({id});
             if(facility)
             {
+                for(const i in facility.photos)
+                {
+                    if(!facility.photos[i].includes('/'))
+                         facility.photos[i] = `https://${process.env.CDN_URL}/${facility.photos[i]}`;
+                }
                 return facility;
             }
             else {
@@ -144,7 +156,11 @@ export class FacilityService {
        
 
     }
-    async updateFacility(user:User,id:number,data:any): Promise <any> {
+    async updateFacility(user:User,id:number,data:any,files:any): Promise <any> {
+
+        const imgUrls=[];
+        const s3Urls = process.env.S3_URLS.split(",");
+        let replaceLink;
         const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasaragod','Alappuzha','Pathanamthitta','Wayanad']
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
@@ -184,9 +200,23 @@ export class FacilityService {
             if(data.status){
                 facility.status=data.status
             }
-            if(data.photos)
-            {
-                facility.photos=data.photos
+            if(files)
+            {  
+                for(let i=0;i<files.length;i++)
+                {
+                    const imgLink = files[i].location;
+                    for(const k in s3Urls)
+                    {   
+                        if(imgLink.includes(s3Urls[k]))
+                        {
+                            replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
+                            imgUrls.push(replaceLink);
+                        }
+                    }
+
+                }
+                if(imgUrls.length>0)
+                    facility.photos=imgUrls;
             }
             await this.facilityRepository.save(facility);
             const {...result} = facility
