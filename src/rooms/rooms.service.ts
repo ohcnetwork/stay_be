@@ -79,12 +79,18 @@ export class RoomsService {
             return e;
         }
     }
-    async deleteRoom(user:User,id:number):Promise<void>{
-        const result= await this.roomRepository.findOne(id);
-       if(await this.validateUser(user,result.facility.id)) {
-           if(!result)
+    async deleteRoom(user:User,id:any):Promise<any>{
+
+        const user1=await this.userRepository.findOne({id:user.id})
+        if(id.roomid.length>0){
+            for(var i=0;i<id.roomid.length;i++){
+    
+            const result= await this.roomRepository.findOne(id.roomid[i]);
+    
+            if(await this.roomRepository.validateUserFacility(user1,result.id)) {
+              if(!result)
             {
-            throw new NotFoundException(`Room with id ${id} not found.`);
+                throw new NotFoundException(`Room with id ${id.roomid[i]} not found.`);
          }
          else{
            result.status=RoomStatus.NOT_AVAILABLE
@@ -92,10 +98,17 @@ export class RoomsService {
          }
     }
     }
+}
+
+else{
+    return new HttpException("no id given",HttpStatus.BAD_REQUEST)
+}
+}
 
      async updateRoomStatus(user:User,id:number,status:RoomStatus):Promise<Room>{
+        const user1 = await this.userRepository.findOne({id:user.id})
         const room = await this.getRoomById(id);
-        if(await this.validateUser(user,room.facility.id)){
+        if(await this.roomRepository.validateUserFacility(user1,room.id)){
         room.status=status;
         await room.save();
         return room;}
