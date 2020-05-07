@@ -154,15 +154,17 @@ export class FacilityService {
        
 
     }
-    async updateFacility(user:User,id:number,data:any): Promise <any> {
-        const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasaragod','Alappuzha','Pathanamthitta','Wayanad']
+    async updateFacility(user:User,id:number,data:any,files:any): Promise <any> {
+        const imgUrls=[];
+        const s3Urls = process.env.S3_URLS.split(",");
+        let replaceLink;
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
         if(facility){
             if(data.name) {
                 facility.name=data.name
             }
-            if(data.facilities==="" || data.facilities) {
+            if(data.facilities===null || data.facilities) {
                 facility.facilities=data.facilities
             }
             if(data.address) {
@@ -178,9 +180,7 @@ export class FacilityService {
                 facility.panchayath = data.panchayath
             }
             if(data.district){
-                if(L.includes(data.district)){
-                    facility.district=data.district
-                }
+                facility.district=data.district
             }
             if(data.policy){
                 facility.policy=data.policy;
@@ -194,9 +194,24 @@ export class FacilityService {
             if(data.status){
                 facility.status=data.status
             }
-            if(data.photos)
-            {
-                facility.photos=data.photos
+            
+            if(files)
+            {  
+                for(let i=0;i<files.length;i++)
+                {
+                    const imgLink = files[i].location;
+                    for(const k in s3Urls)
+                    {   
+                        if(imgLink.includes(s3Urls[k]))
+                        {
+                            replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
+                            imgUrls.push(replaceLink);
+                        }
+                    }
+
+                }
+                if(imgUrls.length>0)
+                    facility.photos=imgUrls;
             }
             await this.facilityRepository.save(facility);
             const {...result} = facility
