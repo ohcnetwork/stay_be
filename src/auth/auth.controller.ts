@@ -20,13 +20,7 @@ export class AuthController {
       return this.authService.getUser(req);
     }
   
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard('jwt'))
-    @Get('all-users')
-    getAllUsers() {
-      this.logger.verbose(`User retrieving all users `);
-      return this.authService.getAllUsers();
-    }
+
   
     @UseGuards(AuthGuard('local'))
     @Post('login')
