@@ -110,6 +110,19 @@ export class BookingService {
       
         .where('bookings.book_id = :id', {id:book_id})
         .getOne();
+
+        const date1 =new Date(book.checkout)
+         const date2 =new Date(book.checkin)
+
+         const monthcheckin = date2.getMonth();
+         const daycheckin = date2.getDate();
+         const yearcheckin = date2.getFullYear();
+         const checkindate = yearcheckin + "-" + monthcheckin + "-" +daycheckin;
+
+         const monthcheckout = date1.getMonth();
+         const daycheckout = date1.getDate();
+         const yearcheckout = date1.getFullYear();
+         const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
           
 
         return await this.mailerService.sendMail({
@@ -124,8 +137,8 @@ export class BookingService {
                          
                           hotelName: book.room.facility.name,
                           address: book.room.facility.address,
-                          checkin: book.checkin,
-                          checkout: book.checkout,
+                          checkin: checkindate,
+                          checkout: checkoutdate,
                           book_id: book.book_id,
                           type: book.room.category,
                           phone:book.room.facility.contact
