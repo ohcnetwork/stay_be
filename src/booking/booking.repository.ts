@@ -121,11 +121,14 @@ export class BookingRepository extends Repository<Booking> {
 
              const querybook = await query.getOne();
 
+            
+
+
            var ownerid = Number(querybook.room.facility.ownerID);
 
            
            const owner = await userRepository.findOne(ownerid)
-           //console.log(owner)
+           
                         
 
                        // console.log(querybook.facility.address);
@@ -142,8 +145,8 @@ export class BookingRepository extends Repository<Booking> {
                           numberOfGuests: guestdetails.length,
                           hotelName: querybook.room.facility.name,
                           address: querybook.room.facility.address,
-                          checkin: querybook.checkin,
-                          checkout: querybook.checkout,
+                          checkin: checkindate,
+                          checkout: checkoutdate,
                           book_id: querybook.book_id,
                           type: querybook.room.category,
                           phone:querybook.room.facility.contact,
@@ -166,12 +169,13 @@ export class BookingRepository extends Repository<Booking> {
                                 template: 'booking_confirmationhotel',
                                 context: {
                                   //email: user.email,
+                                  ownerName:owner.name,
                                   userName: querybook.user.name,
                                   numberOfGuests: guestdetails.length,
                                   type: querybook.room.category,
                                   guestdetail:querybook.guestdetail,
-                                  checkin:querybook.checkin,
-                                  checkout:querybook.checkout,
+                                  checkin: checkindate,
+                                  checkout: checkoutdate,
                                  
                                     
         
