@@ -130,13 +130,15 @@ export class RoomsService {
         async updateRooms(user:User,data:any,files:any): Promise <any> 
         {
             const imgUrls=[];
-	        const s3Urls = process.env.S3_URLS.split(",");
+	        const s3Urls = "process.env.S3_URLS".split(",");
             let replaceLink;
             const roomsUpdate = [];
+            console.log(data.ids)
             const idList = data.ids.split(",");
+            const user1=await this.userRepository.findOne({id:user.id})
             for(const i in idList)
-            {
-                // if(await this.findRoom(user,id)){ //add validation 
+            {   
+                 if(await this.roomRepository.validateUserFacility(user1,idList[i])){ //add validation 
                 const room = await this.roomRepository.findOne({id:idList[i] })
                 if(room)
                 {
@@ -191,6 +193,7 @@ export class RoomsService {
                     }
                 }
             }
+        }
             return {
                 success:true,
                 statusCode:200,
@@ -198,3 +201,4 @@ export class RoomsService {
             };
         }
 }
+

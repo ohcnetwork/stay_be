@@ -4,6 +4,7 @@ import { RoomStatus } from './room-status.enum';
 import { GetRoomsFilterDto } from './dto/get-room-filter';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { Booking } from 'src/booking/entities/Booking.entity';
+import { UnauthorizedException } from '@nestjs/common';
 
 
 @EntityRepository(Room)
@@ -14,7 +15,7 @@ export class RoomRepository extends Repository<Room>{
         facilityRepository:FacilityRepository,
         ):Promise<any>{
         
-        const {beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid} = filterDto;
+        const {beds,category,search,minimum,maximum,district,checkin,checkout,type,hotelid,roomid,sort} = filterDto;
         const notAvailable= [];
         //if filter type is hotel
         if(type.localeCompare("hotel")===0){
@@ -67,6 +68,15 @@ export class RoomRepository extends Repository<Room>{
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
         }
+        if(sort === 'low_to_high')
+        query.orderBy("room.cost","ASC")
+        else if(sort === 'high_to_low')
+        query.orderBy("room.cost","DESC")
+        else{
+            return {
+                sort:"enter a valid string"
+            }
+        }        
 
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
@@ -210,4 +220,21 @@ export class RoomRepository extends Repository<Room>{
         }
         return roomId;
     }
+    async validateUserFacility(user:any,id:any): Promise<any>{
+        
+        const query = this.createQueryBuilder('room');
+            query.innerJoin('room.facility','facility')
+                .select(['facility.id','room.id','facility.ownerID'])
+                .where('room.id = :id and facility.ownerID = :userid', {id:id,userid:user.id})
+            const result = await query.getOne()
+            
+            if(user.type==='facilityowner' && result)
+            {
+                return result;
+            }
+            else{
+                throw new UnauthorizedException();
+            }
+    }
 }
+
