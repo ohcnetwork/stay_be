@@ -30,6 +30,7 @@ export class AuthService {
     this.logger.verbose(`User Logged In ${user.name}`);
     if (user) {
       const {...result} = user;
+      delete result.password;
       return {
         success: true,
         message: 'Success',
