@@ -50,12 +50,12 @@ export class RoomsService {
         try
         {
             const imgUrls=[];
-	   //     const s3Urls = process.env.S3_URLS.split(",");
-         //   const coronasafe_cdn= process.env.CDN_URL;
-           // let replaceLink;
+	    const s3Urls = process.env.S3_URLS.split(",");
+            const coronasafe_cdn= process.env.CDN_URL;
+            let replaceLink;
             if(await this.validateUser(user,id))
             {
-             /*   if(files)
+                if(files)
                 {
                     for(let i=0;i<files.length;i++)
                     {
@@ -70,7 +70,7 @@ export class RoomsService {
                          }
                      }
 			
-	            }*/
+	            }
                 return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
             }
             else
