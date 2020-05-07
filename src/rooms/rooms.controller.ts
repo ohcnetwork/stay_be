@@ -44,7 +44,7 @@ export class RoomsController {
       FilesInterceptor('file',5,{
       storage: multerS3({
         s3: s3,
-        bucket: "AWS_S3_BUCKET_NAME",
+        bucket: AWS_S3_BUCKET_NAME,
         acl: 'public-read',
         key: function(request, file, cb) {
           cb(null, `${Date.now().toString()} - ${file.originalname}`);
