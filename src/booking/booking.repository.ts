@@ -47,7 +47,7 @@ export class BookingRepository extends Repository<Booking> {
         {
             if(guestdetails.length != 0  ) {
 
-              var diff = checkout.valueOf() - checkin.valueOf();
+              
              
 
                const date1 =new Date(checkout)
@@ -55,24 +55,31 @@ export class BookingRepository extends Repository<Booking> {
 
                const currentdate = new Date();
                const year = currentdate.getFullYear();
+               const month = currentdate.getMonth();
+               const day = currentdate.getDay();
+               const today = year + "-" + month + "-" +day;
               const futureyear = year+2;
 
-              const futuremonthcheckin = date2.getMonth();
-              const futuredaycheckin = date2.getDate();
-               const futurecheckindate = futureyear+ "-" +futuremonthcheckin + "-" + futuredaycheckin;
-              const futurecheckin = new Date(futurecheckindate)
+              const monthcheckin = date2.getMonth();
+              const daycheckin = date2.getDate();
+              const yearcheckin = date2.getFullYear();
+              const checkindate = yearcheckin + "-" + monthcheckin + "-" +daycheckin;
 
-              const futuremonthcheckout = date1.getMonth();
-              const futuredaycheckout = date1.getDate();
+               const future = futureyear+ "-" +month + "-" + day;
               
-               const futurecheckoutdate = futureyear+ "-" +futuremonthcheckout + "-" + futuredaycheckout;
-               const futurecheckout = new Date(futurecheckoutdate)
+
+              const monthcheckout = date1.getMonth();
+              const daycheckout = date1.getDate();
+              const yearcheckout = date1.getFullYear();
+              const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
+               
+               
 
 
                // console.log(checkout.valueOf()-checkin.valueOf())
                 if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
                 {
-                  if ((date2 >= currentdate) && (date2 <= futurecheckin) && (date1 <= futurecheckout))
+                  if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
                   {
                     
                 
