@@ -69,9 +69,9 @@ export class RoomRepository extends Repository<Room>{
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
         }
-        if(sort === 'ascending')
+        if(sort === 'low_to_high')
         query.orderBy("room.cost","ASC")
-        else if(sort === 'descending')
+        else if(sort === 'high_to_low')
         query.orderBy("room.cost","DESC")
         else{
             return {
