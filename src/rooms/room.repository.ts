@@ -74,9 +74,7 @@ export class RoomRepository extends Repository<Room>{
         else if(sort === 'high_to_low')
         query.orderBy("room.cost","DESC")
         else{
-            return {
-                sort:"enter a valid string"
-            }
+            throw new HttpException("no sort found",HttpStatus.NOT_FOUND)
         }
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
