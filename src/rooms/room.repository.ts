@@ -240,21 +240,5 @@ export class RoomRepository extends Repository<Room>{
                 throw new UnauthorizedException();
             }
     }
-    async validateUserFacility(user:any,id:any): Promise<any>{
-        
-        const query = this.createQueryBuilder('room');
-            query.innerJoin('room.facility','facility')
-                .select(['facility.id','room.id','facility.ownerID'])
-                .where('room.id = :id and facility.ownerID = :userid', {id:id,userid:user.id})
-            const result = await query.getOne()
-            
-            if(user.type==='facilityowner' && result)
-            {
-                return result;
-            }
-            else{
-                throw new UnauthorizedException();
-            }
-    }
 }
 
