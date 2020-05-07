@@ -9,6 +9,7 @@ import { Room } from "src/rooms/entity/room.entity";
 import { GuestDetail } from "./entities/GuestDetail.entity";
 import { MailerService } from "@nestjs-modules/mailer";
 import { UserRepository } from "src/auth/user.repository";
+import { getDefaultSettings } from "http2";
 
 
 @EntityRepository(Booking)
@@ -47,16 +48,32 @@ export class BookingRepository extends Repository<Booking> {
             if(guestdetails.length != 0  ) {
 
               var diff = checkout.valueOf() - checkin.valueOf();
-              console.log(diff);
+             
 
                const date1 =new Date(checkout)
-                const date2 =new Date(checkin)
-               // console.log(checkout.valueOf()-checkin.valueOf())
-                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7){
+               const date2 =new Date(checkin)
 
-               // const diff = (Number(checkout)-Number(checkin))
-                //(checkout.toLocaleString()-checkin.toDateString())
-               //console.log(diff)
+               const currentdate = new Date();
+               const year = currentdate.getFullYear();
+              const futureyear = year+2;
+
+              const futuremonthcheckin = date2.getMonth();
+              const futuredaycheckin = date2.getDate();
+               const futurecheckindate = futureyear+ "-" +futuremonthcheckin + "-" + futuredaycheckin;
+              const futurecheckin = new Date(futurecheckindate)
+
+              const futuremonthcheckout = date1.getMonth();
+              const futuredaycheckout = date1.getDate();
+              
+               const futurecheckoutdate = futureyear+ "-" +futuremonthcheckout + "-" + futuredaycheckout;
+               const futurecheckout = new Date(futurecheckoutdate)
+
+
+               // console.log(checkout.valueOf()-checkin.valueOf())
+                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
+                {
+                  if ((date2 >= currentdate) && (date2 <= futurecheckin) && (date1 <= futurecheckout))
+                  {
                     
                 
                         const booking = new Booking();
@@ -102,11 +119,6 @@ export class BookingRepository extends Repository<Booking> {
            
            const owner = await userRepository.findOne(ownerid)
            //console.log(owner)
-
-
-             
-            
-             
                         
 
                        // console.log(querybook.facility.address);
@@ -178,6 +190,11 @@ export class BookingRepository extends Repository<Booking> {
                     
                         
                         }
+          else{
+            throw new NotFoundException(" booking not available for entered dates ")
+          }
+                      }
+          
         else{
             throw new NotFoundException(" 7 days quarantine is compulsory ")
         }
