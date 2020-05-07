@@ -56,6 +56,7 @@ export class AuthController {
 
 @Post('forget-password')
   forgotPassword(@Body() body: ForgetPasswordDtoDto) {
+    this.logger.verbose("Forgot Password function called");
     return this.authService.forgetPassword(body);
 }
 }

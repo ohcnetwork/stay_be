@@ -1,6 +1,7 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { IsDate } from "class-validator";
+import { IsDate, IsDateString } from "class-validator";
 import { GuestDetailDto } from "./GuestDetailDto.dto";
+import { Type } from "@nestjs/common";
 
 export class CreateBookingDto {
 
@@ -8,12 +9,13 @@ export class CreateBookingDto {
     roomid:number;
 
     @ApiModelProperty({ example:null })
-    //@IsDate()
-    checkin:string;
+   // @IsDateString()
+    checkin:Date;
 
     //@IsDate()
     @ApiModelProperty({ example:null })
-    checkout:string;
+    //@IsDate()
+    checkout:Date;
 
     @ApiModelProperty({
         type: GuestDetailDto,
@@ -21,4 +23,11 @@ export class CreateBookingDto {
       })
       readonly guestdetails: GuestDetailDto[];
 
+}
+function format(inputDate) {
+  var date = new Date(inputDate);
+  if (!isNaN(date.getTime())) {
+      // Months use 0 index.
+      return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+  }
 }

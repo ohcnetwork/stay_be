@@ -11,6 +11,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import {imageFileFilter} from './middleware/file-upload.utils';
 const AWS = require('aws-sdk');
 import * as multerS3 from 'multer-s3';
+import { DeleteRoom } from './dto/delete-room.dto';
 
 const AWS_S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME;
 const s3 = new AWS.S3();
@@ -64,9 +65,10 @@ export class RoomsController {
 
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
-    @Delete('/:id')
-    deleteRoom(@Req() req:any,@Param('id',ParseIntPipe) id:number):Promise<void>{
-        return this.roomsService.deleteRoom(req.user,id);
+    @Delete('/deleteroom')
+    deleteRoom(@Req() req:any,@Body() body:DeleteRoom):Promise<void>{
+        console.log("delete room")
+        return this.roomsService.deleteRoom(req.user,body);
     }
 
     @ApiBearerAuth()

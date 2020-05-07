@@ -9,11 +9,33 @@
   <title></title>
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+  <style>
+    @media only screen and (min-width: 768px) {
+      .resp {
+        width: 75%;
+      }
+    }
+
+    @media only screen and (min-width: 992px) {
+      .resp {
+        width: 50%;
+      }
+    }
+
+    .text-gray-600 {
+      color: #718096
+    }
+
+    .bg-gray-200 {
+      background-color: rbg(226, 232, 240, .75);
+    }
+  </style>
 </head>
 
-<body class="bg-gray-200 bg-opacity-75" style="font-family: 'Roboto';">
+<body class="bg-gray-200 " style="font-family: 'Roboto';">
   <div class="flex flex-wrap">
-    <div class="w-full md:w-2/3 lg:w-1/2 bg-white mx-auto mb-1 mt-10 sm:px-2 md:px-4 s py-4">
+    <div class=" bg-white mx-auto mb-1 mt-10 sm:px-2 md:px-4 s py-4 resp">
       <div class=" w-full mr-auto mb-1 px-6 mt-6">
         <div class="flex flex-row">
           <div>
@@ -83,7 +105,7 @@
           </thead>
           <tbody>
             {{#each guestdetail}}
-            <tr class="text-xs sm:text-sm">
+            <tr class="text-xs sm:text-sm border-b">
               <td class="pr-2 py-2 text-left text-sm break-all">{{name}}</td>
               <td class="px-2 py-2 text-left text-sm">{{gender}}</td>
               <td class="px-2 py-2 text-left text-sm">{{age}}</td>
