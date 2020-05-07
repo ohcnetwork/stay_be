@@ -28,6 +28,7 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
+          try{
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
 
         const query = this.createQueryBuilder('bookings');
@@ -44,6 +45,18 @@ export class BookingRepository extends Repository<Booking> {
         if (!query1)
         {
             if(guestdetails.length != 0  ) {
+
+              var diff = checkout.valueOf() - checkin.valueOf();
+              console.log(diff);
+
+               const date1 =new Date(checkout)
+                const date2 =new Date(checkin)
+               // console.log(checkout.valueOf()-checkin.valueOf())
+                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7){
+
+               // const diff = (Number(checkout)-Number(checkin))
+                //(checkout.toLocaleString()-checkin.toDateString())
+               //console.log(diff)
                     
                 
                         const booking = new Booking();
@@ -88,7 +101,7 @@ export class BookingRepository extends Repository<Booking> {
 
            
            const owner = await userRepository.findOne(ownerid)
-           console.log(owner)
+           //console.log(owner)
 
 
              
@@ -101,7 +114,7 @@ export class BookingRepository extends Repository<Booking> {
                     
                    return await mailerService.sendMail({
                         to: user.email.toLowerCase(),
-                        from: process.env.FROM,
+                        from: process.env.From,
                         subject: 'Booking confirmed!',
                         template: 'booking_confirmation',
                         context: {
@@ -129,7 +142,7 @@ export class BookingRepository extends Repository<Booking> {
                         async () => {
                            return await mailerService.sendMail({
                                 to: owner.email.toLowerCase(),
-                                from: process.env.FROM,
+                                from: process.env.From,
                                 subject: 'new booking!',
                                 template: 'booking_confirmationhotel',
                                 context: {
@@ -164,7 +177,10 @@ export class BookingRepository extends Repository<Booking> {
                     
                     
                         
-                   
+                        }
+        else{
+            throw new NotFoundException(" 7 days quarantine is compulsory ")
+        }
                     }
         else {
             throw new NotFoundException("enter guest details")
@@ -173,7 +189,9 @@ export class BookingRepository extends Repository<Booking> {
         else {
             throw new NotFoundException("room not available")
         }
-
+}catch(e){
+ return  e.message
+}
     
     }
 

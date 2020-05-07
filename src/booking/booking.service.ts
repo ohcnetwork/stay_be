@@ -86,7 +86,7 @@ export class BookingService {
         return this.bookingRepository.createBooking(user,createbookingDto,this.roomRepository,this.mailerService,this.userRepository);
         }
         else{
-          throw new HttpException("checkin date must be less than checkout date",HttpStatus.BAD_REQUEST)
+          throw new HttpException("Invalid date",HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -114,7 +114,7 @@ export class BookingService {
 
         return await this.mailerService.sendMail({
           to: book.user.email.toLowerCase(),
-          from: process.env.FROM,
+          from: process.env.From,
           subject: 'Booking cancellation',
           template: 'booking_cancellation',
           
