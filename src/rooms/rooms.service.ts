@@ -164,17 +164,17 @@ else{
         //edit rooms
         async updateRooms(user:User,data:any,files:any): Promise <any> 
         {
-            const imgUrls=[];
-	        const s3Urls = "process.env.S3_URLS".split(",");
+            let imgUrls=[];
+	    const s3Urls = process.env.S3_URLS.split(",");
             let replaceLink;
             const roomsUpdate = [];
             console.log(data.ids)
             const idList = data.ids.split(",");
             const user1=await this.userRepository.findOne({id:user.id})
-            for(const i in idList)
+            for(const x in idList)
             {   
-                 if(await this.roomRepository.validateUserFacility(user1,idList[i])){ //add validation 
-                const room = await this.roomRepository.findOne({id:idList[i] })
+                if(await this.roomRepository.validateUserFacility(user1,idList[x])){ 
+                const room = await this.roomRepository.findOne({id:idList[x] })
                 if(room)
                 {
                     if(data.title) {
@@ -215,6 +215,8 @@ else{
                         }
                         if(imgUrls.length>0)
                             room.photos=imgUrls;
+			    
+			imgUrls=[];
                     }
                     await this.roomRepository.save(room);
                     const {...result} = room

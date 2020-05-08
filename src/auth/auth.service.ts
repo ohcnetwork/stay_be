@@ -79,6 +79,8 @@ export class AuthService {
 
         const registerUser = await this.userRepository.save(data);
         const {...result} = registerUser;
+        delete result.password;
+        delete result.confirm;
         return {
           success: true,
           message: 'Success',

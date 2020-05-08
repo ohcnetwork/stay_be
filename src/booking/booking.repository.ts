@@ -29,7 +29,7 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
-          
+
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
      
      
