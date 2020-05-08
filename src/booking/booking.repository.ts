@@ -235,7 +235,7 @@ export class BookingRepository extends Repository<Booking> {
              .innerJoin('room.facility','facility')
              .innerJoin('bookings.guestdetail','guestdetail')
              .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
-                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','facility.photos','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
              .where('user.id = :id', {id:user.id});
             var final=[]
 
