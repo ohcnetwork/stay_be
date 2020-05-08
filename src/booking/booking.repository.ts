@@ -80,7 +80,7 @@ export class BookingRepository extends Repository<Booking> {
             
              
                // console.log(checkout.valueOf()-checkin.valueOf())
-                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
+                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 6) 
                 {
                   
                   if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
