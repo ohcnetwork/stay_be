@@ -171,10 +171,10 @@ else{
             console.log(data.ids)
             const idList = data.ids.split(",");
             const user1=await this.userRepository.findOne({id:user.id})
-            for(const i in idList)
+            for(const x in idList)
             {   
-                 if(await this.roomRepository.validateUserFacility(user1,idList[i])){ 
-                const room = await this.roomRepository.findOne({id:idList[i] })
+                if(await this.roomRepository.validateUserFacility(user1,idList[x])){ 
+                const room = await this.roomRepository.findOne({id:idList[x] })
                 if(room)
                 {
                     if(data.title) {
