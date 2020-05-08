@@ -215,6 +215,8 @@ else{
                         }
                         if(imgUrls.length>0)
                             room.photos=imgUrls;
+			    
+			imgUrls=[];
                     }
                     await this.roomRepository.save(room);
                     const {...result} = room
