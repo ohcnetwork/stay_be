@@ -41,7 +41,7 @@ export class UpdateRoomDto {
     readonly ids:string;
 
     @ApiModelProperty({ example:null })
-    @IsNotEmpty()
+    @IsOptional()
     status:RoomStatus;
 
 }
