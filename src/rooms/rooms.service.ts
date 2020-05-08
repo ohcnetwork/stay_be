@@ -164,7 +164,7 @@ else{
         //edit rooms
         async updateRooms(user:User,data:any,files:any): Promise <any> 
         {
-            const imgUrls=[];
+            let imgUrls=[];
 	    const s3Urls = process.env.S3_URLS.split(",");
             let replaceLink;
             const roomsUpdate = [];
