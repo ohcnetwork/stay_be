@@ -84,7 +84,7 @@ export class BookingService {
 
             } 
             const pattern = /^((\+91|91|0)[\- ]{0,1})?[456789]\d{9}$/;
-          if (! pattern.test(String(guestdetails[i].number))){
+          if ((! pattern.test(String(guestdetails[i].number))) && (String( guestdetails[i].number)!="null")){
             throw new HttpException({detail:"Invalid mobile number"},HttpStatus.BAD_REQUEST)
           }
         }
