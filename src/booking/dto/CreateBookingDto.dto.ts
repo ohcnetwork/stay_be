@@ -9,25 +9,18 @@ export class CreateBookingDto {
     roomid:number;
 
     @ApiModelProperty({ example:null })
-   // @IsDateString()
+    //@IsDateString()
     checkin:Date;
 
     //@IsDate()
     @ApiModelProperty({ example:null })
-    //@IsDate()
+   // @IsDate()
     checkout:Date;
 
     @ApiModelProperty({
         type: GuestDetailDto,
         isArray: true,
       })
-      readonly guestdetails: GuestDetailDto[];
+       guestdetails: GuestDetailDto[];
 
-}
-function format(inputDate) {
-  var date = new Date(inputDate);
-  if (!isNaN(date.getTime())) {
-      // Months use 0 index.
-      return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-  }
 }
