@@ -29,25 +29,28 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
-          try{
+          
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
-
+     
+     
+        
+          
         const query = this.createQueryBuilder('bookings');
-            
+          
         query.innerJoin('bookings.room','room')
                 .innerJoin('room.facility','facility')
                 .select(['bookings.checkin','bookings.statusBooking','bookings.checkout','room.id','bookings.statusCheckin','room.beds'])
                 .where('(room.id = :id)AND (bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{id:roomid,Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
-           
+                
               const query1 =   await query.getOne();
-             
+                
             
        // const found = await bookingRepository.findOne({room.id:roomid})
         if (!query1)
         {
             if(guestdetails.length != 0  ) {
 
-              
+            
              
 
                const date1 =new Date(checkout)
@@ -74,15 +77,16 @@ export class BookingRepository extends Repository<Booking> {
               const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
                
                
-
-
+            
+             
                // console.log(checkout.valueOf()-checkin.valueOf())
                 if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
                 {
+                  
                   if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
                   {
                     
-                
+                    
                         const booking = new Booking();
                         booking.checkin = checkin;
                         booking.checkout = checkout;
@@ -106,8 +110,7 @@ export class BookingRepository extends Repository<Booking> {
                         }
                       const bookid  = booking.book_id
                     
-
-
+                      
         //const data = {userid:userId, roomid:roomId,}
         const query = this.createQueryBuilder('bookings');
         query.innerJoin('bookings.user','user')
@@ -198,28 +201,30 @@ export class BookingRepository extends Repository<Booking> {
                             };
                           });
                     
-                    
                         
+                        
+  
                         }
+                      
           else{
-            throw new NotFoundException(" booking not available for entered dates ")
+            throw new HttpException({detail:"Booking is not available for entered dates"},HttpStatus.NOT_FOUND)
           }
+        
                       }
           
         else{
-            throw new NotFoundException(" 7 days quarantine is compulsory ")
+          throw new HttpException({detail:"7 days quarantine is compulsory"},HttpStatus.NOT_FOUND)
         }
-                    }
+                 }
+                    
         else {
-            throw new NotFoundException("enter guest details")
+          throw new HttpException({detail:"Enter details"},HttpStatus.NOT_FOUND)
         }
         }
         else {
-            throw new NotFoundException("room not available")
+          throw new HttpException({detail:"Room not available"},HttpStatus.NOT_FOUND)
         }
-}catch(e){
- return  e.message
-}
+
     
     }
 
@@ -239,7 +244,7 @@ export class BookingRepository extends Repository<Booking> {
                 return await query.getMany();
                 }
                 else{
-                    throw new NotFoundException("No Bookings")
+                    throw new NotFoundException({detail:"No Bookings"})
                 }
 
     }
@@ -259,7 +264,7 @@ export class BookingRepository extends Repository<Booking> {
                 return await query.getMany();
                 }
                 else{
-                    throw new NotFoundException("No Bookings")
+                    throw new NotFoundException({detail:"No Bookings"})
                 }
 
 
@@ -303,7 +308,7 @@ export class BookingRepository extends Repository<Booking> {
                     data:book
                   }}
                   else {
-                     throw new HttpException ( "Booking was cancelled!",HttpStatus.NOT_ACCEPTABLE);
+                     throw new HttpException ( {detail:"Booking was cancelled!"},HttpStatus.NOT_ACCEPTABLE);
                   }
 
             }

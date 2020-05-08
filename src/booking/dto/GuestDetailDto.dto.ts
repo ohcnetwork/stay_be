@@ -1,22 +1,25 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import { IsOptional } from "class-validator";
+import { IsOptional,  IsIn } from "class-validator";
+
 
 
 export class GuestDetailDto {
   
 
     @ApiModelProperty({ example:null })
-    readonly name:string;
+     name:string;
 
     @ApiModelProperty()
-    readonly age:number;
+     age:number;
 
     @ApiModelProperty()
-    readonly gender:string;
+    @IsIn(["MALE","FEMALE", "OTHER"])
+    gender:string;
 
      @ApiModelProperty({ required: false, example: null })
     @IsOptional()
-    readonly number:number;
+   
+   number:number;
 
     
 }
