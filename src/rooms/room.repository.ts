@@ -7,7 +7,7 @@ import { Booking } from 'src/booking/entities/Booking.entity';
 
 import { User } from 'src/auth/entities/User.entity';
 
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
 
 
 @EntityRepository(Room)
@@ -71,16 +71,15 @@ export class RoomRepository extends Repository<Room>{
         if(search){
             query.andWhere('(room.title LIKE :search OR room.description LIKE :search OR room.status LIKE :search)',{search: `%${search}%`});
         }
+        if(sort){
         if(sort === 'low_to_high')
         query.orderBy("room.cost","ASC")
         else if(sort === 'high_to_low')
         query.orderBy("room.cost","DESC")
         else{
-            return {
-                sort:"enter a valid string"
-            }
+            throw new HttpException("enter valid sort string",HttpStatus.NOT_FOUND)
 
-        }
+        }}
 
     const[room,count]= await query.getManyAndCount();
     //from all the rooms extract unique hotel id's
