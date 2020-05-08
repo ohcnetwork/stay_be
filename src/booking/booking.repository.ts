@@ -237,12 +237,23 @@ export class BookingRepository extends Repository<Booking> {
              .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
                     'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
              .where('user.id = :id', {id:user.id});
-
+            var final=[]
 
              if(await query.getCount()>0){
 
-                return await query.getMany();
+              // return await query.getMany();
+              const result =await  query.getMany();
+              for(const  i in result)
+              {
+                for(const j in result[i].room.facility.photos)
+                {
+                  if(!result[i].room.facility.photos[j].includes('/'))
+                      result[i].room.facility.photos[j] = `https://${process.env.CDN_URL}/${result[i].room.facility.photos[j]}`;
                 }
+                final.push(result[i])
+              }
+                return final;
+            }
                 else{
                     throw new NotFoundException({detail:"No Bookings"})
                 }
