@@ -83,7 +83,7 @@ export class BookingRepository extends Repository<Booking> {
                 if(((+date1-+date2)/(1000 * 3600 * 24)) >= 6) 
                 {
                   
-                  if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
+                  if ((new Date(checkindate) >= new Date(today)) && (new Date(checkindate) <= new Date(future)) && (new Date(checkoutdate) <= new Date(future)))
                   {
                     
                     
