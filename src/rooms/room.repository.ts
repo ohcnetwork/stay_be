@@ -23,7 +23,7 @@ export class RoomRepository extends Repository<Room>{
         //if filter type is hotel
         if(type.localeCompare("hotel")===0){
 
-        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'});
+        const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'}).andWhere('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
 
        
         if(district)
