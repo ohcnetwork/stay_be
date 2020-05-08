@@ -29,7 +29,7 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
-          try{
+         
         const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
 
         const query = this.createQueryBuilder('bookings');
@@ -217,9 +217,7 @@ export class BookingRepository extends Repository<Booking> {
         else {
             throw new NotFoundException("room not available")
         }
-}catch(e){
- return  e.message
-}
+
     
     }
 
