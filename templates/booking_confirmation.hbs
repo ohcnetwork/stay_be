@@ -11,9 +11,23 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
   <style>
+    .table-resp {
+      min-width: 270px;
+    }
+
+    @media only screen and (min-width: 500px) {
+      .table-resp {
+        min-width: 500px;
+      }
+    }
+
     @media only screen and (min-width: 768px) {
       .resp {
         width: 75%;
+      }
+
+      .table-resp {
+        min-width: 500px;
       }
     }
 
@@ -21,7 +35,12 @@
       .resp {
         width: 50%;
       }
+
+      .table-resp {
+        min-width: 500px;
+      }
     }
+
 
     .color-gray-600 {
       color: #718096
@@ -42,8 +61,8 @@
 </head>
 
 <body style="font-family: 'Roboto';  background-color: rgb(226, 232, 240, .75); ;">
-  <div class="resp mx-auto flex flex-wrap">
-    <div class="mb-1 mt-10 sm:px-2 md:px-4 px-1 pt-4 " style="background-color: white;">
+  <div class="mx-auto flex flex-wrap">
+    <div class="mb-1 mt-10 sm:px-2 md:px-4 px-1 pt-4 resp" style="background-color: white;">
       <div class=" w-full mr-auto mb-1 px-6 mt-6">
         <div class="flex flex-row">
           <div>
@@ -102,7 +121,7 @@
 
       </div>
       <div class="w-full mx-auto mb-4 mt-1">
-        <table class="table-fixed mx-auto w-full">
+        <table class="table-fixed mx-auto table-resp">
           <thead class="bgcolor-gray-700 color-white">
             <tr class="text-sm sm:text-base">
               <th class="border px-2 py-2 text-left">Name</th>

@@ -11,15 +11,33 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
   <style>
+    .table-resp {
+      min-width: 270px;
+    }
+
+    @media only screen and (min-width: 500px) {
+      .table-resp {
+        min-width: 500px;
+      }
+    }
+
     @media only screen and (min-width: 768px) {
       .resp {
         width: 75%;
+      }
+
+      .table-resp {
+        min-width: 500px;
       }
     }
 
     @media only screen and (min-width: 992px) {
       .resp {
         width: 50%;
+      }
+
+      .table-resp {
+        min-width: 500px;
       }
     }
 
@@ -79,7 +97,7 @@
         </div>
       </div>
       <div class="w-full mx-auto mb-4 mt-1 md:px-4">
-        <table class="w-full table-fixed mx-auto ">
+        <table class="table-fixed mx-auto table-resp">
           <thead class="color-white" style="background-color: rgb(74, 85, 104, 1);">
             <tr class="text-sm sm:text-base">
               <th class="border px-2 py-2 text-left">Name</th>
