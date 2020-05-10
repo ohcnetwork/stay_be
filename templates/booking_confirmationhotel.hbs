@@ -1,204 +1,134 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en">
+
 <head>
-  <meta charset="utf8">
+  <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="x-apple-disable-message-reformatting">
   <title></title>
-
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
   <style>
-    @media screen {
-      img {
-        max-width: 100%;
-      }
-      td,
-      th {
-        box-sizing: border-box;
-      }
-      u~div .wrapper {
-        min-width: 100vw;
-      }
-      a[x-apple-data-detectors] {
-        color: inherit;
-        text-decoration: none;
-      }
-      .all-font-roboto {
-        font-family: Roboto, -apple-system, "Segoe UI", sans-serif !important;
-      }
-      .all-font-sans {
-        font-family: -apple-system, "Segoe UI", sans-serif !important;
+    @media only screen and (min-width: 768px) {
+      .resp {
+        width: 75%;
       }
     }
-    @media (max-width: 600px) {
-      .sm-inline-block {
-        display: inline-block !important;
-      }
-      .sm-hidden {
-        display: none !important;
-      }
-      .sm-leading-32 {
-        line-height: 32px !important;
-      }
-      .sm-p-20 {
-        padding: 20px !important;
-      }
-      .sm-py-12 {
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
-      }
-      .sm-text-center {
-        text-align: center !important;
-      }
-      .sm-text-xs {
-        font-size: 12px !important;
-      }
-      .sm-text-lg {
-        font-size: 18px !important;
-      }
-      .sm-w-1-4 {
-        width: 25% !important;
-      }
-      .sm-w-3-4 {
-        width: 75% !important;
-      }
-      .sm-w-full {
-        width: 100% !important;
+
+    @media only screen and (min-width: 992px) {
+      .resp {
+        width: 50%;
       }
     }
-  </style>
-  <style>
-    @media (max-width: 600px) {
-      .sm-dui17-b-t {
-        border: solid #4299e1;
-        border-width: 4px 0 0;
-      }
+
+    .color-gray-600 {
+      color: #718096
+    }
+
+    .color-white {
+      color: white;
+    }
+
+    .bgcolor-gray-200 {
+      background-color: rgb(226, 232, 240, .75);
     }
   </style>
 </head>
-<body style="box-sizing: border-box; margin: 0; padding: 0; width: 100%; word-break: break-word; -webkit-font-smoothing: antialiased; background-color: #f4f4f5;">
-  <div style="display: block; line-height: 0; font-size: 0;">New booking in your hotel</div>
-  <table class="wrapper all-font-sans" width="100%" height="100%" cellpadding="0" cellspacing="0" role="presentation">
-    <tr>
-      <td align="center" style="padding: 24px;" width="100%">
-        <table class="sm-w-full" width="600" cellpadding="0" cellspacing="0" role="presentation">
-          <tr>
-            <td align="left" class="sm-p-20 sm-dui17-b-t" style="border-radius: 2px; padding: 40px; position: relative; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -2px rgba(0, 0, 0, .05); vertical-align: top; z-index: 50;" bgcolor="#ffffff" valign="top">
-              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <td style="padding-top: 24px;">
-                    <img src="https://img.icons8.com/material/50/000000/person-at-home.png"/>
-                  </td>
-                <tr>
-                  <td width="80%">
-                    <h1 class="sm-text-lg all-font-roboto" style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">Facility Provider Receipt</h1>
-                    <p class="sm-text-xs" style="margin: 0; color: #a0aec0; font-size: 14px;">You have a new registration</p>
-                  </td>
-                  
-                </tr>
-                
-                <tr>
-                  
-                  <td>
-                    <br><br>
-                    <p class="sm-text-xs" style="margin: 0; font-weight: 400; font-size: 20px;">Hey {{ownerName}},<br> You have a new confirmed reservation ✔</p>
-                    </td>
-                </tr>
-                <tr>
-                  <td>
-                    <br><br>
-                    <h1 class="sm-text-lg all-font-roboto" style="font-weight: 700; line-height: 100%; margin: 0; margin-bottom: 4px; font-size: 24px;">
-                      Booking Details
-                    </h1>
-                  </td>
-                </tr>
-              </table>
-              <div style="line-height: 32px;">&zwnj;</div>
-              <table class="sm-leading-32" style="line-height: 28px; font-size: 14px;" width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <div style="background-color: #edf2f7; height: 2px; line-height: 2px;">&zwnj;</div>
-                <tr>
-                  <td class="sm-inline-block" style="color: #718096;" width="50%">Booked By</td>
-                  <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{userName}}</td>
-                </tr>
-                <tr>
-                  <td class="sm-inline-block" style="color: #718096;" width="50%">Number of Guests</td>
-                  <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{numberOfGuests}}</td>
-                </tr>
-                <tr>
-                  <td class="sm-inline-block" style="color: #718096;" width="50%">Room Type</td>
-                  <td class="sm-inline-block" style="font-weight: 600; text-align: right;" width="50%" align="right">{{type}}</td>
-                </tr>
-            </table>
-            <br><br>
-              <table class="table">
-                <thead class="thead-dark">
-                  <tr>
-                    
-                    <th scope="col">Name</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Mobile</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {{#each guestdetail}}
-                  <tr>
-                    <td>{{name}}</td>
-                    <td>{{gender}}</td>
-                    <td>{{age}}</td>
-                    <td>{{number}}</td>
-                  </tr>
-                  {{/each}}
-                </tbody>
-              </table>
-              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <tr>
-                  <td style="padding-top: 24px; padding-bottom: 24px;">
-                    <div style="background-color: #edf2f7; height: 2px; line-height: 2px;">&zwnj;</div>
-                  </td>
-                </tr>
-              </table>
-              <table style="font-size: 14px;" width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <tr>
-                  <td class="sm-w-full sm-inline-block sm-text-center" width="40%">
-                    <p class="all-font-roboto" style="margin: 0; margin-bottom: 4px; color: #a0aec0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">Check-in</p>
-                    <p class="all-font-roboto" style="font-weight: 600; margin: 0; color: #000000;">{{checkin}}</p>
-                  </td>
-                  <td class="sm-w-full sm-inline-block sm-py-12" style="font-family: Menlo, Consolas, monospace; font-weight: 600; text-align: center; color: #cbd5e0; font-size: 18px; letter-spacing: -1px;" width="20%" align="center">&gt;&gt;&gt;</td>
-                  <td class="sm-w-full sm-inline-block sm-text-center" style="text-align: right;" width="40%" align="right">
-                    <p class="all-font-roboto" style="margin: 0; margin-bottom: 4px; color: #a0aec0; font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">Check-out</p>
-                    <p class="all-font-roboto" style="font-weight: 600; margin: 0; color: #000000;">{{checkout}}</p>
-                  </td>
-                </tr>
-              </table>
-              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <tr>
-                  <td style="padding-top: 24px; padding-bottom: 24px;">
-                    <div style="background-color: #edf2f7; height: 2px; line-height: 2px;">&zwnj;</div>
-                    <center><img src="https://cdn.coronasafe.network/break-chain.png" width="200px"></center>
-                  </td>
-                </tr>
-              </table>
-              
-              
-            </td>
-          </tr>
+
+<body class="bgcolor-gray-200 " style="font-family: 'Roboto';">
+  <div class="flex flex-wrap">
+    <div class=" bg-white mx-auto mb-1 mt-10 sm:px-2 md:px-4 px-1 pt-4 resp">
+      <div class=" w-full mr-auto mb-1 px-6 mt-6">
+        <div class="flex flex-row">
+          <div>
+            <img src="https://img.icons8.com/material/50/000000/person-at-home.png" />
+          </div>
+          <div>
+            <p class="text-2xl font-medium mt-4 ml-1 text-gray-900">Stay</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full mr-auto mb-1 px-6">
+        <div class="text-2xl font-semibold">New booking in your hotel</div>
+        <div class="text-xs font-normal color-gray-600">Facility Provider Receipt
+        </div>
+      </div>
+      <div class="w-full mr-auto mb-1 px-6 py-6">
+        <p style="font-family:roboto" class="text-xl font-normal leading-relaxed text-gray-800 antialiased"> Hey
+          {{ownerName}},<br>You have a new confirmed reservation
+          <span class="text-xl">✔</span>
+        </p>
+      </div>
+      <div class="w-full mr-auto mt-2 px-6">
+        <div class="text-2xl font-semibold">Booking Details</div>
+      </div>
+      <div class="w-full mr-auto mb-1 px-6 py-6">
+        <div class="flex mb-4">
+          <div class="w-1/2 color-gray-600">Booked By</div>
+          <div class="w-1/2 text-right break-all">{{userName}}</div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-1/2 color-gray-600">Number of Guests</div>
+          <div class="w-1/2 text-right break-all">{{numberOfGuests}}</div>
+        </div>
+        <div class="flex mb-4">
+          <div class="w-1/2 color-gray-600">Room Type</div>
+          <div class="w-1/2 text-right break-all">{{type}}</div>
+        </div>
+      </div>
+      <div class="w-full mx-auto mb-4 mt-1 md:px-4">
+        <table class="w-full table-fixed mx-auto ">
+          <thead class="bg-gray-700 color-white">
+            <tr class="text-sm sm:text-base">
+              <th class="border px-2 py-2 text-left">Namessss</th>
+              <th class="border px-2 py-2 text-left">Gender</th>
+              <th class="border px-2 py-2 text-left">Age</th>
+              <th class="border px-2 py-2 text-left">Mobile</th>
+            </tr>
+          </thead>
+          <tbody style="border-color:#e2e8f0">
+            {{#each guestdetail}}
+            <tr class="text-xs sm:text-sm border-b">
+              <td class="pr-2 py-2 text-left text-sm break-all">{{name}}</td>
+              <td class="px-2 py-2 text-left text-sm">{{gender}}</td>
+              <td class="px-2 py-2 text-left text-sm">{{age}}</td>
+              <td class="pl-2 py-2 text-left text-sm break-all">{{number}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
         </table>
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-          <tr>
-            <td style="padding-top: 24px; padding-bottom: 24px;">
-              
-              <center><a href="https://coronasafe.network/"><img src="https://cdn.coronasafe.network/coronaSafeLogo.png" width="100px" alt="coronaSafeLogo"></center>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+      </div>
+      <div class="w-full mx-auto mb-1 px-6 py-1">
+      </div>
+      <div class="w-full mx-auto px-6 py-1">
+        <div class="flex mb-4 text-center">
+          <div class="w-2/5 ">
+            <p class="color-gray-600"> CHECK-IN</p>
+            <p class="font-medium text-lg">{{checkin}}</p>
+          </div>
+          <div class="w-1/5 color-gray-600"><br>&gt;&gt;&gt;&gt;</div>
+          <div class="w-2/5 ">
+            <p class="color-gray-600">CHECK-OUT</p>
+            <p class="font-medium text-lg">{{checkout}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full mx-auto mb- px-6 py-1">
+        <hr style="border-color:#e2e8f0">
+      </div>
+      <div class="w-full mx-auto mb-4 px-6 py-1">
+        <img class="mx-auto" src="https://cdn.coronasafe.network/break-chain.png" width="150px">
+      </div>
+      <div class="-ml-4 -mr-4 bgcolor-gray-200 bg-opacity-75 py-2">
+        <a href="https://coronasafe.network/"><img class="mx-auto"
+            src="https://cdn.coronasafe.network/coronaSafeLogo.png" width="130px" alt="coronaSafeLogo">
+      </div>
+    </div>
+
+
+  </div>
 </body>
+
 </html>
-<!-- partial -->
-  
