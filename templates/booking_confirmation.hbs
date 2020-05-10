@@ -23,19 +23,27 @@
       }
     }
 
-    .text-gray-600 {
+    .color-gray-600 {
       color: #718096
     }
 
-    .bg-gray-200 {
-      background-color: rbg(226, 232, 240, .75);
+    .bgcolor-gray-700 {
+      background-color: rgb(74, 85, 104, 1);
+    }
+
+    .color-white {
+      color: white;
+    }
+
+    .bgcolor-gray-200 {
+      background-color: rgb(226, 232, 240, .75);
     }
   </style>
 </head>
 
-<body class="bg-gray-200 " style="font-family: 'Roboto';">
+<body class="bgcolor-gray-200 " style="font-family: 'Roboto';">
   <div class="flex flex-wrap">
-    <div class=" bg-white mx-auto mb-1 mt-10 sm:px-2 md:px-4 s py-4 resp">
+    <div class=" bg-white mx-auto mb-1 mt-10 sm:px-2 md:px-4 px-1 pt-4 resp">
       <div class=" w-full mr-auto mb-1 px-6 mt-6">
         <div class="flex flex-row">
           <div>
@@ -48,7 +56,7 @@
       </div>
       <div class="w-full mr-auto mb-1 px-6">
         <div class="text-2xl font-semibold">Customer Reciept</div>
-        <div class="text-xs font-normal text-gray-600">Your
+        <div class="text-xs font-normal color-gray-600">Your
           reservation is now confirmed
         </div>
       </div>
@@ -64,38 +72,38 @@
       <div class="w-full mr-auto mb-1 px-6 py-6">
 
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Booking Id</div>
+          <div class="w-1/2 color-gray-600">Booking Id</div>
           <div class="w-1/2 text-right break-all">{{book_id}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Booked By</div>
+          <div class="w-1/2 color-gray-600">Booked By</div>
           <div class="w-1/2 text-right break-all">{{userName}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Number of Guests</div>
+          <div class="w-1/2 color-gray-600">Number of Guests</div>
           <div class="w-1/2 text-right break-all">{{numberOfGuests}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Hotel</div>
+          <div class="w-1/2 color-gray-600">Hotel</div>
           <div class="w-1/2 text-right break-all">{{hotelName}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Address</div>
+          <div class="w-1/2 color-gray-600">Address</div>
           <div class="w-1/2 text-right break-all">{{address}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Room Type</div>
+          <div class="w-1/2 color-gray-600">Room Type</div>
           <div class="w-1/2 text-right break-all">{{type}}</div>
         </div>
         <div class="flex mb-4">
-          <div class="w-1/2 text-gray-600">Hotel Contact</div>
+          <div class="w-1/2 color-gray-600">Hotel Contact</div>
           <div class="w-1/2 text-right">{{phone}}</div>
         </div>
 
       </div>
       <div class="w-full mx-auto mb-4 mt-1">
-        <table class="table-fixed mx-auto">
-          <thead class="bg-gray-700 text-white">
+        <table class="table-fixed mx-auto w-full">
+          <thead class="bgcolor-gray-700 color-white">
             <tr class="text-sm sm:text-base">
               <th class="border px-2 py-2 text-left">Name</th>
               <th class="border px-2 py-2 text-left">Gender</th>
@@ -103,7 +111,7 @@
               <th class="border px-2 py-2 text-left">Mobile</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="border-color:#e2e8f0">
             {{#each guestdetail}}
             <tr class="text-xs sm:text-sm border-b">
               <td class="pr-2 py-2 text-left text-sm break-all">{{name}}</td>
@@ -116,28 +124,28 @@
         </table>
       </div>
       <div class="w-full mx-auto mb-1 px-6 py-1">
-        <hr>
+
       </div>
       <div class="w-full mx-auto px-6 py-1">
         <div class="flex mb-4 text-center">
           <div class="w-2/5 ">
-            <p class="text-gray-600"> CHECK-IN</p>
+            <p class="color-gray-600"> CHECK-IN</p>
             <p class="font-medium text-lg">{{checkin}}</p>
           </div>
-          <div class="w-1/5 text-gray-600"><br>&gt;&gt;&gt;&gt;</div>
+          <div class="w-1/5 color-gray-600"><br>&gt;&gt;&gt;&gt;</div>
           <div class="w-2/5 ">
-            <p class="text-gray-600">CHECK-OUT</p>
+            <p class="color-gray-600">CHECK-OUT</p>
             <p class="font-medium text-lg">{{checkout}}</p>
           </div>
         </div>
       </div>
       <div class="w-full mx-auto mb- px-6 py-1">
-        <hr>
+        <hr style="border-color:#e2e8f0">
       </div>
       <div class="w-full mx-auto mb-4 px-6 py-1">
         <img class="mx-auto" src="https://cdn.coronasafe.network/break-chain.png" width="150px">
       </div>
-      <div class="w-full mx-auto bg-gray-200 bg-opacity-75">
+      <div class="-ml-4 -mr-4 bgcolor-gray-200 bg-opacity-75 py-2">
         <a href="https://coronasafe.network/"><img class="mx-auto"
             src="https://cdn.coronasafe.network/coronaSafeLogo.png" width="130px" alt="coronaSafeLogo">
       </div>
