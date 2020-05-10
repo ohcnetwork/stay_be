@@ -59,7 +59,7 @@ export class BookingRepository extends Repository<Booking> {
                const currentdate = new Date();
                const year = currentdate.getFullYear();
                const month = currentdate.getMonth()+1;
-               const day = currentdate.getDay();
+               const day = currentdate.getDate();
                const today = year + "-" + month + "-" +day;
               const futureyear = year+2;
 
