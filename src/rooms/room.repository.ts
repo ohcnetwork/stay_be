@@ -239,5 +239,24 @@ export class RoomRepository extends Repository<Room>{
                 throw new UnauthorizedException();
             }
     }
+    async replaceImageUrl(files:any): Promise<any>
+    {
+        const imgUrls=[];
+        const s3Urls = process.env.S3_URLS.split(",");
+        let replaceLink;
+        for(let i=0;i<files.length;i++)
+        {
+            const imgLink = files[i].location;
+            for(const k in s3Urls)
+                {
+                    if(imgLink.includes(s3Urls[k]))
+                    {
+                        replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
+                        imgUrls.push(replaceLink);
+                    }
+                }
+        }
+          return imgUrls;
+    }
 }
 

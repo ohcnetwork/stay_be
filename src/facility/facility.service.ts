@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateFacilityDto } from './dto';
 import { User } from 'src/auth/entities/User.entity';
 import { UserRepository } from 'src/auth/user.repository';
+import { RoomRepository } from 'src/rooms/room.repository';
 
 @Injectable()
 export class FacilityService {
@@ -14,6 +15,7 @@ export class FacilityService {
    @InjectRepository(FacilityRepository)
    @InjectRepository(UserRepository)
    private readonly facilityRepository: FacilityRepository,
+   private readonly roomRepository: RoomRepository,
    private readonly userRepository:UserRepository){}
    gethello(): string { 
         return 'Welcome to stay service';
@@ -34,8 +36,6 @@ export class FacilityService {
     async findHotel(user:User,id:any): Promise<any>{
         const found =await this.userRepository.findOne({id:user.id})
         const hotel = await this.facilityRepository.findOne({id:id})
-        console.log(hotel)
-        console.log(found)
         if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
             return found
         }
@@ -45,27 +45,13 @@ export class FacilityService {
     }
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
-                const imgUrls=[];
-                const s3Urls = process.env.S3_URLS.split(",");
-                let replaceLink;
+                let imgUrls;
                 if(await this.validateUser(user))
                 {
                     data.ownerID=user.id;
                     if(files)
                     {
-                        for(let i=0;i<files.length;i++)
-                        {
-                            const imgLink = files[i].location;
-                            for(const k in s3Urls)
-                            {
-                                if(imgLink.includes(s3Urls[k]))
-                                {
-                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
-                                    imgUrls.push(replaceLink);
-                                }
-                            }
-    
-                        }
+                        imgUrls = await this.roomRepository.replaceImageUrl(files);
                     }
                     return this.facilityRepository.createFacility(data,user.id,imgUrls);
                 }
@@ -158,9 +144,7 @@ export class FacilityService {
     }
     async updateFacility(user:User,id:number,data:any,files:any): Promise <any> {
 
-        const imgUrls=[];
-        const s3Urls = process.env.S3_URLS.split(",");
-        let replaceLink;
+        let imgUrls;
         const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasaragod','Alappuzha','Pathanamthitta','Wayanad']
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
@@ -202,19 +186,8 @@ export class FacilityService {
             }
             if(files)
             {  
-                for(let i=0;i<files.length;i++)
-                {
-                    const imgLink = files[i].location;
-                    for(const k in s3Urls)
-                    {   
-                        if(imgLink.includes(s3Urls[k]))
-                        {
-                            replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
-                            imgUrls.push(replaceLink);
-                        }
-                    }
+                imgUrls = await this.roomRepository.replaceImageUrl(files);
 
-                }
                 if(imgUrls.length>0)
                     facility.photos=imgUrls;
             }

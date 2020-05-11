@@ -49,27 +49,12 @@ export class RoomsService {
        async createRoom(user:User,createRoomDto: CreateRoomDto,id:number,files:any){
         try
         {
-            const imgUrls=[];
-
-	    const s3Urls = process.env.S3_URLS.split(",");
-            let replaceLink;
+            let imgUrls;
             if(await this.validateUser(user,id))
             {
                 if(files)
                 {
-                    for(let i=0;i<files.length;i++)
-                    {
-                        const imgLink = files[i].location;
-                        for(const k in s3Urls)
-                         {
-                                if(imgLink.includes(s3Urls[k]))
-                                {
-                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
-                                    imgUrls.push(replaceLink);
-                                }
-                         }
-                     }
-			
+                    imgUrls = await this.roomRepository.replaceImageUrl(files);
 	            }
                 return this.roomRepository.createRoom(createRoomDto,id,this.facilityRepository,imgUrls);
             }
@@ -124,7 +109,7 @@ else{
     async getHotelDetail(id:number):Promise<any>{
         const hotel = await this.facilityRepository.findOne({id});
         const room = await this.roomRepository.find({facility:hotel,status:RoomStatus.AVAILABLE})
-        var final=[]
+        var finalHotel=[]
         if(room) {
             const {...result}=room;
             for(const i in result)
@@ -134,13 +119,13 @@ else{
                     if(!result[i].photos[j].includes('/'))
                          result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
                 }
-                final.push(result[i])
+                finalHotel.push(result[i])
             }
         
         if(hotel){
             return {
                 name: hotel.name,
-                data: final
+                data: finalHotel
             }
         }
         else {
@@ -164,11 +149,8 @@ else{
         //edit rooms
         async updateRooms(user:User,data:any,files:any): Promise <any> 
         {
-            let imgUrls=[];
-	    const s3Urls = process.env.S3_URLS.split(",");
-            let replaceLink;
+            let imgUrls ;
             const roomsUpdate = [];
-            console.log(data.ids)
             const idList = data.ids.split(",");
             const user1=await this.userRepository.findOne({id:user.id})
             for(const x in idList)
@@ -180,7 +162,7 @@ else{
                     if(data.title) {
                         room.title=data.title
                     }
-                    if(data.features != "null") {
+                    if(data.features) {
                         room.features=data.features
                     }
                     if(data.description) {
@@ -200,23 +182,13 @@ else{
                     }
                     if(files)
                     {  
-                        for(let i=0;i<files.length;i++)
-                        {
-                            const imgLink = files[i].location;
-                            for(const k in s3Urls)
-                            {   
-                                if(imgLink.includes(s3Urls[k]))
-                                {
-                                    replaceLink = imgLink.replace(`https://${s3Urls[k]}/`,"");
-                                    imgUrls.push(replaceLink);
-                                }
-                            }
-        
-                        }
+                        
+                        imgUrls = await this.roomRepository.replaceImageUrl(files);
+
                         if(imgUrls.length>0)
                             room.photos=imgUrls;
 			    
-			imgUrls=[];
+			            imgUrls=[];
                     }
                     await this.roomRepository.save(room);
                     const {...result} = room
