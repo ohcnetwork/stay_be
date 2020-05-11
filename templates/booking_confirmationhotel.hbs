@@ -1,158 +1,949 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:v="urn:schemas-microsoft-com:vml">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="x-apple-disable-message-reformatting">
+  <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <meta content="width=device-width" name="viewport" />
+  <!--[if !mso]><!-->
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+  <!--<![endif]-->
   <title></title>
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-
-  <style>
-    .table-resp {
-      min-width: 270px;
+  <!--[if !mso]><!-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+  <!--<![endif]-->
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
     }
 
-    @media only screen and (min-width: 500px) {
-      .table-resp {
-        min-width: 500px;
-      }
+    .resp {
+      padding: 2rem;
     }
 
-    @media only screen and (min-width: 768px) {
+    table,
+    td,
+    tr {
+      vertical-align: top;
+      border-collapse: collapse;
+    }
+
+    * {
+      line-height: inherit;
+    }
+
+    a[x-apple-data-detectors=true] {
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+  </style>
+  <style id="media-query" type="text/css">
+    @media (max-width: 920px) {
       .resp {
-        width: 75%;
+        padding: 0;
       }
 
-      .table-resp {
-        min-width: 500px;
+      .block-grid,
+      .col {
+        min-width: 320px !important;
+        max-width: 75% !important;
+        display: block !important;
+      }
+
+      .col {
+        width: 100% !important;
+      }
+
+      .col>div {
+        margin: 0 auto;
+      }
+
+      img.fullwidth,
+      img.fullwidthOnMobile {
+        max-width: 100% !important;
+      }
+
+      .no-stack .col {
+        min-width: 0 !important;
+        display: table-cell !important;
+      }
+
+      .no-stack.two-up .col {
+        width: 50% !important;
+      }
+
+      .no-stack .col.num4 {
+        width: 40% !important;
+      }
+
+      .no-stack .col.num8 {
+        width: 66% !important;
+      }
+
+      .no-stack .col.num5 {
+        width: 20% !important;
+      }
+
+
+      .no-stack .col.num3 {
+        width: 25% !important;
+      }
+
+      .no-stack .col.num6 {
+        width: 50% !important;
+      }
+
+      .no-stack .col.num9 {
+        width: 75% !important;
+      }
+
+      .video-block {
+        max-width: none !important;
+      }
+
+      .mobile_hide {
+        min-height: 0px;
+        max-height: 0px;
+        max-width: 0px;
+        display: none;
+        overflow: hidden;
+        font-size: 0px;
+      }
+
+      .desktop_hide {
+        display: block !important;
+        max-height: none !important;
       }
     }
 
-    @media only screen and (min-width: 992px) {
-      .resp {
-        width: 75%;
+    @media (max-width: 600px) {
+
+      .block-grid {
+        min-width: 320px !important;
+        max-width: 100% !important;
+        display: block !important;
       }
-
-      .table-resp {
-        min-width: 728px;
-      }
-    }
-
-
-    .color-gray-600 {
-      color: #718096
-    }
-
-    .bgcolor-gray-700 {
-      background-color: rgba(74, 85, 104, 1);
-    }
-
-    .color-white {
-      color: white;
-    }
-
-    .bgcolor-gray-200 {
-      background-color: rgba(226, 232, 240, .75);
     }
   </style>
 </head>
 
-<body style="font-family: 'Roboto';  background-color: rgba(226, 232, 240, .5); width:100%;">
-  <div class="flex flex-wrap" style="width: 100%; color: black;">
-    <div class="mx-auto mb-1 mt-10 sm:px-2 md:px-4 px-1 pt-4 resp" style="background-color: white;">
-      <div class=" w-full mr-auto mb-1 px-6 mt-6">
-        <div class="flex flex-row">
-          <div>
-            <img src="https://img.icons8.com/material/50/000000/person-at-home.png" />
-          </div>
-          <div>
-            <p class="text-2xl font-medium mt-4 ml-1 text-gray-900">Stay</p>
-          </div>
-        </div>
-      </div>
-      <div class="w-full mr-auto mb-1 px-6">
-        <div class="text-2xl font-semibold">New booking in your hotel</div>
-        <div class="text-xs font-normal color-gray-600">Facility Provider Receipt
-        </div>
-      </div>
-      <div class="w-full mr-auto mb-1 px-6 py-6">
-        <p style="font-family:roboto" class="text-xl font-normal leading-relaxed text-gray-800 antialiased"> Hey
-          {{ownerName}},<br> You have a new confirmed reservation <span class="text-xl">✔</span>
-        </p>
-      </div>
-      <div class="w-full mr-auto mt-2 px-6">
-        <div class="text-2xl font-semibold">Booking Details</div>
-      </div>
-      <div class="w-full mr-auto mb-1 px-6 py-6">
-        <div class="flex mb-4">
-          <div class="w-1/2 " style="color: #718096;">Booked By</div>
-          <div class="w-1/2 text-right break-all">{{userName}}</div>
-        </div>
-        <div class="flex mb-4">
-          <div class="w-1/2" style="color: #718096;">Number of Guests</div>
-          <div class="w-1/2 text-right break-all">{{numberOfGuests}}</div>
-        </div>
-        <div class="flex mb-4">
-          <div class="w-1/2" style="color: #718096;">Room Type</div>
-          <div class="w-1/2 text-right break-all">{{type}}</div>
-        </div>
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #eff2f6;">
+  <!--[if IE]><div class="ie-browser"><![endif]-->
+  <table bgcolor="#eff2f6" cellpadding="0" cellspacing="0" class="nl-container" role="presentation"
+    style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"
+    valign="top" width="100%">
+    <tbody>
+      <tr style="vertical-align: middle;  padding-top: 1rem;" valign="top">
+        <td style="word-break: break-word; vertical-align: top;" valign="top">
+          <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#ffffff"><![endif]-->
+          <div style="background-color:#eff2f6; ">
+            <div class="block-grid mixed-two-up"
+              style="Margin: 1rem auto; max-width: 75%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
 
-      </div>
-      <div class="w-full mx-auto mb-4 mt-1">
-        <table class="table-fixed mx-auto table-resp">
-          <thead class="bgcolor-gray-700 color-white">
-            <tr class="text-sm sm:text-base">
-              <th class="border px-2 py-2 text-left">Name</th>
-              <th class="border px-2 py-2 text-left">Gender</th>
-              <th class="border px-2 py-2 text-left">Age</th>
-              <th class="border px-2 py-2 text-left">Mobile</th>
-            </tr>
-          </thead>
-          <tbody style="border-color:#e2e8f0">
-            {{#each guestdetail}}
-            <tr class="text-xs sm:text-sm border-b">
-              <td class="pr-2 py-2 text-left text-sm break-all">{{name}}</td>
-              <td class="px-2 py-2 text-left text-sm">{{gender}}</td>
-              <td class="px-2 py-2 text-left text-sm">{{age}}</td>
-              <td class="pl-2 py-2 text-left text-sm break-all">{{number}}</td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      </div>
-      <div class="w-full mx-auto mb-1 px-6 py-1">
+              <table bgcolor="#ffffff" cellpadding="0" cellspacing="0" class="nl-container" role="presentation"
+                style="table-layout: fixed; vertical-align: top; min-width: 320px; Margin: 0 auto; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; width: 100%;"
+                valign="top" width="100%">
+                <tbody>
+                  <tr style="vertical-align: top;" valign="top">
+                    <td style="word-break: break-word; vertical-align: top;" class="resp" valign="top">
+                      <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#ffffff"><![endif]-->
+                      <div style="background-color:#ffffff;">
+                        <div class="block-grid mixed-two-up"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num3"
+                              style="display: table-cell; vertical-align: top; max-width: 25%; width: 225px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <img style="margin-bottom: -.5rem;"
+                                          src="https://img.icons8.com/material/50/000000/person-at-home.png" />
+                                        <strong><span style="font-size: 24px;">Stay</span></strong>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="675" style="background-color:transparent;width:675px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num9"
+                              style="display: table-cell; vertical-align: top; min-width: 320px; max-width: 675px; width: 675px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <div></div>
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12"
+                              style=" max-width: 100%; display: table-cell; vertical-align: top; width: 900px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#000000;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #000000; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
 
-      </div>
-      <div class="w-full mx-auto px-6 py-1">
-        <div class="flex mb-4 text-center">
-          <div class="w-2/5 ">
-            <p style="color: #718096;"> CHECK-IN</p>
-            <p class="font-medium text-lg">{{checkin}}</p>
+                                      <p
+                                        style="line-height: 1.2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">
+                                        <strong><span style="font-size: 24px;">New
+                                            booking in your
+                                            hotel</span></strong></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12"
+                              style=" max-width: 100%; display: table-cell; vertical-align: top; width: 900px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 20px; color: #000000; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px;">
+                                      <p
+                                        style="line-height: 1.5; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">
+                                        <span>Hey
+                                          {{ownerName}},</span>
+                                      </p>
+                                      <p
+                                        style="line-height: 1.5; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">
+                                        <span style="font-size: 20px;">You have
+                                          a new confirmed reservation ✔</span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12"
+                              style=" max-width: 100%; display: table-cell; vertical-align: top; width: 900px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#000000;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 20px; color: #3b3b3b; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+
+                                      <p
+                                        style="line-height: 1.2; word-break: break-word; mso-line-height-alt: NaNpx; margin: 0;">
+                                        <strong><span style="font-size: 20px;">Booking
+                                            Details</span></strong></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="background-color:transparent;">
+                        <div class="block-grid two-up no-stack"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 16px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <span style="color: #718096;">Booked
+                                          By</span></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="color:black; font-size: 15px; line-height: 1.2; word-break: break-word; text-align: right; mso-line-height-alt: 17px; margin: 0;">
+                                        {{userName}}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid two-up no-stack"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 16px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <span style="color: #718096;">Number of
+                                          Guests</span></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="color:black; font-size: 15px; line-height: 1.2; word-break: break-word; text-align: right; mso-line-height-alt: 17px; margin: 0;">
+                                        {{numberOfGuests}}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="background-color:transparent;">
+                        <div class="block-grid two-up no-stack"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 16px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <span style="color: #718096;">
+                                          Room Type</span></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="450" style="background-color:transparent;width:450px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px;"><![endif]-->
+                            <div class="col num6"
+                              style=" max-width: 50%; display: table-cell; vertical-align: top; width: 450px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="color:black; font-size: 15px; line-height: 1.2; word-break: break-word; text-align: right; mso-line-height-alt: 17px; margin: 0;">
+                                        {{type}}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="background-color:transparent;">
+                        <div class="block-grid four-up no-stack"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;background-color:#4a5568;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="background-color:#4a5568;width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#ffffff;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #ffffff; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <strong>Name</strong></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;background-color:#4a5568;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="background-color:#4a5568;width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#ffffff;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #ffffff; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <strong>Gender</strong></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;background-color:#4a5568;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="background-color:#4a5568;width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#ffffff;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #ffffff; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="line-height: 1.2; word-break: break-word; font-size: 14px; mso-line-height-alt: 17px; margin: 0;">
+                                        <span style="font-size: 14px;"><strong>Age</strong></span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;background-color:#4a5568;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="background-color:#4a5568;width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#ffffff;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #ffffff; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        <strong>Mobile</strong></p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      {{#each guestdetail}}
+                      <div style="background-color:transparent;">
+                        <div class="block-grid four-up no-stack" style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;border-bottom:1px solid #D7D7D7;
+													border-bottom:1px solid #D7D7D7;
+													border-bottom:1px solid #D7D7D7;
+													border-bottom:1px solid #D7D7D7;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 1px solid #D7D7D7; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-bottom:10px;padding-left:4px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        {{name}}</p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 1px solid #D7D7D7; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-bottom:10px;padding-left:4px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        {{gender}}</p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 1px solid #D7D7D7; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-bottom:10px;padding-left:4px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        {{age}}</p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="225" style="background-color:transparent;width:225px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 1px solid #D7D7D7; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num3"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 225px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-bottom:10px;padding-left:4px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; word-break: break-word; mso-line-height-alt: 17px; margin: 0;">
+                                        {{number}}</p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      {{/each}}
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12"
+                              style=" max-width: 100%; display: table-cell; vertical-align: top; width: 900px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="font-size: undefined; line-height: 1.2; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: NaNpx;">
+                                      <p
+                                        style="font-size: 14px; line-height: 1.2; mso-line-height-alt: 17px; margin: 0;">
+
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;border-bottom: #D7D7D7 solid 1px;">
+                        <div class="block-grid three-up no-stack"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="300" style="background-color:transparent;width:300px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num4"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 300px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <strong>
+                                        <p style="color:#718096; font-size: 14px; text-align: center;">
+                                          CHECKIN
+                                        </p>
+                                      </strong>
+                                      <strong>
+                                        <p
+                                          style="font-size: 18px; line-height: 1.2; word-break: break-word; text-align: center; mso-line-height-alt: 17px; margin: 0;">
+                                          {{checkin}}
+                                        </p>
+                                      </strong>
+
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="300" style="background-color:transparent;width:300px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num5"
+                              style="max-width: 25%; display: table-cell; vertical-align: middle; width: 300px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <p
+                                        style="font-size: 18px; line-height: 1.2; word-break: break-word; text-align: center; mso-line-height-alt: 17px; margin: 0;">
+                                        <span style="color: #718096;"><strong><span>&gt;&gt;&gt;</span></strong></span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td><td align="center" width="300" style="background-color:transparent;width:300px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num4"
+                              style="max-width: 25%; display: table-cell; vertical-align: top; width: 300px;">
+                              <div style="width:100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div
+                                  style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                  <!--<![endif]-->
+                                  <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                  <div
+                                    style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                    <div
+                                      style="line-height: 1.2; font-size: 12px; color: #555555; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14px;">
+                                      <strong>
+                                        <p style="color:#718096; font-size: 14px; text-align: center;">
+                                          CHECKOUT
+                                        </p>
+                                      </strong>
+                                      <strong>
+                                        <p
+                                          style="font-size: 18px; line-height: 1.2; word-break: break-word; text-align: center; mso-line-height-alt: 17px; margin: 0;">
+                                          {{checkout}}
+                                        </p>
+                                      </strong>
+                                    </div>
+                                  </div>
+                                  <!--[if mso]></td></tr></table><![endif]-->
+                                  <!--[if (!mso)&(!IE)]><!-->
+                                </div>
+                                <!--<![endif]-->
+                              </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div style="width:100% !important;">
+                              <!--[if (!mso)&(!IE)]><!-->
+                              <div
+                                style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                <!--<![endif]-->
+                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                <div
+                                  style="text-align: center; color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                  <img class="mx-auto" src="https://cdn.coronasafe.network/break-chain.png"
+                                    width="150px">
+                                </div>
+                                <!--[if mso]></td></tr></table><![endif]-->
+                                <!--[if (!mso)&(!IE)]><!-->
+                              </div>
+                              <!--<![endif]-->
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background-color:transparent;">
+                        <div class="block-grid"
+                          style="Margin: 0 auto; max-width: 100%; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;">
+                          <div
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div style="width:100% !important;">
+                              <!--[if (!mso)&(!IE)]><!-->
+                              <div
+                                style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                <!--<![endif]-->
+                                <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
+                                <div
+                                  style="text-align: center; color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:1.2;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;">
+                                  <a href="https://coronasafe.network/"><img class="mx-auto"
+                                      src="https://cdn.coronasafe.network/coronaSafeLogo.png" width="130px"
+                                      alt="coronaSafeLogo"></a>
+                                </div>
+                                <!--[if mso]></td></tr></table><![endif]-->
+                                <!--[if (!mso)&(!IE)]><!-->
+                              </div>
+                              <!--<![endif]-->
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                          </div>
+                        </div>
+                      </div>
+                      <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="w-1/5 "><br>&gt;&gt;&gt;&gt;</div>
-          <div class="w-2/5 ">
-            <p style="color: #718096;">CHECK-OUT</p>
-            <p class="font-medium text-lg">{{checkout}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="w-full mx-auto mb- px-6 py-1">
-        <hr style="border-color:#e2e8f0">
-      </div>
-      <div class="w-full mx-auto mb-4 px-6 py-1">
-        <img class="mx-auto" src="https://cdn.coronasafe.network/break-chain.png" width="150px">
-      </div>
-      <div class="-ml-4 -mr-4 py-2">
-        <a href="https://coronasafe.network/"><img class="mx-auto"
-            src="https://cdn.coronasafe.network/coronaSafeLogo.png" width="130px" alt="coronaSafeLogo">
-      </div>
-    </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-
-  </div>
+  <!--[if (IE)]></div><![endif]-->
 </body>
 
 </html>
