@@ -31,7 +31,6 @@ export class AuthService {
     if (user) {
       const {...result} = user;
       delete result.password;
-      delete result.id;
       return {
         success: true,
         message: 'Success',
