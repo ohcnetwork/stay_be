@@ -73,7 +73,7 @@ export class FacilityService {
 
     async getFacility(user:User): Promise<any> {
    
-        
+        if(await this.validateUser(user)){
         const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
@@ -98,11 +98,13 @@ export class FacilityService {
             }
         }
     }
-   
-    
+    else{
+        throw new HttpException("Action Forbidden",HttpStatus.FORBIDDEN);
+    }
+    }
 
     async getFacilityById(user:User,id:number):Promise<any>{
-        if(await this.findHotel(user,id)){
+        
             const facility = await this.facilityRepository.findOne({id});
             if(facility)
             {
@@ -118,10 +120,8 @@ export class FacilityService {
             }
         
         }
-        else{
-            throw new UnauthorizedException;
-        }
-    }
+        
+    
     async deleteFacility(user:User,id:number):Promise<any> {
             if(await this.findHotel(user,id)){
             const facility = await this.facilityRepository.findOne({ id:id })
