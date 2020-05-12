@@ -103,8 +103,8 @@ export class FacilityService {
     }
     }
 
-    async getFacilityById(id:number):Promise<any>{
-
+    async getFacilityById(user:User,id:number):Promise<any>{
+        if(await this.findHotel(user,id)){
             const facility = await this.facilityRepository.findOne({id});
             if(facility)
             {
@@ -119,7 +119,10 @@ export class FacilityService {
                 throw new NotFoundException("No Such Facility")
             }
         
-        
+        }
+        else{
+            throw new UnauthorizedException;
+        }
     }
     async deleteFacility(user:User,id:number):Promise<any> {
             if(await this.findHotel(user,id)){

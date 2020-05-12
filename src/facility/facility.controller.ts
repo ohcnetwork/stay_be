@@ -42,10 +42,12 @@ export class FacilityController {
         return this.facilityService.getFacility(req.user);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
     @Get(":hotelId")
-    getFacilityById(@Param ('hotelId',ParseIntPipe) hotelId :number) {
+    getFacilityById(@Req() req:any,@Param ('hotelId',ParseIntPipe) hotelId :number) {
         this.logger.verbose("facility retrieved");
-        return this.facilityService.getFacilityById(hotelId);
+        return this.facilityService.getFacilityById(req.user,hotelId);
     }
 
 
