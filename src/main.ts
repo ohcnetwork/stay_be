@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import * as config from 'config';
+import * as helmet from 'helmet';
 import { join } from 'path';
+import * as csurf from 'csurf';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
+import * as rateLimit from 'express-rate-limit';
 Sentry.init({
   dsn: process.env.SENTRY_DSN }
   );
@@ -13,13 +16,23 @@ Sentry.init({
 async function bootstrap() {
   const logger = new Logger('Coronasafe Root');
   const serverConfig = config.get('server');
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+  const app = await NestFactory.create<NestExpressApplication>(AppModule,{cors:true});
+  app.use(helmet());
+  app.useLogger(csurf());
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
   } else {
     app.enableCors({ origin: '*' });
   }
+
+  app.set('trust proxy', 1)
+
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    }),
+  );
 
   app.useStaticAssets(join(__dirname, '../../../public'));
   global.console.log('environment', process.env.NODE_ENV);
