@@ -29,25 +29,28 @@ export class BookingRepository extends Repository<Booking> {
         mailerService: MailerService,
         userRepository:UserRepository,
         ): Promise<any>{
-          try{
-        const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
 
+        const { roomid,checkin,checkout ,guestdetails} = createbookingDto;
+     
+     
+        
+          
         const query = this.createQueryBuilder('bookings');
-            
+          
         query.innerJoin('bookings.room','room')
                 .innerJoin('room.facility','facility')
                 .select(['bookings.checkin','bookings.statusBooking','bookings.checkout','room.id','bookings.statusCheckin','room.beds'])
                 .where('(room.id = :id)AND (bookings.statusBooking != :Cancelled) AND (bookings.statusCheckin != :Checkout) AND ((bookings.checkin <= :checkin AND checkout >= :checkout) OR (checkin < :checkin  AND checkout >= :checkout) OR (checkin >= :checkin AND checkout <= :checkout) OR (checkin >= :checkin AND checkin <= :checkout) OR ( checkin  <= :checkin AND (checkout >= :checkin AND checkout <= :checkout)))',{id:roomid,Cancelled:"CANCELLED",Checkout:"CHECKEDOUT",checkin,checkout})
-           
+                
               const query1 =   await query.getOne();
-             
+                
             
        // const found = await bookingRepository.findOne({room.id:roomid})
         if (!query1)
         {
             if(guestdetails.length != 0  ) {
 
-              
+            
              
 
                const date1 =new Date(checkout)
@@ -55,12 +58,12 @@ export class BookingRepository extends Repository<Booking> {
 
                const currentdate = new Date();
                const year = currentdate.getFullYear();
-               const month = currentdate.getMonth();
-               const day = currentdate.getDay();
+               const month = currentdate.getMonth()+1;
+               const day = currentdate.getDate();
                const today = year + "-" + month + "-" +day;
               const futureyear = year+2;
 
-              const monthcheckin = date2.getMonth();
+              const monthcheckin = date2.getMonth()+1;
               const daycheckin = date2.getDate();
               const yearcheckin = date2.getFullYear();
               const checkindate = yearcheckin + "-" + monthcheckin + "-" +daycheckin;
@@ -68,21 +71,22 @@ export class BookingRepository extends Repository<Booking> {
                const future = futureyear+ "-" +month + "-" + day;
               
 
-              const monthcheckout = date1.getMonth();
+              const monthcheckout = date1.getMonth()+1;
               const daycheckout = date1.getDate();
               const yearcheckout = date1.getFullYear();
               const checkoutdate = yearcheckout + "-" + monthcheckout + "-" +daycheckout;
                
                
-
-
+            
+             
                // console.log(checkout.valueOf()-checkin.valueOf())
-                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 7) 
+                if(((+date1-+date2)/(1000 * 3600 * 24)) >= 6) 
                 {
-                  if ((checkindate >= today) && (checkindate <= future) && (checkoutdate <= future))
+                  
+                  if ((new Date(checkindate) >= new Date(today)) && (new Date(checkindate) <= new Date(future)) && (new Date(checkoutdate) <= new Date(future)))
                   {
                     
-                
+                    
                         const booking = new Booking();
                         booking.checkin = checkin;
                         booking.checkout = checkout;
@@ -106,8 +110,7 @@ export class BookingRepository extends Repository<Booking> {
                         }
                       const bookid  = booking.book_id
                     
-
-
+                      
         //const data = {userid:userId, roomid:roomId,}
         const query = this.createQueryBuilder('bookings');
         query.innerJoin('bookings.user','user')
@@ -198,28 +201,30 @@ export class BookingRepository extends Repository<Booking> {
                             };
                           });
                     
-                    
                         
+                        
+  
                         }
+                      
           else{
-            throw new NotFoundException(" booking not available for entered dates ")
+            throw new HttpException({detail:"Booking is not available for entered dates"},HttpStatus.NOT_FOUND)
           }
+        
                       }
           
         else{
-            throw new NotFoundException(" 7 days quarantine is compulsory ")
+          throw new HttpException({detail:"7 days quarantine is compulsory"},HttpStatus.NOT_FOUND)
         }
-                    }
+                 }
+                    
         else {
-            throw new NotFoundException("enter guest details")
+          throw new HttpException({detail:"Enter details"},HttpStatus.NOT_FOUND)
         }
         }
         else {
-            throw new NotFoundException("room not available")
+          throw new HttpException({detail:"Room not available"},HttpStatus.NOT_FOUND)
         }
-}catch(e){
- return  e.message
-}
+
     
     }
 
@@ -230,16 +235,27 @@ export class BookingRepository extends Repository<Booking> {
              .innerJoin('room.facility','facility')
              .innerJoin('bookings.guestdetail','guestdetail')
              .select(['bookings.book_id','bookings.checkin','bookings.checkout','bookings.statusBooking','bookings.statusCheckin',
-                    'bookings.createdAt','bookings.updatedAt', 'room.category','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
+                    'bookings.createdAt','bookings.updatedAt', 'room.category','facility.photos','room.cost','facility.name','facility.address','facility.district','guestdetail.name','guestdetail.age','guestdetail.gender','guestdetail.number'])
              .where('user.id = :id', {id:user.id});
-
+            var final=[]
 
              if(await query.getCount()>0){
 
-                return await query.getMany();
+              // return await query.getMany();
+              const result =await  query.getMany();
+              for(const  i in result)
+              {
+                for(const j in result[i].room.facility.photos)
+                {
+                  if(!result[i].room.facility.photos[j].includes('/'))
+                      result[i].room.facility.photos[j] = `https://${process.env.CDN_URL}/${result[i].room.facility.photos[j]}`;
                 }
+                final.push(result[i])
+              }
+                return final;
+            }
                 else{
-                    throw new NotFoundException("No Bookings")
+                    throw new NotFoundException({detail:"No Bookings"})
                 }
 
     }
@@ -259,7 +275,7 @@ export class BookingRepository extends Repository<Booking> {
                 return await query.getMany();
                 }
                 else{
-                    throw new NotFoundException("No Bookings")
+                    throw new NotFoundException({detail:"No Bookings"})
                 }
 
 
@@ -303,7 +319,7 @@ export class BookingRepository extends Repository<Booking> {
                     data:book
                   }}
                   else {
-                     throw new HttpException ( "Booking was cancelled!",HttpStatus.NOT_ACCEPTABLE);
+                     throw new HttpException ( {detail:"Booking was cancelled!"},HttpStatus.NOT_ACCEPTABLE);
                   }
 
             }

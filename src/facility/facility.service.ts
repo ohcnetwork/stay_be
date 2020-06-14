@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateFacilityDto } from './dto';
 import { User } from 'src/auth/entities/User.entity';
 import { UserRepository } from 'src/auth/user.repository';
+import { RoomRepository } from 'src/rooms/room.repository';
 
 @Injectable()
 export class FacilityService {
@@ -14,6 +15,7 @@ export class FacilityService {
    @InjectRepository(FacilityRepository)
    @InjectRepository(UserRepository)
    private readonly facilityRepository: FacilityRepository,
+   private readonly roomRepository: RoomRepository,
    private readonly userRepository:UserRepository){}
    gethello(): string { 
         return 'Welcome to stay service';
@@ -34,8 +36,6 @@ export class FacilityService {
     async findHotel(user:User,id:any): Promise<any>{
         const found =await this.userRepository.findOne({id:user.id})
         const hotel = await this.facilityRepository.findOne({id:id})
-        console.log(hotel)
-        console.log(found)
         if((found.type === 'facilityowner' && hotel.ownerID === found.id)||(found.type === 'admin')){
             return found
         }
@@ -45,28 +45,13 @@ export class FacilityService {
     }
    async addfacility(data:any,user:User,files:any): Promise<any> {
         try{
-                const imgUrls=[];
-                const coronasafe_cdn = process.env.CDN_URL;
-                const s3Urls = process.env.S3_URLS.split(",");
-                let replaceLink;
+                let imgUrls;
                 if(await this.validateUser(user))
                 {
                     data.ownerID=user.id;
                     if(files)
                     {
-                        for(let i=0;i<files.length;i++)
-                        {
-                            const imgLink = files[i].location;
-                            for(const k in s3Urls)
-                            {
-                                if(imgLink.includes(s3Urls[k]))
-                                {
-                                    replaceLink = imgLink.replace(s3Urls[k],coronasafe_cdn);
-                                    imgUrls.push(replaceLink);
-                                }
-                            }
-    
-                        }
+                        imgUrls = await this.roomRepository.replaceImageUrl(files);
                     }
                     return this.facilityRepository.createFacility(data,user.id,imgUrls);
                 }
@@ -88,10 +73,18 @@ export class FacilityService {
 
     async getFacility(user:User): Promise<any> {
    
-            if(await this.validateUser(user)){
+        if(await this.validateUser(user)){
         const facility = await this.facilityRepository.find({ ownerID:user.id })
         if(facility) {
             const {...result}=facility;
+            for(const i in result)
+            {
+                for(const j in result[i].photos)
+                {
+                    if(!result[i].photos[j].includes('/'))
+                         result[i].photos[j] = `https://${process.env.CDN_URL}/${result[i].photos[j]}`;
+                }
+            }
             return{
                 success:true,
                 message:"facilities retrieved",
@@ -110,19 +103,25 @@ export class FacilityService {
     }
     }
 
-    async getFacilityById(id:number):Promise<any>{
-
+    async getFacilityById(user:User,id:number):Promise<any>{
+        
             const facility = await this.facilityRepository.findOne({id});
             if(facility)
             {
+                for(const i in facility.photos)
+                {
+                    if(!facility.photos[i].includes('/'))
+                         facility.photos[i] = `https://${process.env.CDN_URL}/${facility.photos[i]}`;
+                }
                 return facility;
             }
             else {
                 throw new NotFoundException("No Such Facility")
             }
         
+        }
         
-    }
+    
     async deleteFacility(user:User,id:number):Promise<any> {
             if(await this.findHotel(user,id)){
             const facility = await this.facilityRepository.findOne({ id:id })
@@ -144,7 +143,9 @@ export class FacilityService {
        
 
     }
-    async updateFacility(user:User,id:number,data:any): Promise <any> {
+    async updateFacility(user:User,id:number,data:any,files:any): Promise <any> {
+
+        let imgUrls;
         const  L=['Thiruvananthapuram','Ernakulam','Kollam','Kannur','Kozhikode','Kottayam','Thrissur','Idukki','Malappuram','Palakkad','Kasaragod','Alappuzha','Pathanamthitta','Wayanad']
         if(await this.findHotel(user,id)){
         const facility = await this.facilityRepository.findOne({id:id })
@@ -184,9 +185,12 @@ export class FacilityService {
             if(data.status){
                 facility.status=data.status
             }
-            if(data.photos)
-            {
-                facility.photos=data.photos
+            if(files)
+            {  
+                imgUrls = await this.roomRepository.replaceImageUrl(files);
+
+                if(imgUrls.length>0)
+                    facility.photos=imgUrls;
             }
             await this.facilityRepository.save(facility);
             const {...result} = facility

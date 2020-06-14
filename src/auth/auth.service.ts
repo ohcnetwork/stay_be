@@ -30,6 +30,8 @@ export class AuthService {
     this.logger.verbose(`User Logged In ${user.name}`);
     if (user) {
       const {...result} = user;
+      delete result.password;
+      delete result.id;
       return {
         success: true,
         message: 'Success',
@@ -78,6 +80,8 @@ export class AuthService {
 
         const registerUser = await this.userRepository.save(data);
         const {...result} = registerUser;
+        delete result.password;
+        delete result.confirm;
         return {
           success: true,
           message: 'Success',
