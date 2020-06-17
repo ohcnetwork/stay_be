@@ -12,21 +12,42 @@ import * as rateLimit from 'express-rate-limit';
 Sentry.init({
   dsn: process.env.SENTRY_DSN }
   );
-
+//const csp = require('helmet-csp')
 async function bootstrap() {
   const logger = new Logger('Coronasafe Root');
   const serverConfig = config.get('server');
   const app = await NestFactory.create<NestExpressApplication>(AppModule,{cors:true});
   app.use(helmet());
   app.useLogger(csurf());
+/*  app.use(csp({
+    directives:{
+      defaultSrc:["'none'"],
+      data:["'self'"],
+      scriptSrc:['https://cdn.coronasafe.network','https://sentry.io','//unpkg.com/leaflet@1.6.0/dist/leaflet.css','self'],
+      fontSrc:['self'],
+      imageSrc:['https://coronasafe.network/break-chain.png','https://cdn.stay.coronasafe.network','https://coronasafe.network/','https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png','self'],
+      frameSrc:["'self'"],
+      baseUri:["'self','https://nominatim.openstreetmap.org/search'"],
+      objectSrc:["'self"],
+      mediaSrc:["'self'"],
+      frameAncestors:["'self'"],
+      formAction:["'self"],
+      connectSrc:['https://sentry.io','self'],
+      reportUri:'',
+
+    }
+  }))*/
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
   } else {
-    app.enableCors({ origin: '*' });
+    app.enableCors({ origin: process.env.HOSTNAME });
   }
-
   app.set('trust proxy', 1)
-
+  app.disable('etag')
+  app.use(function(req, res, next) {
+    res.header('x-powered-by', 'coronasafe network');
+    next();
+  });
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
