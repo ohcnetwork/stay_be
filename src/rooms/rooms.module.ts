@@ -8,6 +8,8 @@ import { BookingRepository} from '../booking/booking.repository';
 import { BookingModule } from 'src/booking/booking.module';
 import { UserRepository } from 'src/auth/user.repository';
 import {Room} from 'src/rooms/entity/room.entity'
+import { DefaultAdminSite, DefaultAdminModule } from 'nestjs-admin';
+import { RoomAdmin } from './rooms.admin';
 
 
 
@@ -19,9 +21,15 @@ import {Room} from 'src/rooms/entity/room.entity'
     TypeOrmModule.forFeature([BookingRepository]),
     TypeOrmModule.forFeature([UserRepository]),
     BookingModule,
+    DefaultAdminModule
   ],
   controllers: [RoomsController],
   providers: [RoomsService],
   exports: [RoomsService],
 })
-export class RoomsModule {}
+export class RoomsModule {
+  constructor(private readonly adminSite: DefaultAdminSite) {
+        
+    adminSite.register('Room',RoomAdmin )
+  }
+}
