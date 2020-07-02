@@ -7,7 +7,7 @@ import { Booking } from 'src/booking/entities/Booking.entity';
 
 import { User } from 'src/auth/entities/User.entity';
 
-import { UnauthorizedException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
 
 
 @EntityRepository(Room)
@@ -23,11 +23,7 @@ export class RoomRepository extends Repository<Room>{
         //if filter type is hotel
         if(type.localeCompare("hotel")===0){
 
-        const queryone = this.createQueryBuilder('room').select(['room.id']).where('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
-        if(await queryone.getCount()>0){
-
         const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'}).andWhere('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
-        if(await query.getCount()>0){
        
         if(district)
         {   const id = [];
@@ -111,19 +107,12 @@ export class RoomRepository extends Repository<Room>{
         }
     }
     return hotels;
-}
-else{
-    throw new NotFoundException({detail:"No hotels"})
-}
-}
-else{
-    throw new NotFoundException({detail:"No hotel rooms available"})
-}
+
     } //if filter type is rooms or something
     else {
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room').where('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
-        if(await query.getCount()>0){
+
 
         if(checkin && checkout)
 
@@ -192,10 +181,6 @@ else{
         {
              console.log("Rooms with provided specification not available!!");
         }
-    }
-        else{
-            throw new NotFoundException({detail:"No rooms available"})
-        }  
     }
  }
 
