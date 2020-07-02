@@ -8,6 +8,9 @@ import { Booking } from 'src/booking/entities/Booking.entity';
 import { User } from 'src/auth/entities/User.entity';
 
 import { UnauthorizedException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { AdminFilterDto } from './dto/admin-filter-dto.dto';
+import { QueryExpressionMap } from 'typeorm/query-builder/QueryExpressionMap';
+import { GuestDetail } from 'src/booking/entities/GuestDetail.entity';
 
 
 @EntityRepository(Room)
@@ -274,6 +277,18 @@ else{
                 }
         }
           return imgUrls;
+    }
+
+    async getAggregateDistrictDetails(adminFilterDto:AdminFilterDto):Promise<any>{
+        const query = this.createQueryBuilder('room')
+        query.innerJoin('room.facility','facility').select("SUM (room.beds) AS beds")
+        query.where('facility.district = :district',{district:adminFilterDto.district})
+        const noOfBeds = await query.getRawMany()
+        
+        return {
+            noOfBeds,
+        }
+
     }
 }
 

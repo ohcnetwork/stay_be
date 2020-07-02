@@ -10,6 +10,7 @@ import { RoomRepository } from 'src/rooms/room.repository';
 import { UserRepository } from 'src/auth/user.repository';
 import { QueryFailedError, LessThanOrEqual, MoreThanOrEqual, LessThan, Between } from 'typeorm';
 import {MailerService} from "@nestjs-modules/mailer";
+import {AdminFilterDto} from "src/rooms/dto/admin-filter-dto.dto"
 import { IsDateString } from 'class-validator';
 import { isDate } from 'util';
 
@@ -284,5 +285,10 @@ export class BookingService {
           }
         }*/
       }
+
+      async getAggregateDistrictDetails(AdminFilterDto:AdminFilterDto):Promise<any>{
+        console.log("hello from service")
+        return this.bookingRepository.getAggregateDistrictDetails(AdminFilterDto)
+    }
 
 }

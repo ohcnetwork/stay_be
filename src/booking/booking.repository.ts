@@ -10,6 +10,7 @@ import { GuestDetail } from "./entities/GuestDetail.entity";
 import { MailerService } from "@nestjs-modules/mailer";
 import { UserRepository } from "src/auth/user.repository";
 import { getDefaultSettings } from "http2";
+import { AdminFilterDto } from "src/rooms/dto/admin-filter-dto.dto";
 
 
 @EntityRepository(Booking)
@@ -327,5 +328,28 @@ export class BookingRepository extends Repository<Booking> {
             }
         }
 
-    
+        async getAggregateDistrictDetails(adminFilterDto:AdminFilterDto):Promise<any>{
+          
+          const today = new Date()
+          console.log(today)
+          const quarentine = this.createQueryBuilder('bookings')
+          quarentine.innerJoin('bookings.room','room').innerJoin('room.facility','facility').select(['bookings.book_id']).where('bookings.checkout > :date AND facility.district = :district',{date:today,district:adminFilterDto.district})
+          console.log((await quarentine.getMany()))
+          const [noOfPeopleInQuarentine,count] = await quarentine.getManyAndCount()
+          var number = 0
+          console.log(noOfPeopleInQuarentine[0].book_id,count)
+          for (var i =0 ;i<count;i++)
+          {
+              console.log(i)
+              const noOfPeople = this.createQueryBuilder('bookings').innerJoin('bookings.guestdetail','guestdetail').select(['guestdetail.booking.book_id'])
+              noOfPeople.where('guestdetail.booking.book_id = :id',{id:noOfPeopleInQuarentine[i].book_id})
+             console.log(await noOfPeople.getRawMany())
+              number+=(await noOfPeople.getRawMany()).length
+          }
+          console.log(number)
+          return {
+              noOfPeopleInQuarentine:number
+          }
+  
+      }
 }

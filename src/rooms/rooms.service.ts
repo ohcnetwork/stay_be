@@ -8,6 +8,7 @@ import { User} from '../auth/entities/User.entity';
 import { RoomStatus } from './room-status.enum';
 import { FacilityRepository } from 'src/facility/facility.repository';
 import { UserRepository } from 'src/auth/user.repository';
+import { AdminFilterDto } from './dto/admin-filter-dto.dto';
 
 
 @Injectable()
@@ -209,5 +210,10 @@ else{
                 data: roomsUpdate[0]
             };
         }
+
+    async getAggregateDistrictDetails(AdminFilterDto:AdminFilterDto):Promise<any>{
+        console.log("hello from service")
+        return this.roomRepository.getAggregateDistrictDetails(AdminFilterDto)
+    }
 }
 

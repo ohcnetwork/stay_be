@@ -13,6 +13,7 @@ import { UpdateRoomDto } from './dto/update-room-dto.dto';
 const AWS = require('aws-sdk');
 import * as multerS3 from 'multer-s3';
 import { DeleteRoom } from './dto/delete-room.dto';
+import { AdminFilterDto } from './dto/admin-filter-dto.dto';
 
 const AWS_S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME;
 const s3 = new AWS.S3();
@@ -96,6 +97,11 @@ export class RoomsController {
          return this.roomsService.getPrice();
      }
 
+     @Post('/get/aggregateDistrictDetails')
+        aggregateDistrictDetails(@Body() body:AdminFilterDto){
+          console.log("hello")
+          return this.roomsService.getAggregateDistrictDetails(body)
+        }
     //EDIT ROOM API
     @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
@@ -121,4 +127,5 @@ export class RoomsController {
             return this.roomsService.updateRooms(req.user,updateRoomDto,req.files);
         }
 
+        
 }

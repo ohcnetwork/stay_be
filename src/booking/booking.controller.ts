@@ -4,6 +4,7 @@ import { BookingService } from './booking.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateBookingDto } from './dto/CreateBookingDto.dto';
 import { ChangeStatusDto} from './dto/ChangeStatusDto.dto';
+import { AdminFilterDto } from 'src/rooms/dto/admin-filter-dto.dto';
 
 
 @ApiUseTags('Booking')
@@ -76,6 +77,11 @@ export class BookingController {
     }
 
 
+    @Post('/get/aggregateDistrictDetails')
+        aggregateDistrictDetails(@Body() body:AdminFilterDto){
+          console.log("hello")
+          return this.bookingService.getAggregateDistrictDetails(body)
+        }
 
 
 
