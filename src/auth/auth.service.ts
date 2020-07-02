@@ -105,7 +105,9 @@ export class AuthService {
   }
 
 
-  async login(user: any) {
+  async login(user1: any) {
+    const user = await this.validateUser(user1.email,user1.password)
+    if(user){
     const {email, id} = user;
     const payload = {email, id};
     return {
@@ -113,6 +115,10 @@ export class AuthService {
       // eslint-disable-next-line @typescript-eslint/camelcase
       access_token: this.jwtService.sign(payload)
     }
+  }
+  else{
+    throw new UnauthorizedException({detail:'No active account found with the given credentials', code :'no_active_account'})
+  }
   }
 
   async changePassword(user: User, data: ChangePasswordDto): Promise<any> {
