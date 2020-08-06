@@ -10,6 +10,9 @@ import { UserRepository } from 'src/auth/user.repository';
 import { RoomRepository } from 'src/rooms/room.repository';
 import {HandlebarsAdapter, MailerModule} from "@nestjs-modules/mailer";
 import {nestMailer} from "../config/constants";
+import { DefaultAdminSite, DefaultAdminModule } from 'nestjs-admin';
+import { BookingAdmin } from './booking.admin';
+import { GuestAdmin } from './guest.admin';
 @Module({
   imports:[
     TypeOrmModule.forFeature([Booking, BookingRepository]),
@@ -29,9 +32,16 @@ import {nestMailer} from "../config/constants";
         },
       }),
     }),
+    DefaultAdminModule
   ],
   controllers: [BookingController],
   providers: [BookingService],
   exports: [BookingService],
 })
-export class BookingModule {}
+export class BookingModule {
+  constructor(private readonly adminSite: DefaultAdminSite) {
+        
+    adminSite.register('Booking',BookingAdmin )
+    adminSite.register('Guests',GuestAdmin)
+  }
+}

@@ -20,13 +20,12 @@ export class AuthController {
       return this.authService.getUser(req);
     }
   
-
-  
-    @UseGuards(AuthGuard('local'))
+   // @UseGuards(AuthGuard('local'))
     @Post('login')
     login(@Req() req,@Body() loginDto:LoginDto) {
-      this.logger.verbose(`user Logged in ${req.user.email}`);
-      return this.authService.login(req.user);
+      this.logger.verbose(`user Logged in `,loginDto.email);
+      console.log(loginDto.email)
+      return this.authService.login(loginDto);
     }
   
   

@@ -10,6 +10,8 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy, JwtStrategy } from './strategy';
 import {HandlebarsAdapter, MailerModule} from "@nestjs-modules/mailer";
 import {nestMailer} from "../config/constants";
+import { DefaultAdminModule, DefaultAdminSite } from 'nestjs-admin';
+import { UserAdmin } from './auth.admin';
 
 const jwtConfig = config.get('jwt');
 
@@ -33,9 +35,15 @@ const jwtConfig = config.get('jwt');
         },
       }),
     }),
+    DefaultAdminModule
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService]
 })
-export class AuthModule {}
+export class AuthModule {
+  constructor(private readonly adminSite: DefaultAdminSite) {
+        
+    adminSite.register('Users', UserAdmin )
+  }
+}

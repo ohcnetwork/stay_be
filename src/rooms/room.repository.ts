@@ -24,7 +24,6 @@ export class RoomRepository extends Repository<Room>{
         if(type.localeCompare("hotel")===0){
 
         const query = this.createQueryBuilder('room').innerJoin('room.facility','facility').select(['facility.id','room.id','facility.status']).where('facility.status = :ACTIVE',{ACTIVE:'ACTIVE'}).andWhere('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
-
        
         if(district)
         {   const id = [];
@@ -108,10 +107,13 @@ export class RoomRepository extends Repository<Room>{
         }
     }
     return hotels;
+
     } //if filter type is rooms or something
     else {
         //query to find rooms based on check in and check out
         const query = this.createQueryBuilder('room').where('room.status =:AVAILABLE',{AVAILABLE:'AVAILABLE'});
+
+
         if(checkin && checkout)
 
         { 

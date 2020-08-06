@@ -11,7 +11,7 @@ import { BookingController } from './booking/booking.controller';
 import { BookingModule } from './booking/booking.module';
 import {HandlebarsAdapter, MailerModule} from '@nestjs-modules/mailer';
 import {nestMailer} from "./config/constants";
-
+import {DefaultAdminModule} from 'nestjs-admin';
 @Module({
   imports: [
     AuthModule,
@@ -31,6 +31,7 @@ import {nestMailer} from "./config/constants";
         },
       }),
     }),
+    DefaultAdminModule
   ],
   controllers: [AuthController,FacilityController,RoomsController, BookingController],
   providers: [],
