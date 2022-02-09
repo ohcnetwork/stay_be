@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.4.2",
-    "@nestjs/common": "^6.10.14",
+    "@nestjs/common": "^7.4.3",
     "@nestjs/core": "^6.10.14",
     "@nestjs/cqrs": "^6.1.0",
     "@nestjs/jwt": "^7.0.0",
